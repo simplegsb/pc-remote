@@ -220,10 +220,13 @@ public class ControlPadView extends LinearLayout
         ImageButton leftMouseButton = new ImageButton(getContext());
         leftMouseButton.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1.0f));
         leftMouseButton.setImageResource(R.drawable.mouse_button_left);
+        leftMouseButton.setOnClickListener(new ControlPadListener(fControlPad, ControlPadListener.MOUSE_BUTTON_CLICK, 1));
         mouseButtons.addView(leftMouseButton);
+
         ImageButton rightMouseButton = new ImageButton(getContext());
         rightMouseButton.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1.0f));
         rightMouseButton.setImageResource(R.drawable.mouse_button_right);
+        rightMouseButton.setOnClickListener(new ControlPadListener(fControlPad, ControlPadListener.MOUSE_BUTTON_CLICK, 3));
         mouseButtons.addView(rightMouseButton);
 
         return (mouseButtons);
@@ -244,7 +247,8 @@ public class ControlPadView extends LinearLayout
         mousePad.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1.0f));
         mousePad.setBackgroundResource(R.drawable.mouse_pad_border);
 
-        final GestureDetector gestureDetector = new GestureDetector(new ControlPadListener(fControlPad));
+        final GestureDetector gestureDetector = new GestureDetector(getContext(), new ControlPadListener(fControlPad,
+                ControlPadListener.MOUSE_MOVE_RELATIVE));
         mousePad.setOnTouchListener(new OnTouchListener()
         {
             @Override
