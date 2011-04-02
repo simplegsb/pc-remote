@@ -36,7 +36,7 @@ import com.se.pcremote.server.PCRemoteServer;
  * </p>
  * 
  * <ul>
- * <li>Instantiate <code>PCRemoteClient</code> and call the {@link #init() int()} method to connect to the server.</li>
+ * <li>Instantiate <code>PCRemoteClient</code> and call the {@link #init() init()} method to connect to the server.</li>
  * <li>Send any combination of TCP and UDP commands to the server using the {@link #sendCommandViaTcp(String) sendCommandViaTcp(String)} and
  * {@link #sendCommandViaUdp(String) sendCommandViaUdp(String)} methods respectively. For a description of the commands that can be sent to the
  * server, see {@link com.se.pcremote.server.PCRemoteServer PCRemoteServer}.</li>
@@ -341,7 +341,7 @@ public class PCRemoteClient
      */
     public boolean isConnected()
     {
-        return (fTcpSocket.isConnected() && !fTcpSocket.isClosed());
+        return (fTcpSocket != null && fTcpSocket.isConnected() && !fTcpSocket.isClosed());
     }
 
     /**

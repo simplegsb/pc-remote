@@ -32,6 +32,7 @@ import org.apache.log4j.Logger;
  * <li><code>mouseMove(x,y);</code> Moves the mouse to the designated location.</li>
  * <li><code>mouseMoveRelative(x,y);</code> Moves the mouse to the designated location relative to its current location.</li>
  * <li><code>mousePress(mouseButton);</code> Presses a mouse button (note that the command <code>mouseRelease(mouseButton);</code> must be received
+ * after this to release the button).</li>
  * <li><code>mouseRelease(mouseButton);</code> Releases a mouse button.</li>
  * <li><code>mouseWheel(notches);</code> Spins the mouse wheel.</li>
  * <li><code>keyPress(key);</code> Presses a key on the keyboard (note that the command <code>keyRelease(key);</code> must be received after this to
@@ -125,8 +126,8 @@ public class CommandExecuter
             else if (methodName.equals("mouseMoveRelative"))
             {
                 Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
-                fRobot.mouseMove(mouseLocation.x + -1 * (int) Double.parseDouble(methodParameters[0]), mouseLocation.y + -1
-                        * (int) Double.parseDouble(methodParameters[1]));
+                fRobot.mouseMove(mouseLocation.x + -1 * (int) Double.parseDouble(methodParameters[0]),
+                        mouseLocation.y + -1 * (int) Double.parseDouble(methodParameters[1]));
             }
             else if (methodName.equals("mousePress"))
             {
