@@ -137,6 +137,26 @@ public class ControlPad extends Activity
         unbindService(fServiceConnection);
     }
 
+    @Override
+    public void finish()
+    {
+        disconnect();
+
+        super.finish();
+    }
+
+    /**
+     * <p>
+     * Retrieves the connection to the active {@link com.se.pcremote.android.PC PC}.
+     * </p>
+     * 
+     * @return The connection to the active <code>PC</code>.
+     */
+    public PCConnection getConnection()
+    {
+        return (fPcConnection);
+    }
+
     /**
      * <p>
      * Retrieves the active {@link com.se.pcremote.android.Layout Layout}.
@@ -269,14 +289,6 @@ public class ControlPad extends Activity
         getMenuInflater().inflate(R.menu.control_pad_options, menu);
 
         return (true);
-    }
-
-    @Override
-    protected void onDestroy()
-    {
-        disconnect();
-
-        super.onDestroy();
     }
 
     @Override

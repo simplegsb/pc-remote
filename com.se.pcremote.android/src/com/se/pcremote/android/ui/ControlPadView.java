@@ -1,7 +1,11 @@
 package com.se.pcremote.android.ui;
 
+import android.content.res.Configuration;
+import android.view.GestureDetector;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -35,8 +39,7 @@ public class ControlPadView extends LinearLayout
 
     /**
      * <p>
-     * The font size of the title message displayed when the active {@link com.se.pcremote.android.Layout Layout} does not exist (the 'lost'
-     * screen).
+     * The font size of the title message displayed when the active {@link com.se.pcremote.android.Layout Layout} does not exist (the 'lost' screen).
      * </p>
      */
     private static final int LOST_TITLE_FONT_SIZE = 36;
@@ -71,12 +74,13 @@ public class ControlPadView extends LinearLayout
      */
     public void build()
     {
-        setOrientation(LinearLayout.VERTICAL);
         removeAllViews();
 
         Layout layout = fControlPad.getLayout();
         if (layout.getId() == 0)
         {
+            setOrientation(LinearLayout.VERTICAL);
+
             TextView lostTitle = new TextView(getContext());
             lostTitle.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
             lostTitle.setText(R.string.lost_title);
@@ -97,28 +101,54 @@ public class ControlPadView extends LinearLayout
         }
         else
         {
+            // Prepare the parent view depending on the orientation of the device.
+            ViewGroup parentView = null;
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            {
+                LinearLayout left = new LinearLayout(getContext());
+                left.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1.0f));
+                left.setOrientation(LinearLayout.VERTICAL);
+                addView(left);
+                parentView = left;
+            }
+            else
+            {
+                setOrientation(LinearLayout.VERTICAL);
+                parentView = this;
+            }
+
             if (layout.hasButtonGrid())
             {
                 View buttonGrid = buildButtonGrid(layout);
-                addView(buttonGrid);
+                parentView.addView(buttonGrid);
             }
 
             if (layout.hasKeyboardButton())
             {
                 View keyboard = buildKeyboard();
-                addView(keyboard);
+                parentView.addView(keyboard);
+            }
+
+            // Prepare the parent view depending on the orientation of the device.
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            {
+                LinearLayout right = new LinearLayout(getContext());
+                right.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1.0f));
+                right.setOrientation(LinearLayout.VERTICAL);
+                addView(right);
+                parentView = right;
             }
 
             if (layout.hasMousePad())
             {
                 View mousePad = buildMousePad(layout);
-                addView(mousePad);
+                parentView.addView(mousePad);
             }
 
             if (layout.hasMouseButtons())
             {
                 View mouseButtons = buildMouseButtons();
-                addView(mouseButtons);
+                parentView.addView(mouseButtons);
             }
         }
     }
@@ -214,16 +244,15 @@ public class ControlPadView extends LinearLayout
         mousePad.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1.0f));
         mousePad.setBackgroundResource(R.drawable.mouse_pad_border);
 
-        // final GestureDetector gestureDetector = new GestureDetector(new ControlPadListener(fControlPad.getClient()));
-        // mousePad.setOnTouchListener(new OnTouchListener()
-        // {
-        // @Override
-        // public boolean onTouch(final View view, final MotionEvent event)
-        // {
-        // gestureDetector.onTouchEvent(event);
-        // return (true);
-        // }
-        // });
+        final GestureDetector gestureDetector = new GestureDetector(new ControlPadListener(fControlPad));
+        mousePad.setOnTouchListener(new OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(final View view, final MotionEvent event)
+            {
+                return (gestureDetector.onTouchEvent(event));
+            }
+        });
 
         return (mousePad);
     }
