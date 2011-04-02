@@ -14,7 +14,7 @@ import com.se.pcremote.server.PCRemoteServer;
 
 /**
  * <p>
- * Creates and edits PCs.
+ * Creates and edits {@link com.se.pcremote.android.PC PC}s.
  * </p>
  * 
  * @author simple
@@ -43,13 +43,7 @@ public class PCPreferences extends PreferenceActivity
     {
         try
         {
-            // Load the PC details from the preferences.
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-            fPc.setName(preferences.getString("pcName", "New PC"));
-            fPc.setHost(preferences.getString("pcHost", null));
-            fPc.setPort(Integer.parseInt(preferences.getString("pcPort", String.valueOf(PCRemoteServer.DEFAULT_PORT))));
-
-            fPc.save(this);
+            savePreferencesToPc();
 
             setResult(RESULT_OK, new Intent(null, fPc.getUri()));
 
@@ -61,20 +55,29 @@ public class PCPreferences extends PreferenceActivity
         }
     }
 
-    @Override
-    protected void onCreate(final Bundle savedInstanceState)
+    /**
+     * <p>
+     * Loads the preference values from the {@link com.se.pcremote.android.PC PC}.
+     * </p>
+     */
+    private void loadPreferencesFromPc()
     {
-        super.onCreate(savedInstanceState);
-
         fPc = new PC();
         fPc.load(this, getIntent().getData());
 
-        // Save the PC details to the preferences.
         Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
         editor.putString("pcName", fPc.getName());
         editor.putString("pcHost", fPc.getHost());
         editor.putString("pcPort", String.valueOf(fPc.getPort()));
         editor.commit();
+    }
+
+    @Override
+    protected void onCreate(final Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+
+        loadPreferencesFromPc();
 
         addPreferencesFromResource(R.xml.pc_preference_fragment);
     }
@@ -83,5 +86,28 @@ public class PCPreferences extends PreferenceActivity
     protected Dialog onCreateDialog(final int id)
     {
         return (DialogFactory.getInstance().createDialog(this, DialogFactory.DIALOG_INVALID_PORT_ID));
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        savePreferencesToPc();
+
+        super.onDestroy();
+    }
+
+    /**
+     * <p>
+     * Saves the preference values to the {@link com.se.pcremote.android.PC PC}.
+     * </p>
+     */
+    public void savePreferencesToPc()
+    {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        fPc.setName(preferences.getString("pcName", "New PC"));
+        fPc.setHost(preferences.getString("pcHost", null));
+        fPc.setPort(Integer.parseInt(preferences.getString("pcPort", String.valueOf(PCRemoteServer.DEFAULT_PORT))));
+
+        fPc.save(this);
     }
 }

@@ -39,7 +39,59 @@ public class LayoutPreferences extends PreferenceActivity
     @Override
     public void finish()
     {
-        // Load the Layout details from the preferences.
+        savePreferencesToLayout();
+
+        setResult(RESULT_OK, new Intent(null, fLayout.getUri()));
+
+        super.finish();
+    }
+
+    /**
+     * <p>
+     * Loads the preference values from the {@link com.se.pcremote.android.Layout Layout}.
+     * </p>
+     */
+    private void loadPreferencesFromLayout()
+    {
+        fLayout = new Layout();
+        fLayout.load(this, getIntent().getData());
+
+        Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+        editor.putString("layoutButtonGridHeight", String.valueOf(fLayout.getButtonGridHeight()));
+        editor.putString("layoutButtonGridWidth", String.valueOf(fLayout.getButtonGridWidth()));
+        editor.putBoolean("layoutHasButtonGrid", fLayout.hasButtonGrid());
+        editor.putBoolean("layoutHasKeyboardButton", fLayout.hasKeyboardButton());
+        editor.putBoolean("layoutHasMouseButtons", fLayout.hasMouseButtons());
+        editor.putBoolean("layoutHasMousePad", fLayout.hasMousePad());
+        editor.putString("layoutName", fLayout.getName());
+        editor.commit();
+    }
+
+    @Override
+    protected void onCreate(final Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+
+        loadPreferencesFromLayout();
+
+        addPreferencesFromResource(R.xml.layout_preference_fragment);
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        savePreferencesToLayout();
+
+        super.onDestroy();
+    }
+
+    /**
+     * <p>
+     * Saves the preference values to the {@link com.se.pcremote.android.Layout Layout}.
+     * </p>
+     */
+    public void savePreferencesToLayout()
+    {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         fLayout.setButtonGridHeight(Integer.parseInt(preferences.getString("layoutButtonGridHeight", "3")));
         fLayout.setButtonGridWidth(Integer.parseInt(preferences.getString("layoutButtonGridWidth", "3")));
@@ -50,31 +102,5 @@ public class LayoutPreferences extends PreferenceActivity
         fLayout.setName(preferences.getString("layoutName", "New Layout"));
 
         fLayout.save(this);
-
-        setResult(RESULT_OK, new Intent(null, fLayout.getUri()));
-
-        super.finish();
-    }
-
-    @Override
-    protected void onCreate(final Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-
-        fLayout = new Layout();
-        fLayout.load(this, getIntent().getData());
-
-        // Save the Layout details to the preferences.
-        Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-        editor.putString("layoutButtonGridHeight", String.valueOf(fLayout.getButtonGridHeight()));
-        editor.putString("layoutButtonGridWidth", String.valueOf(fLayout.getButtonGridWidth()));
-        editor.putBoolean("layoutHasButtonGrid", fLayout.hasButtonGrid());
-        editor.putBoolean("layoutHasKeyboardButton", fLayout.hasKeyboardButton());
-        editor.putBoolean("layoutHasMouseButtons", fLayout.hasMouseButtons());
-        editor.putBoolean("layoutHasMousePad", fLayout.hasMousePad());
-        editor.putString("layoutName", fLayout.getName());
-        editor.commit();
-
-        addPreferencesFromResource(R.xml.layout_preference_fragment);
     }
 }
