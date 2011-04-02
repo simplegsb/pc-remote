@@ -15,6 +15,7 @@ import java.awt.AWTException;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Robot;
+import java.awt.event.InputEvent;
 
 import org.apache.log4j.Logger;
 
@@ -29,15 +30,15 @@ import org.apache.log4j.Logger;
  * </p>
  * 
  * <ul>
+ * <li><code>keyPress(key);</code> Presses a key on the keyboard (note that the command <code>keyRelease(key);</code> must be received after this to
+ * release the key).</li>
+ * <li><code>keyRelease(key);</code> Releases a key on the keyboard.</li>
  * <li><code>mouseMove(x,y);</code> Moves the mouse to the designated location.</li>
  * <li><code>mouseMoveRelative(x,y);</code> Moves the mouse to the designated location relative to its current location.</li>
  * <li><code>mousePress(mouseButton);</code> Presses a mouse button (note that the command <code>mouseRelease(mouseButton);</code> must be received
  * after this to release the button).</li>
  * <li><code>mouseRelease(mouseButton);</code> Releases a mouse button.</li>
  * <li><code>mouseWheel(notches);</code> Spins the mouse wheel.</li>
- * <li><code>keyPress(key);</code> Presses a key on the keyboard (note that the command <code>keyRelease(key);</code> must be received after this to
- * release the key).</li>
- * <li><code>keyRelease(key);</code> Releases a key on the keyboard.</li>
  * </ul>
  * 
  * @author Gary Buyn
@@ -81,7 +82,6 @@ public class CommandExecuter
     public CommandExecuter(final Robot robot)
     {
         fRobot = robot;
-
         fLogger = Logger.getLogger(getClass());
     }
 
@@ -131,11 +131,35 @@ public class CommandExecuter
             }
             else if (methodName.equals("mousePress"))
             {
-                fRobot.mousePress(Integer.parseInt(methodParameters[0]));
+                int button = Integer.parseInt(methodParameters[0]);
+                if (button == 1)
+                {
+                    fRobot.mousePress(InputEvent.BUTTON1_MASK);
+                }
+                else if (button == 2)
+                {
+                    fRobot.mousePress(InputEvent.BUTTON2_MASK);
+                }
+                else if (button == 3)
+                {
+                    fRobot.mousePress(InputEvent.BUTTON3_MASK);
+                }
             }
             else if (methodName.equals("mouseRelease"))
             {
-                fRobot.mouseRelease(Integer.parseInt(methodParameters[0]));
+                int button = Integer.parseInt(methodParameters[0]);
+                if (button == 1)
+                {
+                    fRobot.mouseRelease(InputEvent.BUTTON1_MASK);
+                }
+                else if (button == 2)
+                {
+                    fRobot.mouseRelease(InputEvent.BUTTON2_MASK);
+                }
+                else if (button == 3)
+                {
+                    fRobot.mouseRelease(InputEvent.BUTTON3_MASK);
+                }
             }
             else if (methodName.equals("mouseWheel"))
             {
