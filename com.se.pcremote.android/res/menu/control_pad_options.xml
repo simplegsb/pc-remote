@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/switch_layout" android:titleCondensed="@string/switch_layout_short" android:title="@string/switch_layout" android:icon="@drawable/select"></item>
+    <item android:id="@+id/switch_pc" android:titleCondensed="@string/switch_pc_short" android:title="@string/switch_pc" android:icon="@drawable/select"></item>
+    <item android:id="@+id/settings" android:title="@string/settings" android:icon="@drawable/settings"></item>
+</menu>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="gen"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.se.pcremote"/>
+	<classpathentry kind="lib" path="lib/log4j-over-slf4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-android-1.6.1-RC1.jar"/>
+	<classpathentry kind="lib" path="/com.se.pcremote/properties"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

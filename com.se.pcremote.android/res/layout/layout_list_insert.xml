@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:background="@drawable/insert_gradient">
+    <ImageView android:src="@drawable/insert" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="2dip" />
+    <TextView android:text="@string/insert_layout" android:textSize="24sp" android:layout_width="wrap_content" android:layout_height="fill_parent"
+        android:gravity="center_vertical" />
+</LinearLayout>

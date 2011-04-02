@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- General -->	
+    <string name="app_name">PC Remote for Android</string>
+    <string name="connection_status">PC Remote Status</string>
+    <string name="lost_title">Congratulations!</string>
+    <string name="lost_summary">You found Tux! This means you don\'t have an active layout so I\'m going to go ahead and suggest activating one (press \'Menu\' and then select \'Layout\')</string>
+    <string name="main_preferences">Settings</string>
+    <string name="provider_authority">com.se.pcremote.android.pcremoteprovider</string>
+    <string name="settings">Settings</string>
+		
+	<!-- Control Pad -->
+    <string name="keyboard_button">Show Keyboard</string>
+	<string name="left_mouse_button">L</string>
+    <string name="right_mouse_button">R</string>    
+	
+	<!-- Layouts -->	
+    <string name="active_layout">Active Layout</string>
+    <string name="active_layout_summary">The layout you are currently using to control the PC</string>
+	<string name="delete_layouts">Delete Layouts</string>
+    <string name="insert_layout">Create Layout</string>
+    <string name="layout">Layout</string>
+    <string name="layout_button_grid_category">Button Grid</string>
+    <string name="layout_button_grid_height">Button Grid Height</string>
+    <string name="layout_button_grid_width">Button Grid Width</string>
+    <string name="layout_category">Layouts</string>
+    <string name="layout_has_button_grid">Display Button Grid</string>
+    <string name="layout_has_keyboard_button">Display Keyboard Button</string>
+    <string name="layout_has_mouse_buttons">Display Mouse Buttons</string>
+    <string name="layout_has_mouse_pad">Display Mouse Pad</string>
+    <string name="layout_keyboard_category">Keyboard</string>
+    <string name="layout_mouse_category">Mouse</string>
+    <string name="layout_name">Name</string>
+    <string name="layout_preferences">Layout Settings</string>
+    <string name="mime_type_layout">vnd.android.cursor.dir/com.se.pcremote.layout</string>
+    <string name="mime_type_layout_id">vnd.android.cursor.item/com.se.pcremote.layout</string>
+    <string name="manage_layouts">Manage Layouts</string>
+    <string name="manage_layouts_summary">Manage the controls that can be used to control a PC</string>
+    <string name="switch_layout">Switch Layout</string>
+    <string name="switch_layout_short">Layout</string>
+    
+	<!-- PCs -->
+    <string name="active_pc">Active PC</string>
+    <string name="active_pc_summary">The PC you are currently controlling</string>
+	<string name="delete_pcs">Delete PCs</string>
+    <string name="insert_pc">Create PC</string>
+    <string name="manage_pcs">Manage PCs</string>
+    <string name="manage_pcs_summary">Manage the PCs that can be controlled</string>
+    <string name="mime_type_pc">vnd.android.cursor.dir/com.se.pcremote.pc</string>
+    <string name="mime_type_pc_id">vnd.android.cursor.item/com.se.pcremote.pc</string>
+	<string name="pc">PC</string>
+    <string name="pc_category">PCs</string>
+    <string name="pc_host">Host or IP Address</string>
+    <string name="pc_name">Name</string>
+    <string name="pc_port">Port</string>
+    <string name="pc_preferences">PC Settings</string>
+	<string name="switch_pc">Switch PC</string>
+    <string name="switch_pc_short">PC</string>
+</resources>
