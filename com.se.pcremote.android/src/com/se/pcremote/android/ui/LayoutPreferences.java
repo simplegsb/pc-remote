@@ -93,8 +93,14 @@ public class LayoutPreferences extends PreferenceActivity
     public void savePreferencesToLayout()
     {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        fLayout.setButtonGridHeight(Integer.parseInt(preferences.getString("layoutButtonGridHeight", "3")));
-        fLayout.setButtonGridWidth(Integer.parseInt(preferences.getString("layoutButtonGridWidth", "3")));
+        if (preferences.getString("layoutButtonGridHeight", "").length() != 0)
+        {
+            fLayout.setButtonGridHeight(Integer.parseInt(preferences.getString("layoutButtonGridHeight", "3")));
+        }
+        if (preferences.getString("layoutButtonGridWidth", "").length() != 0)
+        {
+            fLayout.setButtonGridWidth(Integer.parseInt(preferences.getString("layoutButtonGridWidth", "3")));
+        }
         fLayout.setHasButtonGrid(preferences.getBoolean("layoutHasButtonGrid", true));
         fLayout.setHasKeyboardButton(preferences.getBoolean("layoutHasKeyboardButton", true));
         fLayout.setHasMouseButtons(preferences.getBoolean("layoutHasMouseButtons", true));

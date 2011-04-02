@@ -2,5 +2,5 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" android:title="@string/pc_preferences">
     <EditTextPreference android:title="@string/pc_name" android:key="pcName" />
     <EditTextPreference android:title="@string/pc_host" android:key="pcHost" />
-    <EditTextPreference android:title="@string/pc_port" android:key="pcPort" />
+    <EditTextPreference android:title="@string/pc_port" android:key="pcPort" android:numeric="integer" />
 </PreferenceScreen>

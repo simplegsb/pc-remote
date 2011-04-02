@@ -3,8 +3,8 @@
 	<EditTextPreference android:title="@string/layout_name" android:key="layoutName"></EditTextPreference>
 	<PreferenceCategory android:title="@string/layout_button_grid_category">
 		<CheckBoxPreference android:title="@string/layout_has_button_grid" android:key="layoutHasButtonGrid" />
-		<EditTextPreference android:title="@string/layout_button_grid_height" android:key="layoutButtonGridHeight" android:dependency="layoutHasButtonGrid" />
-		<EditTextPreference android:title="@string/layout_button_grid_width" android:key="layoutButtonGridWidth" android:dependency="layoutHasButtonGrid" />
+		<EditTextPreference android:title="@string/layout_button_grid_height" android:key="layoutButtonGridHeight" android:numeric="integer" android:dependency="layoutHasButtonGrid" />
+		<EditTextPreference android:title="@string/layout_button_grid_width" android:key="layoutButtonGridWidth" android:numeric="integer" android:dependency="layoutHasButtonGrid" />
 	</PreferenceCategory>
     <PreferenceCategory android:title="@string/layout_keyboard_category">
         <CheckBoxPreference android:title="@string/layout_has_keyboard_button" android:key="layoutHasKeyboardButton" />

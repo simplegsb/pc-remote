@@ -56,45 +56,38 @@ public final class DialogFactory
 
     /**
      * <p>
-     * The ID of the dialog to display when an invalid port is entered.
-     * </p>
-     */
-    public static final int DIALOG_INVALID_PORT_ID = 4;
-
-    /**
-     * <p>
      * The ID of the dialog to display when the active {@link com.se.pcremote.android.PC PC} does not exist.
      * </p>
      */
-    public static final int DIALOG_NO_ACTIVE_PC_ID = 5;
+    public static final int DIALOG_NO_ACTIVE_PC_ID = 4;
 
     /**
      * <p>
      * The ID of the dialog to display if an attempt is made to delete all {@link com.se.pcremote.android.Layout Layout}s.
      * </p>
      */
-    public static final int DIALOG_NO_DELETE_ALL_LAYOUTS_ID = 6;
+    public static final int DIALOG_NO_DELETE_ALL_LAYOUTS_ID = 5;
 
     /**
      * <p>
      * The ID of the dialog to display when no {@link com.se.pcremote.android.PC PC}s exist.
      * </p>
      */
-    public static final int DIALOG_NO_PCS_ID = 7;
+    public static final int DIALOG_NO_PCS_ID = 6;
 
     /**
      * <p>
      * The ID of the dialog to display to select the active {@link com.se.pcremote.android.Layout Layout}.
      * </p>
      */
-    public static final int DIALOG_SELECT_ACTIVE_LAYOUT_ID = 8;
+    public static final int DIALOG_SELECT_ACTIVE_LAYOUT_ID = 7;
 
     /**
      * <p>
      * The ID of the dialog to display to select the active {@link com.se.pcremote.android.PC PC}.
      * </p>
      */
-    public static final int DIALOG_SELECT_ACTIVE_PC_ID = 9;
+    public static final int DIALOG_SELECT_ACTIVE_PC_ID = 8;
 
     /**
      * <p>
@@ -448,10 +441,6 @@ public final class DialogFactory
         {
             dialog = createDeletePcsDialog(activity);
         }
-        else if (id == DIALOG_INVALID_PORT_ID)
-        {
-            dialog = createInvalidPortDialog(activity);
-        }
         else if (id == DIALOG_NO_ACTIVE_PC_ID)
         {
             dialog = createNoActivePcDialog(activity);
@@ -474,35 +463,6 @@ public final class DialogFactory
         }
 
         return (dialog);
-    }
-
-    /**
-     * <p>
-     * Creates the dialog to display when an invalid port is entered.
-     * </p>
-     * 
-     * @param activity The activity the dialog is being created for.
-     * 
-     * @return The dialog to display when an invalid port is entered.
-     */
-    private Dialog createInvalidPortDialog(final Activity activity)
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle("Invalid Port");
-        builder.setMessage("Failed to save the PC. You have chosen an invalid port number ("
-                + PreferenceManager.getDefaultSharedPreferences(activity).getString("pcPort", null)
-                + "). The port number must only contain the numbers 0-9 e.g. 10999.");
-
-        builder.setNegativeButton("OK", new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(final DialogInterface dialog, final int id)
-            {
-                activity.removeDialog(DIALOG_INVALID_PORT_ID);
-            }
-        });
-
-        return (builder.create());
     }
 
     /**

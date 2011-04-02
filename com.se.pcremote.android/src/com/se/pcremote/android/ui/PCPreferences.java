@@ -1,6 +1,5 @@
 package com.se.pcremote.android.ui;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -41,18 +40,11 @@ public class PCPreferences extends PreferenceActivity
     @Override
     public void finish()
     {
-        try
-        {
-            savePreferencesToPc();
+        savePreferencesToPc();
 
-            setResult(RESULT_OK, new Intent(null, fPc.getUri()));
+        setResult(RESULT_OK, new Intent(null, fPc.getUri()));
 
-            super.finish();
-        }
-        catch (NumberFormatException e)
-        {
-            showDialog(DialogFactory.DIALOG_INVALID_PORT_ID);
-        }
+        super.finish();
     }
 
     /**
@@ -83,12 +75,6 @@ public class PCPreferences extends PreferenceActivity
     }
 
     @Override
-    protected Dialog onCreateDialog(final int id)
-    {
-        return (DialogFactory.getInstance().createDialog(this, DialogFactory.DIALOG_INVALID_PORT_ID));
-    }
-
-    @Override
     protected void onDestroy()
     {
         savePreferencesToPc();
@@ -106,7 +92,10 @@ public class PCPreferences extends PreferenceActivity
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         fPc.setName(preferences.getString("pcName", "New PC"));
         fPc.setHost(preferences.getString("pcHost", null));
-        fPc.setPort(Integer.parseInt(preferences.getString("pcPort", String.valueOf(PCRemoteServer.DEFAULT_PORT))));
+        if (preferences.getString("pcPort", "").length() != 0)
+        {
+            fPc.setPort(Integer.parseInt(preferences.getString("pcPort", String.valueOf(PCRemoteServer.DEFAULT_PORT))));
+        }
 
         fPc.save(this);
     }
