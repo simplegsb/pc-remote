@@ -15,6 +15,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.se.pcremote.android.Key;
 import com.se.pcremote.android.Layout;
 import com.se.pcremote.android.R;
 
@@ -176,6 +177,14 @@ public class ControlPadView extends LinearLayout
             for (int columnIndex = 0; columnIndex < layout.getButtonGridWidth(); columnIndex++)
             {
                 Button buttonGridButton = new Button(getContext());
+
+                Key key = layout.getButtonGridKey(getContext(), rowIndex, columnIndex);
+                if (key != null)
+                {
+                    buttonGridButton.setText(key.getName());
+                    buttonGridButton.setOnClickListener(new ControlPadListener(fControlPad, ControlPadListener.KEY_CLICK, key.getCode()));
+                }
+
                 buttonGridRow.addView(buttonGridButton);
             }
 

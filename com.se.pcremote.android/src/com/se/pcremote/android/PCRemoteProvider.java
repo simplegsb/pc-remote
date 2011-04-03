@@ -35,6 +35,13 @@ public class PCRemoteProvider extends ContentProvider
 
     /**
      * <p>
+     * The name of the column that contains 'code' for Keys.
+     * </p>
+     */
+    public static final String KEY_COLUMN_CODE = "code";
+
+    /**
+     * <p>
      * The name of the column that contains 'images' for Keys.
      * </p>
      */

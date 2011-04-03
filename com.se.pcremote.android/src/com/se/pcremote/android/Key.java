@@ -18,6 +18,13 @@ public class Key
 {
     /**
      * <p>
+     * The code that is required by the {com.se.pcremote.server.PCRemoteServer PCRemoteServer}.
+     * </p>
+     */
+    private int fCode;
+
+    /**
+     * <p>
      * A unique identifier.
      * </p>
      */
@@ -37,8 +44,21 @@ public class Key
      */
     public Key()
     {
+        fCode = -1;
         fId = 0;
         fName = null;
+    }
+
+    /**
+     * <p>
+     * Retrieves the code that is required by the {com.se.pcremote.server.PCRemoteServer PCRemoteServer}.
+     * </p>
+     * 
+     * @return The code that is required by the <code>PCRemoteServer</code>.
+     */
+    public int getCode()
+    {
+        return (fCode);
     }
 
     /**
@@ -96,23 +116,12 @@ public class Key
 
             if (cursor.moveToFirst())
             {
+                fCode = cursor.getInt(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_CODE));
                 fId = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
                 fName = cursor.getString(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_NAME));
             }
 
             cursor.close();
         }
-    }
-
-    /**
-     * <p>
-     * Sets the human-readable name.
-     * </p>
-     * 
-     * @param name The human-readable name.
-     */
-    public void setName(final String name)
-    {
-        fName = name;
     }
 }

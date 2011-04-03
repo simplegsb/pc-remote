@@ -64,21 +64,22 @@ public class PCRemoteOpenHelper extends SQLiteOpenHelper
 
         // Create Key table.
         db.execSQL("create table " + PCRemoteProvider.KEY_TABLE + " (" + BaseColumns._ID + " integer primary key autoincrement, "
-                + PCRemoteProvider.KEY_COLUMN_IMAGE + " text, " + PCRemoteProvider.KEY_COLUMN_NAME + " text)");
+                + PCRemoteProvider.KEY_COLUMN_CODE + " integer, " + PCRemoteProvider.KEY_COLUMN_IMAGE + " text, " + PCRemoteProvider.KEY_COLUMN_NAME
+                + " text)");
 
         // Create Keys.
-        db.execSQL("insert into " + PCRemoteProvider.KEY_TABLE + " (" + PCRemoteProvider.KEY_COLUMN_IMAGE + ", " + PCRemoteProvider.KEY_COLUMN_NAME
-                + ") values ('image.png','A')");
-        db.execSQL("insert into " + PCRemoteProvider.KEY_TABLE + " (" + PCRemoteProvider.KEY_COLUMN_IMAGE + ", " + PCRemoteProvider.KEY_COLUMN_NAME
-                + ") values ('image.png','B')");
-        db.execSQL("insert into " + PCRemoteProvider.KEY_TABLE + " (" + PCRemoteProvider.KEY_COLUMN_IMAGE + ", " + PCRemoteProvider.KEY_COLUMN_NAME
-                + ") values ('image.png','C')");
-        db.execSQL("insert into " + PCRemoteProvider.KEY_TABLE + " (" + PCRemoteProvider.KEY_COLUMN_IMAGE + ", " + PCRemoteProvider.KEY_COLUMN_NAME
-                + ") values ('image.png','1')");
-        db.execSQL("insert into " + PCRemoteProvider.KEY_TABLE + " (" + PCRemoteProvider.KEY_COLUMN_IMAGE + ", " + PCRemoteProvider.KEY_COLUMN_NAME
-                + ") values ('image.png','2')");
-        db.execSQL("insert into " + PCRemoteProvider.KEY_TABLE + " (" + PCRemoteProvider.KEY_COLUMN_IMAGE + ", " + PCRemoteProvider.KEY_COLUMN_NAME
-                + ") values ('image.png','3')");
+        db.execSQL("insert into " + PCRemoteProvider.KEY_TABLE + " (" + PCRemoteProvider.KEY_COLUMN_CODE + "," + PCRemoteProvider.KEY_COLUMN_IMAGE
+                + ", " + PCRemoteProvider.KEY_COLUMN_NAME + ") values (65,'image.png','A')");
+        db.execSQL("insert into " + PCRemoteProvider.KEY_TABLE + " (" + PCRemoteProvider.KEY_COLUMN_CODE + "," + PCRemoteProvider.KEY_COLUMN_IMAGE
+                + ", " + PCRemoteProvider.KEY_COLUMN_NAME + ") values (66,'image.png','B')");
+        db.execSQL("insert into " + PCRemoteProvider.KEY_TABLE + " (" + PCRemoteProvider.KEY_COLUMN_CODE + "," + PCRemoteProvider.KEY_COLUMN_IMAGE
+                + ", " + PCRemoteProvider.KEY_COLUMN_NAME + ") values (67,'image.png','C')");
+        db.execSQL("insert into " + PCRemoteProvider.KEY_TABLE + " (" + PCRemoteProvider.KEY_COLUMN_CODE + "," + PCRemoteProvider.KEY_COLUMN_IMAGE
+                + ", " + PCRemoteProvider.KEY_COLUMN_NAME + ") values (49,'image.png','1')");
+        db.execSQL("insert into " + PCRemoteProvider.KEY_TABLE + " (" + PCRemoteProvider.KEY_COLUMN_CODE + "," + PCRemoteProvider.KEY_COLUMN_IMAGE
+                + ", " + PCRemoteProvider.KEY_COLUMN_NAME + ") values (50,'image.png','2')");
+        db.execSQL("insert into " + PCRemoteProvider.KEY_TABLE + " (" + PCRemoteProvider.KEY_COLUMN_CODE + "," + PCRemoteProvider.KEY_COLUMN_IMAGE
+                + ", " + PCRemoteProvider.KEY_COLUMN_NAME + ") values (51,'image.png','3')");
     }
 
     @Override
