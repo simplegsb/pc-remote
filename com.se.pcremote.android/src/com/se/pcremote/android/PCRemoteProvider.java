@@ -28,6 +28,48 @@ public class PCRemoteProvider extends ContentProvider
 
     /**
      * <p>
+     * The code for a URI that matches one or more Keys.
+     * </p>
+     */
+    public static final int KEY = 0;
+
+    /**
+     * <p>
+     * The name of the column that contains 'images' for Keys.
+     * </p>
+     */
+    public static final String KEY_COLUMN_IMAGE = "image";
+
+    /**
+     * <p>
+     * The name of the column that contains 'names' for Keys.
+     * </p>
+     */
+    public static final String KEY_COLUMN_NAME = "name";
+
+    /**
+     * <p>
+     * The code for a URI that matches a Key with a specific ID.
+     * </p>
+     */
+    public static final int KEY_ID = 1;
+
+    /**
+     * <p>
+     * The name of the table that contains Keys.
+     * </p>
+     */
+    public static final String KEY_TABLE = "key";
+
+    /**
+     * <p>
+     * The base URI for Keys in this provider.
+     * </p>
+     */
+    public static final Uri KEY_URI = Uri.parse("content://com.se.pcremote.android.pcremoteprovider/key");
+
+    /**
+     * <p>
      * The code for a URI that matches one or more layouts.
      * </p>
      */
@@ -39,6 +81,13 @@ public class PCRemoteProvider extends ContentProvider
      * </p>
      */
     public static final String LAYOUT_COLUMN_BUTTON_GRID_HEIGHT = "button_grid_height";
+
+    /**
+     * <p>
+     * The name of the column that contains 'button grid map' for Layouts.
+     * </p>
+     */
+    public static final String LAYOUT_COLUMN_BUTTON_GRID_MAP = "button_grid_map";
 
     /**
      * <p>
@@ -84,21 +133,21 @@ public class PCRemoteProvider extends ContentProvider
 
     /**
      * <p>
-     * The code for a URI that matches a layout with a specific ID.
+     * The code for a URI that matches a Layout with a specific ID.
      * </p>
      */
     public static final int LAYOUT_ID = 3;
 
     /**
      * <p>
-     * The name of the table that contains layouts.
+     * The name of the table that contains Layouts.
      * </p>
      */
     public static final String LAYOUT_TABLE = "layout";
 
     /**
      * <p>
-     * The base URI for layouts in this provider.
+     * The base URI for Layouts in this provider.
      * </p>
      */
     public static final Uri LAYOUT_URI = Uri.parse("content://com.se.pcremote.android.pcremoteprovider/layout");
@@ -108,7 +157,7 @@ public class PCRemoteProvider extends ContentProvider
      * The code for a URI that matches one or more PCs.
      * </p>
      */
-    public static final int PC = 0;
+    public static final int PC = 4;
 
     /**
      * <p>
@@ -136,7 +185,7 @@ public class PCRemoteProvider extends ContentProvider
      * The code for a URI that matches a PC with a specific ID.
      * </p>
      */
-    public static final int PC_ID = 1;
+    public static final int PC_ID = 5;
 
     /**
      * <p>
@@ -167,10 +216,12 @@ public class PCRemoteProvider extends ContentProvider
      */
     static
     {
-        URI_MATCHER.addURI("com.se.pcremote.android.pcremoteprovider", PC_TABLE, PC);
-        URI_MATCHER.addURI("com.se.pcremote.android.pcremoteprovider", PC_TABLE + "/#", PC_ID);
+        URI_MATCHER.addURI("com.se.pcremote.android.pcremoteprovider", KEY_TABLE, KEY);
+        URI_MATCHER.addURI("com.se.pcremote.android.pcremoteprovider", KEY_TABLE + "/#", KEY_ID);
         URI_MATCHER.addURI("com.se.pcremote.android.pcremoteprovider", LAYOUT_TABLE, LAYOUT);
         URI_MATCHER.addURI("com.se.pcremote.android.pcremoteprovider", LAYOUT_TABLE + "/#", LAYOUT_ID);
+        URI_MATCHER.addURI("com.se.pcremote.android.pcremoteprovider", PC_TABLE, PC);
+        URI_MATCHER.addURI("com.se.pcremote.android.pcremoteprovider", PC_TABLE + "/#", PC_ID);
     }
 
     /**
@@ -196,15 +247,15 @@ public class PCRemoteProvider extends ContentProvider
         int affectedRows = 0;
 
         int match = URI_MATCHER.match(uri);
-        if (match == PC)
+        if (match == KEY)
         {
             SQLiteDatabase database = fOpenHelper.getWritableDatabase();
-            affectedRows = database.delete(PC_TABLE, selection, selectionArgs);
+            affectedRows = database.delete(KEY_TABLE, selection, selectionArgs);
         }
-        else if (match == PC_ID)
+        else if (match == KEY_ID)
         {
             SQLiteDatabase database = fOpenHelper.getWritableDatabase();
-            affectedRows = database.delete(PC_TABLE, BaseColumns._ID + " = " + uri.getLastPathSegment(), null);
+            affectedRows = database.delete(KEY_TABLE, BaseColumns._ID + " = " + uri.getLastPathSegment(), null);
         }
         else if (match == LAYOUT)
         {
@@ -216,6 +267,16 @@ public class PCRemoteProvider extends ContentProvider
             SQLiteDatabase database = fOpenHelper.getWritableDatabase();
             affectedRows = database.delete(LAYOUT_TABLE, BaseColumns._ID + " = " + uri.getLastPathSegment(), null);
         }
+        else if (match == PC)
+        {
+            SQLiteDatabase database = fOpenHelper.getWritableDatabase();
+            affectedRows = database.delete(PC_TABLE, selection, selectionArgs);
+        }
+        else if (match == PC_ID)
+        {
+            SQLiteDatabase database = fOpenHelper.getWritableDatabase();
+            affectedRows = database.delete(PC_TABLE, BaseColumns._ID + " = " + uri.getLastPathSegment(), null);
+        }
 
         return (affectedRows);
     }
@@ -226,13 +287,13 @@ public class PCRemoteProvider extends ContentProvider
         String type = null;
 
         int match = URI_MATCHER.match(uri);
-        if (match == PC)
+        if (match == KEY)
         {
-            type = "vnd.android.cursor.dir/com.se.pcremote.pc";
+            type = "vnd.android.cursor.dir/com.se.pcremote.key";
         }
-        else if (match == PC_ID)
+        else if (match == KEY_ID)
         {
-            type = "vnd.android.cursor.item/com.se.pcremote.pc";
+            type = "vnd.android.cursor.item/com.se.pcremote.key";
         }
         else if (match == LAYOUT)
         {
@@ -241,6 +302,14 @@ public class PCRemoteProvider extends ContentProvider
         else if (match == LAYOUT_ID)
         {
             type = "vnd.android.cursor.item/com.se.pcremote.layout";
+        }
+        else if (match == PC)
+        {
+            type = "vnd.android.cursor.dir/com.se.pcremote.pc";
+        }
+        else if (match == PC_ID)
+        {
+            type = "vnd.android.cursor.item/com.se.pcremote.pc";
         }
 
         return (type);
@@ -252,17 +321,23 @@ public class PCRemoteProvider extends ContentProvider
         Uri insertedData = null;
 
         int match = URI_MATCHER.match(uri);
-        if (match == PC)
+        if (match == KEY)
         {
             SQLiteDatabase database = fOpenHelper.getWritableDatabase();
-            long id = database.insert(PC_TABLE, null, values);
-            insertedData = ContentUris.withAppendedId(PC_URI, id);
+            long id = database.insert(KEY_TABLE, null, values);
+            insertedData = ContentUris.withAppendedId(KEY_URI, id);
         }
         else if (match == LAYOUT)
         {
             SQLiteDatabase database = fOpenHelper.getWritableDatabase();
             long id = database.insert(LAYOUT_TABLE, null, values);
             insertedData = ContentUris.withAppendedId(LAYOUT_URI, id);
+        }
+        else if (match == PC)
+        {
+            SQLiteDatabase database = fOpenHelper.getWritableDatabase();
+            long id = database.insert(PC_TABLE, null, values);
+            insertedData = ContentUris.withAppendedId(PC_URI, id);
         }
 
         return (insertedData);
@@ -281,17 +356,17 @@ public class PCRemoteProvider extends ContentProvider
     {
         Cursor cursor = null;
 
-        if (URI_MATCHER.match(uri) == PC)
+        if (URI_MATCHER.match(uri) == KEY)
         {
             SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-            queryBuilder.setTables(PC_TABLE);
+            queryBuilder.setTables(KEY_TABLE);
             cursor = queryBuilder.query(fOpenHelper.getReadableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
             cursor.setNotificationUri(getContext().getContentResolver(), uri);
         }
-        else if (URI_MATCHER.match(uri) == PC_ID)
+        else if (URI_MATCHER.match(uri) == KEY_ID)
         {
             SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-            queryBuilder.setTables(PC_TABLE);
+            queryBuilder.setTables(KEY_TABLE);
             queryBuilder.appendWhere(BaseColumns._ID + " = " + uri.getLastPathSegment());
             cursor = queryBuilder.query(fOpenHelper.getReadableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
             cursor.setNotificationUri(getContext().getContentResolver(), uri);
@@ -311,6 +386,21 @@ public class PCRemoteProvider extends ContentProvider
             cursor = queryBuilder.query(fOpenHelper.getReadableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
             cursor.setNotificationUri(getContext().getContentResolver(), uri);
         }
+        else if (URI_MATCHER.match(uri) == PC)
+        {
+            SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+            queryBuilder.setTables(PC_TABLE);
+            cursor = queryBuilder.query(fOpenHelper.getReadableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
+            cursor.setNotificationUri(getContext().getContentResolver(), uri);
+        }
+        else if (URI_MATCHER.match(uri) == PC_ID)
+        {
+            SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+            queryBuilder.setTables(PC_TABLE);
+            queryBuilder.appendWhere(BaseColumns._ID + " = " + uri.getLastPathSegment());
+            cursor = queryBuilder.query(fOpenHelper.getReadableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
+            cursor.setNotificationUri(getContext().getContentResolver(), uri);
+        }
 
         return (cursor);
     }
@@ -321,12 +411,12 @@ public class PCRemoteProvider extends ContentProvider
         int affectedRows = 0;
 
         int match = URI_MATCHER.match(uri);
-        if (match == PC)
+        if (match == KEY)
         {
             SQLiteDatabase database = fOpenHelper.getWritableDatabase();
-            affectedRows = database.update(PC_TABLE, values, selection, selectionArgs);
+            affectedRows = database.update(KEY_TABLE, values, selection, selectionArgs);
         }
-        else if (match == PC_ID)
+        else if (match == KEY_ID)
         {
             String selectionWithId = null;
             if (selection == null)
@@ -339,7 +429,7 @@ public class PCRemoteProvider extends ContentProvider
             }
 
             SQLiteDatabase database = fOpenHelper.getWritableDatabase();
-            affectedRows = database.update(PC_TABLE, values, selectionWithId, selectionArgs);
+            affectedRows = database.update(KEY_TABLE, values, selectionWithId, selectionArgs);
         }
         else if (match == LAYOUT)
         {
@@ -360,6 +450,26 @@ public class PCRemoteProvider extends ContentProvider
 
             SQLiteDatabase database = fOpenHelper.getWritableDatabase();
             affectedRows = database.update(LAYOUT_TABLE, values, selectionWithId, selectionArgs);
+        }
+        else if (match == PC)
+        {
+            SQLiteDatabase database = fOpenHelper.getWritableDatabase();
+            affectedRows = database.update(PC_TABLE, values, selection, selectionArgs);
+        }
+        else if (match == PC_ID)
+        {
+            String selectionWithId = null;
+            if (selection == null)
+            {
+                selectionWithId = BaseColumns._ID + " = " + uri.getLastPathSegment();
+            }
+            else
+            {
+                selectionWithId = "(" + selectionWithId + ") and " + BaseColumns._ID + " = " + uri.getLastPathSegment();
+            }
+
+            SQLiteDatabase database = fOpenHelper.getWritableDatabase();
+            affectedRows = database.update(PC_TABLE, values, selectionWithId, selectionArgs);
         }
 
         return (affectedRows);

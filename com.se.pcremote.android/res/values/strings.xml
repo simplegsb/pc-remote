@@ -12,14 +12,18 @@
 	<!-- Control Pad -->
     <string name="keyboard_button">Show Keyboard</string>
 	<string name="left_mouse_button">L</string>
-    <string name="right_mouse_button">R</string>    
+    <string name="right_mouse_button">R</string>
+    
+    <!-- Keys -->
+    <string name="mime_type_key">vnd.android.cursor.dir/com.se.pcremote.key</string>
+    <string name="mime_type_key_id">vnd.android.cursor.item/com.se.pcremote.key</string>
+    <string name="select_key">Select Key</string>
 	
 	<!-- Layouts -->	
     <string name="active_layout">Active Layout</string>
     <string name="active_layout_summary">The layout you are currently using to control the PC</string>
 	<string name="delete_layouts">Delete Layouts</string>
     <string name="insert_layout">Create Layout</string>
-    <string name="layout">Layout</string>
     <string name="layout_button_grid_category">Button Grid</string>
     <string name="layout_button_grid_height">Button Grid Height</string>
     <string name="layout_button_grid_width">Button Grid Width</string>
@@ -48,7 +52,6 @@
     <string name="manage_pcs_summary">Manage the PCs that can be controlled</string>
     <string name="mime_type_pc">vnd.android.cursor.dir/com.se.pcremote.pc</string>
     <string name="mime_type_pc_id">vnd.android.cursor.item/com.se.pcremote.pc</string>
-	<string name="pc">PC</string>
     <string name="pc_category">PCs</string>
     <string name="pc_host">Host or IP Address</string>
     <string name="pc_name">Name</string>

@@ -33,6 +33,13 @@ public class Layout
 
     /**
      * <p>
+     * The mapping of Keys for the button grid.
+     * </p>
+     */
+    private String fButtonGridMap;
+
+    /**
+     * <p>
      * The width of the button grid.
      * </p>
      */
@@ -95,6 +102,7 @@ public class Layout
     public Layout()
     {
         fButtonGridHeight = DEFATULT_BUTTON_GRID_SIZE;
+        fButtonGridMap = "A,B,C";
         fButtonGridWidth = DEFATULT_BUTTON_GRID_SIZE;
         fHasButtonGrid = true;
         fHasKeyboardButton = true;
@@ -135,6 +143,46 @@ public class Layout
     public int getButtonGridHeight()
     {
         return (fButtonGridHeight);
+    }
+
+    /**
+     * <p>
+     * Retrieves the Key for the button in the given grid location.
+     * </p>
+     * 
+     * @param context The context from which the content provider can be retrieved.
+     * @param row The row the button is in.
+     * @param column The column the button is in.
+     * 
+     * @return The Key for the button in the given grid location, or <code>null</code> if no Key has been assigned.
+     */
+    public Key getButtonGridKey(final Context context, final int row, final int column)
+    {
+        Key key = null;
+
+        for (String buttonMap : fButtonGridMap.split(","))
+        {
+            String[] buttonMapParts = buttonMap.split(":");
+            if (Integer.parseInt(buttonMapParts[0]) == row && Integer.parseInt(buttonMapParts[1]) == column)
+            {
+                key = new Key();
+                key.load(context, ContentUris.withAppendedId(PCRemoteProvider.KEY_URI, Integer.parseInt(buttonMapParts[2])));
+            }
+        }
+
+        return (key);
+    }
+
+    /**
+     * <p>
+     * Retrieves the mapping of Keys for the button grid.
+     * </p>
+     * 
+     * @return The mapping of Keys for the button grid.
+     */
+    public String getButtonGridMap()
+    {
+        return (fButtonGridMap);
     }
 
     /**
@@ -267,6 +315,7 @@ public class Layout
                 fNewLayout = false;
 
                 fButtonGridHeight = cursor.getInt(cursor.getColumnIndex(PCRemoteProvider.LAYOUT_COLUMN_BUTTON_GRID_HEIGHT));
+                fButtonGridMap = cursor.getString(cursor.getColumnIndex(PCRemoteProvider.LAYOUT_COLUMN_BUTTON_GRID_MAP));
                 fButtonGridWidth = cursor.getInt(cursor.getColumnIndex(PCRemoteProvider.LAYOUT_COLUMN_BUTTON_GRID_WIDTH));
                 fHasButtonGrid = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(PCRemoteProvider.LAYOUT_COLUMN_HAS_BUTTON_GRID)));
                 fHasKeyboardButton = Boolean
@@ -293,6 +342,7 @@ public class Layout
         ContentResolver contentResolver = context.getContentResolver();
         ContentValues values = new ContentValues();
         values.put(PCRemoteProvider.LAYOUT_COLUMN_BUTTON_GRID_HEIGHT, fButtonGridHeight);
+        values.put(PCRemoteProvider.LAYOUT_COLUMN_BUTTON_GRID_MAP, fButtonGridMap);
         values.put(PCRemoteProvider.LAYOUT_COLUMN_BUTTON_GRID_WIDTH, fButtonGridWidth);
         values.put(PCRemoteProvider.LAYOUT_COLUMN_HAS_BUTTON_GRID, String.valueOf(fHasButtonGrid));
         values.put(PCRemoteProvider.LAYOUT_COLUMN_HAS_KEYBOARD_BUTTON, String.valueOf(fHasKeyboardButton));
@@ -325,6 +375,41 @@ public class Layout
     public void setButtonGridHeight(final int buttonGridHeight)
     {
         fButtonGridHeight = buttonGridHeight;
+    }
+
+    /**
+     * <p>
+     * Sets the Key for the button in the given grid location.
+     * </p>
+     * 
+     * @param row The row the button is in.
+     * @param column The column the button is in.
+     * @param key The Key for the button in the given grid location.
+     */
+    public void setButtonGridKey(final int row, final int column, final Key key)
+    {
+        String gridLocation = row + ":" + column + ":";
+        if (fButtonGridMap.contains(gridLocation))
+        {
+            fButtonGridMap = fButtonGridMap.replaceFirst(gridLocation + "[0-9]*,", gridLocation + key.getId() + ",");
+            fButtonGridMap = fButtonGridMap.replaceFirst(gridLocation + "[0-9]*$", gridLocation + key.getId());
+        }
+        else
+        {
+            fButtonGridMap += "," + gridLocation + key.getId();
+        }
+    }
+
+    /**
+     * <p>
+     * Sets the mapping of Keys for the button grid.
+     * </p>
+     * 
+     * @param buttonGridMap The mapping of Keys for the button grid.
+     */
+    public void setButtonGridMap(final String buttonGridMap)
+    {
+        fButtonGridMap = buttonGridMap;
     }
 
     /**

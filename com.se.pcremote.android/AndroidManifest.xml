@@ -11,7 +11,14 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:name=".ui.LayoutList" android:label="@string/layout">
+        <activity android:name=".ui.KeyList" android:label="@string/select_key">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.dir/com.se.pcremote.key" /> <!-- @string/mime_type_key does not work for SDK 7... -->
+            </intent-filter>
+        </activity>
+		<activity android:name=".ui.LayoutList" android:label="@string/manage_layouts">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
@@ -30,7 +37,7 @@
 		</activity>
 		<activity android:name=".ui.MainPreferences">
 		</activity>
-		<activity android:name=".ui.PCList" android:label="@string/pc">
+		<activity android:name=".ui.PCList" android:label="@string/manage_pcs">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />

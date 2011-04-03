@@ -87,7 +87,7 @@ public class PCPreferences extends PreferenceActivity
      * Saves the preference values to the {@link com.se.pcremote.android.PC PC}.
      * </p>
      */
-    public void savePreferencesToPc()
+    private void savePreferencesToPc()
     {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         fPc.setName(preferences.getString("pcName", "New PC"));

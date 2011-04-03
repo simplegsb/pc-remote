@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
+import com.se.pcremote.android.Key;
 import com.se.pcremote.android.Layout;
 import com.se.pcremote.android.R;
 
@@ -21,6 +24,27 @@ public class LayoutPreferences extends PreferenceActivity
 {
     /**
      * <p>
+     * The ID of a request for a {@link com.se.pcremote.android.Key Key}.
+     * </p>
+     */
+    public static final int QUERY_KEYS_REQUEST = 0;
+
+    /**
+     * <p>
+     * The column the button being edited is in.
+     * </p>
+     */
+    private int fButtonGridColumnIndex;
+
+    /**
+     * <p>
+     * The row the button being edited is in.
+     * </p>
+     */
+    private int fButtonGridRowIndex;
+
+    /**
+     * <p>
      * The Layout being created/edited.
      * </p>
      */
@@ -33,6 +57,8 @@ public class LayoutPreferences extends PreferenceActivity
      */
     public LayoutPreferences()
     {
+        fButtonGridColumnIndex = -1;
+        fButtonGridRowIndex = -1;
         fLayout = null;
     }
 
@@ -48,6 +74,18 @@ public class LayoutPreferences extends PreferenceActivity
 
     /**
      * <p>
+     * Retrieves the Layout being created/edited.
+     * </p>
+     * 
+     * @return The Layout being created/edited.
+     */
+    public Layout getLayout()
+    {
+        return (fLayout);
+    }
+
+    /**
+     * <p>
      * Loads the preference values from the {@link com.se.pcremote.android.Layout Layout}.
      * </p>
      */
@@ -58,6 +96,7 @@ public class LayoutPreferences extends PreferenceActivity
 
         Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
         editor.putString("layoutButtonGridHeight", String.valueOf(fLayout.getButtonGridHeight()));
+        editor.putString("layoutButtonGridMap", fLayout.getButtonGridMap());
         editor.putString("layoutButtonGridWidth", String.valueOf(fLayout.getButtonGridWidth()));
         editor.putBoolean("layoutHasButtonGrid", fLayout.hasButtonGrid());
         editor.putBoolean("layoutHasKeyboardButton", fLayout.hasKeyboardButton());
@@ -68,6 +107,32 @@ public class LayoutPreferences extends PreferenceActivity
     }
 
     @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent intent)
+    {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        if (resultCode == RESULT_OK)
+        {
+            if (requestCode == QUERY_KEYS_REQUEST)
+            {
+                Key key = new Key();
+                key.load(this, intent.getData());
+
+                if (key.getId() != 0)
+                {
+                    // Set/save the button grid map.
+                    fLayout.setButtonGridKey(fButtonGridRowIndex, fButtonGridColumnIndex, key);
+                    PreferenceManager.getDefaultSharedPreferences(this).edit().putString("layoutButtonGridMap", fLayout.getButtonGridMap()).commit();
+
+                    // Refresh the preferences on-screen.
+                    finish();
+                    startActivity(getIntent());
+                }
+            }
+        }
+    }
+
+    @Override
     protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -75,6 +140,40 @@ public class LayoutPreferences extends PreferenceActivity
         loadPreferencesFromLayout();
 
         addPreferencesFromResource(R.xml.layout_preference_fragment);
+
+        findPreference("layoutButtonGridHeight").setOnPreferenceChangeListener(new OnPreferenceChangeListener()
+        {
+            @Override
+            public boolean onPreferenceChange(final Preference preference, final Object newValue)
+            {
+                // Save the button grid height.
+                PreferenceManager.getDefaultSharedPreferences(LayoutPreferences.this).edit().putString("layoutButtonGridHeight", (String) newValue)
+                        .commit();
+
+                // Refresh the preferences on-screen.
+                finish();
+                startActivity(getIntent());
+
+                return (true);
+            }
+        });
+        ((ButtonGridMapPreference) findPreference("layoutButtonGridMap")).setLayoutPreferences(this);
+        findPreference("layoutButtonGridWidth").setOnPreferenceChangeListener(new OnPreferenceChangeListener()
+        {
+            @Override
+            public boolean onPreferenceChange(final Preference preference, final Object newValue)
+            {
+                // Save the button grid width.
+                PreferenceManager.getDefaultSharedPreferences(LayoutPreferences.this).edit().putString("layoutButtonGridWidth", (String) newValue)
+                        .commit();
+
+                // Refresh the preferences on-screen.
+                finish();
+                startActivity(getIntent());
+
+                return (true);
+            }
+        });
     }
 
     @Override
@@ -90,13 +189,14 @@ public class LayoutPreferences extends PreferenceActivity
      * Saves the preference values to the {@link com.se.pcremote.android.Layout Layout}.
      * </p>
      */
-    public void savePreferencesToLayout()
+    private void savePreferencesToLayout()
     {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (preferences.getString("layoutButtonGridHeight", "").length() != 0)
         {
             fLayout.setButtonGridHeight(Integer.parseInt(preferences.getString("layoutButtonGridHeight", "3")));
         }
+        fLayout.setButtonGridMap(preferences.getString("layoutButtonGridMap", ""));
         if (preferences.getString("layoutButtonGridWidth", "").length() != 0)
         {
             fLayout.setButtonGridWidth(Integer.parseInt(preferences.getString("layoutButtonGridWidth", "3")));
@@ -108,5 +208,29 @@ public class LayoutPreferences extends PreferenceActivity
         fLayout.setName(preferences.getString("layoutName", "New Layout"));
 
         fLayout.save(this);
+    }
+
+    /**
+     * <p>
+     * Sets the column the button being edited is in.
+     * </p>
+     * 
+     * @param columnIndex The column the button being edited is in.
+     */
+    public void setButtonGridColumnIndex(final int columnIndex)
+    {
+        fButtonGridColumnIndex = columnIndex;
+    }
+
+    /**
+     * <p>
+     * Sets the row the button being edited is in.
+     * </p>
+     * 
+     * @param rowIndex The row the button being edited is in.
+     */
+    public void setButtonGridRowIndex(final int rowIndex)
+    {
+        fButtonGridRowIndex = rowIndex;
     }
 }
