@@ -26,6 +26,7 @@
     <string name="insert_layout">Create Layout</string>
     <string name="layout_button_grid_category">Button Grid</string>
     <string name="layout_button_grid_height">Button Grid Height</string>
+    <string name="layout_button_grid_map">Button Grid Map</string>
     <string name="layout_button_grid_width">Button Grid Width</string>
     <string name="layout_category">Layouts</string>
     <string name="layout_has_button_grid">Display Button Grid</string>

@@ -5,7 +5,7 @@
 		<CheckBoxPreference android:title="@string/layout_has_button_grid" android:key="layoutHasButtonGrid" />
 		<EditTextPreference android:title="@string/layout_button_grid_height" android:key="layoutButtonGridHeight" android:numeric="integer" android:dependency="layoutHasButtonGrid" />
 		<EditTextPreference android:title="@string/layout_button_grid_width" android:key="layoutButtonGridWidth" android:numeric="integer" android:dependency="layoutHasButtonGrid" />
-		<com.se.pcremote.android.ui.ButtonGridMapPreference android:key="layoutButtonGridMap" android:dependency="layoutHasButtonGrid" />
+		<com.se.pcremote.android.ui.ButtonGridMapPreference android:title="@string/layout_button_grid_map" android:key="layoutButtonGridMap" android:dependency="layoutHasButtonGrid" />
 	</PreferenceCategory>
     <PreferenceCategory android:title="@string/layout_keyboard_category">
         <CheckBoxPreference android:title="@string/layout_has_keyboard_button" android:key="layoutHasKeyboardButton" />

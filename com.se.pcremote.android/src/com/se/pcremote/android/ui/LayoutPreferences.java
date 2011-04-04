@@ -3,6 +3,7 @@ package com.se.pcremote.android.ui;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
@@ -20,7 +21,7 @@ import com.se.pcremote.android.R;
  * 
  * @author simple
  */
-public class LayoutPreferences extends PreferenceActivity
+public class LayoutPreferences extends PreferenceActivity implements OnSharedPreferenceChangeListener
 {
     /**
      * <p>
@@ -138,8 +139,8 @@ public class LayoutPreferences extends PreferenceActivity
         super.onCreate(savedInstanceState);
 
         loadPreferencesFromLayout();
-
         addPreferencesFromResource(R.xml.layout_preference_fragment);
+        setPreferenceSummaries();
 
         findPreference("layoutButtonGridHeight").setOnPreferenceChangeListener(new OnPreferenceChangeListener()
         {
@@ -182,6 +183,28 @@ public class LayoutPreferences extends PreferenceActivity
         savePreferencesToLayout();
 
         super.onDestroy();
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+
+        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(final SharedPreferences sharedPreferences, final String key)
+    {
+        setPreferenceSummaries();
     }
 
     /**
@@ -232,5 +255,18 @@ public class LayoutPreferences extends PreferenceActivity
     public void setButtonGridRowIndex(final int rowIndex)
     {
         fButtonGridRowIndex = rowIndex;
+    }
+
+    /**
+     * <p>
+     * Sets the preference summaries to the values of the preferences.
+     * </p>
+     */
+    private void setPreferenceSummaries()
+    {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        findPreference("layoutName").setSummary(preferences.getString("layoutName", null));
+        findPreference("layoutButtonGridHeight").setSummary(preferences.getString("layoutButtonGridHeight", null));
+        findPreference("layoutButtonGridWidth").setSummary(preferences.getString("layoutButtonGridWidth", null));
     }
 }

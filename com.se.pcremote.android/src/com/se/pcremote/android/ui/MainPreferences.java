@@ -2,7 +2,10 @@ package com.se.pcremote.android.ui;
 
 import android.content.ContentUris;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -12,6 +15,8 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
 
+import com.se.pcremote.android.Layout;
+import com.se.pcremote.android.PC;
 import com.se.pcremote.android.PCRemoteProvider;
 import com.se.pcremote.android.R;
 
@@ -22,7 +27,7 @@ import com.se.pcremote.android.R;
  * 
  * @author simple
  */
-public class MainPreferences extends PreferenceActivity
+public class MainPreferences extends PreferenceActivity implements OnSharedPreferenceChangeListener
 {
     /**
      * <p>
@@ -45,6 +50,7 @@ public class MainPreferences extends PreferenceActivity
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.xml.main_preference_fragment);
+        setPreferenceSummaries();
 
         // Save the active Layout.
         getPreferenceScreen().findPreference("activeLayout").setOnPreferenceChangeListener(new OnPreferenceChangeListener()
@@ -92,6 +98,28 @@ public class MainPreferences extends PreferenceActivity
     }
 
     @Override
+    public void onPause()
+    {
+        super.onPause();
+
+        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(final SharedPreferences sharedPreferences, final String key)
+    {
+        setPreferenceSummaries();
+    }
+
+    @Override
     protected void onStart()
     {
         super.onStart();
@@ -135,5 +163,23 @@ public class MainPreferences extends PreferenceActivity
 
         activeLayoutPreference.setEntries(selectLayoutNames);
         activeLayoutPreference.setEntryValues(selectLayoutUris);
+    }
+
+    /**
+     * <p>
+     * Sets the preference summaries to the values of the preferences.
+     * </p>
+     */
+    private void setPreferenceSummaries()
+    {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        PC pc = new PC();
+        pc.load(this, Uri.parse(preferences.getString("activePc", null)));
+        findPreference("activePc").setSummary(pc.getName());
+
+        Layout layout = new Layout();
+        layout.load(this, Uri.parse(preferences.getString("activeLayout", null)));
+        findPreference("activeLayout").setSummary(layout.getName());
     }
 }

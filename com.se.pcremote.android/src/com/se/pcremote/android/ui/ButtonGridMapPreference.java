@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.se.pcremote.android.Key;
 import com.se.pcremote.android.PCRemoteProvider;
@@ -79,6 +81,20 @@ public class ButtonGridMapPreference extends Preference
 
     /**
      * <p>
+     * The padding around the title.
+     * </p>
+     */
+    private static final int TITLE_PADDING = 15;
+
+    /**
+     * <p>
+     * The size of the title text.
+     * </p>
+     */
+    private static final int TITLE_TEXT_SIZE = 22;
+
+    /**
+     * <p>
      * The {@link com.se.pcremote.android.ui.LayoutPreferences LayoutPreferences} on which this <code>ButtonGridMapPreference</code> is being
      * displayed.
      * </p>
@@ -130,8 +146,14 @@ public class ButtonGridMapPreference extends Preference
         fLayoutPreferences = null;
     }
 
-    @Override
-    protected View onCreateView(final ViewGroup parent)
+    /**
+     * <p>
+     * Builds the button grid portion of this <code>ButtonGridMapPreference</code>.
+     * </p>
+     * 
+     * @return The button grid portion of this <code>ButtonGridMapPreference</code>.
+     */
+    private View buildButtonGrid()
     {
         int buttonGridHeight = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("layoutButtonGridHeight", "0"));
         int buttonGridWidth = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("layoutButtonGridWidth", "0"));
@@ -162,6 +184,24 @@ public class ButtonGridMapPreference extends Preference
         }
 
         return (buttonGrid);
+    }
+
+    @Override
+    protected View onCreateView(final ViewGroup parent)
+    {
+        LinearLayout preference = new LinearLayout(getContext());
+        preference.setOrientation(LinearLayout.VERTICAL);
+
+        TextView title = new TextView(getContext());
+        title.setPadding(TITLE_PADDING, TITLE_PADDING, TITLE_PADDING, TITLE_PADDING);
+        title.setTextColor(0xffffffff);
+        title.setTextSize(TITLE_TEXT_SIZE);
+        title.setText(getTitle());
+        preference.addView(title);
+
+        preference.addView(buildButtonGrid());
+
+        return (preference);
     }
 
     /**
