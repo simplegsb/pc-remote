@@ -104,18 +104,17 @@ public class ControlPadView extends LinearLayout
         {
             // Prepare the parent view depending on the orientation of the device.
             ViewGroup parentView = null;
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            setOrientation(LinearLayout.VERTICAL);
+            parentView = this;
+
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
+                    && (layout.hasButtonGrid() || layout.hasKeyboardButton()))
             {
                 LinearLayout left = new LinearLayout(getContext());
                 left.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1.0f));
                 left.setOrientation(LinearLayout.VERTICAL);
                 addView(left);
                 parentView = left;
-            }
-            else
-            {
-                setOrientation(LinearLayout.VERTICAL);
-                parentView = this;
             }
 
             if (layout.hasButtonGrid())
@@ -131,7 +130,8 @@ public class ControlPadView extends LinearLayout
             }
 
             // Prepare the parent view depending on the orientation of the device.
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
+                    && (layout.hasMousePad() || layout.hasMouseButtons()))
             {
                 LinearLayout right = new LinearLayout(getContext());
                 right.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1.0f));
