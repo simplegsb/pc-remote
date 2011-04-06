@@ -66,7 +66,7 @@ public class PCRemoteServer
 
             fLogger.info("#########################");
             fLogger.info("PC Remote 1.0 Server");
-            fLogger.info("simple solutions");
+            fLogger.info("simple entertainment");
             fLogger.info("Gary Buyn");
             fLogger.info("#########################");
             fLogger.info("Starting server...");

@@ -130,7 +130,7 @@ public class PCRemoteClient
 
             fLogger.info("#########################");
             fLogger.info("PC Remote 1.0 Client");
-            fLogger.info("simple solutions");
+            fLogger.info("simple entertainment");
             fLogger.info("Gary Buyn");
             fLogger.info("#########################");
             fLogger.info("Connecting to server at " + serverHost + ":" + serverPort + "...");
