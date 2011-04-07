@@ -206,8 +206,8 @@ public class ButtonGridMapPreference extends Preference
 
     /**
      * <p>
-     * Set the {@link com.se.pcremote.android.ui.layout.LayoutPreferences LayoutPreferences} on which this <code>ButtonGridMapPreference</code> is being
-     * displayed.
+     * Set the {@link com.se.pcremote.android.ui.layout.LayoutPreferences LayoutPreferences} on which this <code>ButtonGridMapPreference</code> is
+     * being displayed.
      * </p>
      * 
      * @param layoutPreferences The <code>LayoutPreferences</code> on which this <code>ButtonGridMapPreference</code> is being displayed.

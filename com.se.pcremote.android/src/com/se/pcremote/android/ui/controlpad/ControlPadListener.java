@@ -43,8 +43,8 @@ public class ControlPadListener extends SimpleOnGestureListener implements OnCli
      * Creates an instance of <code>ControlPadListener</code>.
      * </p>
      * 
-     * @param controlPad The {@link com.se.pcremote.android.ui.controlpad.ControlPad ControlPad} this <code>ControlPadListener</code> sends commands to the
-     * active {@link com.se.pcremote.android.PC PC} for.
+     * @param controlPad The {@link com.se.pcremote.android.ui.controlpad.ControlPad ControlPad} this <code>ControlPadListener</code> sends commands
+     * to the active {@link com.se.pcremote.android.PC PC} for.
      */
     public ControlPadListener(final ControlPad controlPad)
     {

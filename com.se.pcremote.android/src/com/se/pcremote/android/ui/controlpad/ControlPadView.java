@@ -23,9 +23,9 @@ import com.se.pcremote.android.R;
 
 /**
  * <p>
- * The content {@link android.view.View View} for the {@link com.se.pcremote.android.ui.controlpad.ControlPad ControlPad} activity. This view is created
- * programmatically because it is based on the properties of the <code>ControlPad</code>'s currently active {@link com.se.pcremote.android.Layout
- * Layout}.
+ * The content {@link android.view.View View} for the {@link com.se.pcremote.android.ui.controlpad.ControlPad ControlPad} activity. This view is
+ * created programmatically because it is based on the properties of the <code>ControlPad</code>'s currently active
+ * {@link com.se.pcremote.android.Layout Layout}.
  * </p>
  * 
  * @author simple
@@ -47,8 +47,18 @@ public class ControlPadView extends LinearLayout
      */
     private static final int LOST_TITLE_FONT_SIZE = 36;
 
+    /**
+     * <p>
+     * The ID of the left mouse button.
+     * </p>
+     */
     public static final int MOUSE_BUTTON_LEFT = -1;
 
+    /**
+     * <p>
+     * The ID of the right mouse button.
+     * </p>
+     */
     public static final int MOUSE_BUTTON_RIGHT = -3;
 
     /**
@@ -63,8 +73,8 @@ public class ControlPadView extends LinearLayout
      * Creates an instance of <code>ControlPadView</code>.
      * </p>
      * 
-     * @param controlPad The {@link com.se.pcremote.android.ui.controlpad.ControlPad ControlPad} that will display this <code>ControlPadView</code> as its
-     * content.
+     * @param controlPad The {@link com.se.pcremote.android.ui.controlpad.ControlPad ControlPad} that will display this <code>ControlPadView</code> as
+     * its content.
      */
     public ControlPadView(final ControlPad controlPad)
     {
