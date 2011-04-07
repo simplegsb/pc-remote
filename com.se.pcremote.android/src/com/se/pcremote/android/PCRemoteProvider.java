@@ -35,10 +35,10 @@ public class PCRemoteProvider extends ContentProvider
 
     /**
      * <p>
-     * The name of the column that contains 'code' for Keys.
+     * The name of the column that contains 'android code' for Keys.
      * </p>
      */
-    public static final String KEY_COLUMN_CODE = "code";
+    public static final String KEY_COLUMN_ANDROID_CODE = "android_code";
 
     /**
      * <p>
@@ -53,6 +53,13 @@ public class PCRemoteProvider extends ContentProvider
      * </p>
      */
     public static final String KEY_COLUMN_NAME = "name";
+
+    /**
+     * <p>
+     * The name of the column that contains 'server code' for Keys.
+     * </p>
+     */
+    public static final String KEY_COLUMN_SERVER_CODE = "server_code";
 
     /**
      * <p>

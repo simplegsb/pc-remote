@@ -133,8 +133,10 @@ public class ControlPad extends Activity
      */
     public void disconnect()
     {
-        fPcConnection.disconnect(fPc);
-        unbindService(fServiceConnection);
+        if (fPcConnection != null && fPc != null)
+        {
+            fPcConnection.disconnect(fPc);
+        }
     }
 
     @Override
@@ -289,6 +291,14 @@ public class ControlPad extends Activity
         getMenuInflater().inflate(R.menu.control_pad_options, menu);
 
         return (true);
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+
+        unbindService(fServiceConnection);
     }
 
     @Override

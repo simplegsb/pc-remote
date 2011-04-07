@@ -1,11 +1,13 @@
 package com.se.pcremote.android.ui;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -44,6 +46,10 @@ public class ControlPadView extends LinearLayout
      * </p>
      */
     private static final int LOST_TITLE_FONT_SIZE = 36;
+
+    public static final int MOUSE_BUTTON_LEFT = -1;
+
+    public static final int MOUSE_BUTTON_RIGHT = -3;
 
     /**
      * <p>
@@ -102,10 +108,14 @@ public class ControlPadView extends LinearLayout
         }
         else
         {
+            ViewGroup parentView = this;
+            addView(buildKeyEventView());
+
             // Prepare the parent view depending on the orientation of the device.
-            ViewGroup parentView = null;
-            setOrientation(LinearLayout.VERTICAL);
-            parentView = this;
+            if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE)
+            {
+                setOrientation(LinearLayout.VERTICAL);
+            }
 
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
                     && (layout.hasButtonGrid() || layout.hasKeyboardButton()))
@@ -125,7 +135,7 @@ public class ControlPadView extends LinearLayout
 
             if (layout.hasKeyboardButton())
             {
-                View keyboard = buildKeyboard();
+                View keyboard = buildKeyboardButton();
                 parentView.addView(keyboard);
             }
 
@@ -181,8 +191,9 @@ public class ControlPadView extends LinearLayout
                 Key key = layout.getButtonGridKey(getContext(), rowIndex, columnIndex);
                 if (key != null)
                 {
+                    buttonGridButton.setId(key.getServerCode());
                     buttonGridButton.setText(key.getName());
-                    buttonGridButton.setOnClickListener(new ControlPadListener(fControlPad, ControlPadListener.KEY_CLICK, key.getCode()));
+                    buttonGridButton.setOnClickListener(new ControlPadListener(fControlPad));
                 }
 
                 buttonGridRow.addView(buttonGridButton);
@@ -196,22 +207,45 @@ public class ControlPadView extends LinearLayout
 
     /**
      * <p>
-     * Builds the keyboard portion of this <code>ControlPadView</code>.
+     * Builds the keyboard button portion of this <code>ControlPadView</code>.
      * </p>
      * 
-     * @return The keyboard portion of this <code>ControlPadView</code>.
+     * @return The keyboard button portion of this <code>ControlPadView</code>.
      */
-    private View buildKeyboard()
+    private View buildKeyboardButton()
     {
-        LinearLayout keyboard = new LinearLayout(getContext());
-        keyboard.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-
         ImageButton keyboardButton = new ImageButton(getContext());
         keyboardButton.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
         keyboardButton.setImageResource(R.drawable.keyboard_button);
-        keyboard.addView(keyboardButton);
+        keyboardButton.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(final View view)
+            {
+                InputMethodManager inputMgr = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMgr.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+            }
+        });
 
-        return (keyboard);
+        return (keyboardButton);
+    }
+
+    /**
+     * <p>
+     * Builds a hidden control capable of receiving key events from the soft and hard keyboards.
+     * </p>
+     * 
+     * @return A hidden control capable of receiving key events from the soft and hard keyboards.
+     */
+    private View buildKeyEventView()
+    {
+        Button keyEventView = new Button(getContext());
+        keyEventView.setLayoutParams(new LayoutParams(1, 1)); // Make it so small that it isn't visible but still holds focus.
+        keyEventView.setFocusable(true);
+        keyEventView.setFocusableInTouchMode(true);
+        keyEventView.setOnKeyListener(new ControlPadListener(fControlPad));
+
+        return (keyEventView);
     }
 
     /**
@@ -227,15 +261,17 @@ public class ControlPadView extends LinearLayout
         mouseButtons.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
         ImageButton leftMouseButton = new ImageButton(getContext());
+        leftMouseButton.setId(MOUSE_BUTTON_LEFT);
         leftMouseButton.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1.0f));
         leftMouseButton.setImageResource(R.drawable.mouse_button_left);
-        leftMouseButton.setOnClickListener(new ControlPadListener(fControlPad, ControlPadListener.MOUSE_BUTTON_CLICK, 1));
+        leftMouseButton.setOnClickListener(new ControlPadListener(fControlPad));
         mouseButtons.addView(leftMouseButton);
 
         ImageButton rightMouseButton = new ImageButton(getContext());
+        rightMouseButton.setId(MOUSE_BUTTON_RIGHT);
         rightMouseButton.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1.0f));
         rightMouseButton.setImageResource(R.drawable.mouse_button_right);
-        rightMouseButton.setOnClickListener(new ControlPadListener(fControlPad, ControlPadListener.MOUSE_BUTTON_CLICK, 3));
+        rightMouseButton.setOnClickListener(new ControlPadListener(fControlPad));
         mouseButtons.addView(rightMouseButton);
 
         return (mouseButtons);
@@ -256,8 +292,7 @@ public class ControlPadView extends LinearLayout
         mousePad.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1.0f));
         mousePad.setBackgroundResource(R.drawable.mouse_pad_border);
 
-        final GestureDetector gestureDetector = new GestureDetector(getContext(), new ControlPadListener(fControlPad,
-                ControlPadListener.MOUSE_MOVE_RELATIVE));
+        final GestureDetector gestureDetector = new GestureDetector(getContext(), new ControlPadListener(fControlPad));
         mousePad.setOnTouchListener(new OnTouchListener()
         {
             @Override

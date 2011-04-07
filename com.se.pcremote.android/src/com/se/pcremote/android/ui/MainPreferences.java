@@ -175,11 +175,11 @@ public class MainPreferences extends PreferenceActivity implements OnSharedPrefe
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         PC pc = new PC();
-        pc.load(this, Uri.parse(preferences.getString("activePc", null)));
+        pc.load(this, Uri.parse(preferences.getString("activePc", "")));
         findPreference("activePc").setSummary(pc.getName());
 
         Layout layout = new Layout();
-        layout.load(this, Uri.parse(preferences.getString("activeLayout", null)));
+        layout.load(this, Uri.parse(preferences.getString("activeLayout", "")));
         findPreference("activeLayout").setSummary(layout.getName());
     }
 }

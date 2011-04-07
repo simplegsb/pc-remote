@@ -5,10 +5,13 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 
 import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 
+import com.se.pcremote.android.Key;
 import com.se.pcremote.client.PCRemoteClient;
 
 /**
@@ -18,36 +21,8 @@ import com.se.pcremote.client.PCRemoteClient;
  * 
  * @author simple
  */
-public class ControlPadListener extends SimpleOnGestureListener implements OnClickListener
+public class ControlPadListener extends SimpleOnGestureListener implements OnClickListener, OnKeyListener
 {
-    /**
-     * <p>
-     * The ID of the key click command.
-     * </p>
-     */
-    public static final int KEY_CLICK = 0;
-
-    /**
-     * <p>
-     * The ID of the mouse button click command.
-     * </p>
-     */
-    public static final int MOUSE_BUTTON_CLICK = 1;
-
-    /**
-     * <p>
-     * The ID of the mouse movement command.
-     * </p>
-     */
-    public static final int MOUSE_MOVE_RELATIVE = 2;
-
-    /**
-     * <p>
-     * The command to send to the active {@link com.se.pcremote.android.PC PC}.
-     * </p>
-     */
-    private int fCommand;
-
     /**
      * <p>
      * The {@link com.se.pcremote.android.ui.ControlPad ControlPad} this <code>ControlPadListener</code> sends commands to the active
@@ -65,98 +40,20 @@ public class ControlPadListener extends SimpleOnGestureListener implements OnCli
 
     /**
      * <p>
-     * The first parameter to send with the command.
-     * </p>
-     */
-    private int fParameter1;
-
-    /**
-     * <p>
-     * The second parameter to send with the command.
-     * </p>
-     */
-    private int fParameter2;
-
-    /**
-     * <p>
      * Creates an instance of <code>ControlPadListener</code>.
      * </p>
      * 
      * @param controlPad The {@link com.se.pcremote.android.ui.ControlPad ControlPad} this <code>ControlPadListener</code> sends commands to the
      * active {@link com.se.pcremote.android.PC PC} for.
-     * @param command The command to send to the active {@link com.se.pcremote.android.PC PC}.
      */
-    public ControlPadListener(final ControlPad controlPad, final int command)
+    public ControlPadListener(final ControlPad controlPad)
     {
-        fCommand = command;
         fControlPad = controlPad;
         fLogger = Logger.getLogger(this.getClass());
-        fParameter1 = 0;
-        fParameter2 = 0;
-    }
-
-    /**
-     * <p>
-     * Creates an instance of <code>ControlPadListener</code>.
-     * </p>
-     * 
-     * @param controlPad The {@link com.se.pcremote.android.ui.ControlPad ControlPad} this <code>ControlPadListener</code> sends commands to the
-     * active {@link com.se.pcremote.android.PC PC} for.
-     * @param command The command to send to the active {@link com.se.pcremote.android.PC PC}.
-     * @param parameter1 The first parameter to send with the command.
-     */
-    public ControlPadListener(final ControlPad controlPad, final int command, final int parameter1)
-    {
-        fCommand = command;
-        fControlPad = controlPad;
-        fLogger = Logger.getLogger(this.getClass());
-        fParameter1 = parameter1;
-        fParameter2 = 0;
-    }
-
-    /**
-     * <p>
-     * Creates an instance of <code>ControlPadListener</code>.
-     * </p>
-     * 
-     * @param controlPad The {@link com.se.pcremote.android.ui.ControlPad ControlPad} this <code>ControlPadListener</code> sends commands to the
-     * active {@link com.se.pcremote.android.PC PC} for.
-     * @param command The command to send to the active {@link com.se.pcremote.android.PC PC}.
-     * @param parameter1 The first parameter to send with the command.
-     * @param parameter2 The second parameter to send with the command.
-     */
-    public ControlPadListener(final ControlPad controlPad, final int command, final int parameter1, final int parameter2)
-    {
-        fCommand = command;
-        fControlPad = controlPad;
-        fLogger = Logger.getLogger(this.getClass());
-        fParameter1 = parameter1;
-        fParameter2 = parameter2;
     }
 
     @Override
     public void onClick(final View view)
-    {
-        sendCommand();
-    }
-
-    @Override
-    public boolean onScroll(final MotionEvent event1, final MotionEvent event2, final float distanceX, final float distanceY)
-    {
-        fParameter1 = (int) distanceX;
-        fParameter2 = (int) distanceY;
-
-        sendCommand();
-
-        return (true);
-    }
-
-    /**
-     * <p>
-     * Sends the command to the active {@link com.se.pcremote.android.PC PC}.
-     * </p>
-     */
-    private void sendCommand()
     {
         if (fControlPad.getConnection() != null)
         {
@@ -165,17 +62,17 @@ public class ControlPadListener extends SimpleOnGestureListener implements OnCli
             {
                 try
                 {
-                    if (fCommand == KEY_CLICK)
+                    if (view.getId() == ControlPadView.MOUSE_BUTTON_LEFT)
                     {
-                        client.sendCommandViaTcp("keyPress(" + fParameter1 + ");keyRelease(" + fParameter1 + ");");
+                        client.sendCommandViaTcp("mousePress(1);mouseRelease(1);");
                     }
-                    else if (fCommand == MOUSE_BUTTON_CLICK)
+                    else if (view.getId() == ControlPadView.MOUSE_BUTTON_RIGHT)
                     {
-                        client.sendCommandViaTcp("mousePress(" + fParameter1 + ");mouseRelease(" + fParameter1 + ");");
+                        client.sendCommandViaTcp("mousePress(3);mouseRelease(3);");
                     }
-                    else if (fCommand == MOUSE_MOVE_RELATIVE)
+                    else
                     {
-                        client.sendCommandViaTcp("mouseMoveRelative(" + fParameter1 + "," + fParameter2 + ");");
+                        client.sendCommandViaTcp("keyPress(" + view.getId() + ");keyRelease(" + view.getId() + ");");
                     }
                 }
                 catch (IOException e)
@@ -184,5 +81,74 @@ public class ControlPadListener extends SimpleOnGestureListener implements OnCli
                 }
             }
         }
+    }
+
+    @Override
+    public boolean onKey(final View view, final int keyCode, final KeyEvent event)
+    {
+        if (event.getAction() == KeyEvent.ACTION_DOWN)
+        {
+            if (fControlPad.getConnection() != null)
+            {
+                PCRemoteClient client = fControlPad.getConnection().getClient();
+                if (client != null && client.isConnected())
+                {
+                    try
+                    {
+                        Key key = new Key();
+                        key.load(fControlPad, event.getKeyCode());
+                        client.sendCommandViaTcp("keyPress(" + key.getServerCode() + ");");
+                    }
+                    catch (IOException e)
+                    {
+                        fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
+                    }
+                }
+            }
+        }
+        else if (event.getAction() == KeyEvent.ACTION_UP)
+        {
+            if (fControlPad.getConnection() != null)
+            {
+                PCRemoteClient client = fControlPad.getConnection().getClient();
+                if (client != null && client.isConnected())
+                {
+                    try
+                    {
+                        Key key = new Key();
+                        key.load(fControlPad, event.getKeyCode());
+                        client.sendCommandViaTcp("keyRelease(" + key.getServerCode() + ");");
+                    }
+                    catch (IOException e)
+                    {
+                        fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
+                    }
+                }
+            }
+        }
+
+        return (false);
+    }
+
+    @Override
+    public boolean onScroll(final MotionEvent event1, final MotionEvent event2, final float distanceX, final float distanceY)
+    {
+        if (fControlPad.getConnection() != null)
+        {
+            PCRemoteClient client = fControlPad.getConnection().getClient();
+            if (client != null && client.isConnected())
+            {
+                try
+                {
+                    client.sendCommandViaTcp("mouseMoveRelative(" + distanceX + "," + distanceY + ");");
+                }
+                catch (IOException e)
+                {
+                    fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
+                }
+            }
+        }
+
+        return (true);
     }
 }
