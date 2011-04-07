@@ -1,4 +1,4 @@
-package com.se.pcremote.android.ui;
+package com.se.pcremote.android.ui.controlpad;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -23,7 +23,7 @@ import com.se.pcremote.android.R;
 
 /**
  * <p>
- * The content {@link android.view.View View} for the {@link com.se.pcremote.android.ui.ControlPad ControlPad} activity. This view is created
+ * The content {@link android.view.View View} for the {@link com.se.pcremote.android.ui.controlpad.ControlPad ControlPad} activity. This view is created
  * programmatically because it is based on the properties of the <code>ControlPad</code>'s currently active {@link com.se.pcremote.android.Layout
  * Layout}.
  * </p>
@@ -53,7 +53,7 @@ public class ControlPadView extends LinearLayout
 
     /**
      * <p>
-     * The {@link com.se.pcremote.android.ui.ControlPad ControlPad} that will display this <code>ControlPadView</code> as its content.
+     * The {@link com.se.pcremote.android.ui.controlpad.ControlPad ControlPad} that will display this <code>ControlPadView</code> as its content.
      * </p>
      */
     private ControlPad fControlPad;
@@ -63,7 +63,7 @@ public class ControlPadView extends LinearLayout
      * Creates an instance of <code>ControlPadView</code>.
      * </p>
      * 
-     * @param controlPad The {@link com.se.pcremote.android.ui.ControlPad ControlPad} that will display this <code>ControlPadView</code> as its
+     * @param controlPad The {@link com.se.pcremote.android.ui.controlpad.ControlPad ControlPad} that will display this <code>ControlPadView</code> as its
      * content.
      */
     public ControlPadView(final ControlPad controlPad)
@@ -75,7 +75,7 @@ public class ControlPadView extends LinearLayout
 
     /**
      * <p>
-     * Builds this <code>ControlPadView</code> based on the {@link com.se.pcremote.android.ui.ControlPad ControlPad}'s currently active
+     * Builds this <code>ControlPadView</code> based on the {@link com.se.pcremote.android.ui.controlpad.ControlPad ControlPad}'s currently active
      * {@link com.se.pcremote.android.Layout Layout}.
      * </p>
      */

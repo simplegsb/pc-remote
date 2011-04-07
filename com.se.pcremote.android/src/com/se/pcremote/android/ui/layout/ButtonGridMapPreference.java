@@ -1,4 +1,4 @@
-package com.se.pcremote.android.ui;
+package com.se.pcremote.android.ui.layout;
 
 import android.content.Context;
 import android.content.Intent;
@@ -95,7 +95,7 @@ public class ButtonGridMapPreference extends Preference
 
     /**
      * <p>
-     * The {@link com.se.pcremote.android.ui.LayoutPreferences LayoutPreferences} on which this <code>ButtonGridMapPreference</code> is being
+     * The {@link com.se.pcremote.android.ui.layout.LayoutPreferences LayoutPreferences} on which this <code>ButtonGridMapPreference</code> is being
      * displayed.
      * </p>
      */
@@ -206,7 +206,7 @@ public class ButtonGridMapPreference extends Preference
 
     /**
      * <p>
-     * Set the {@link com.se.pcremote.android.ui.LayoutPreferences LayoutPreferences} on which this <code>ButtonGridMapPreference</code> is being
+     * Set the {@link com.se.pcremote.android.ui.layout.LayoutPreferences LayoutPreferences} on which this <code>ButtonGridMapPreference</code> is being
      * displayed.
      * </p>
      * 

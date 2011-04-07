@@ -1,4 +1,4 @@
-package com.se.pcremote.android.ui;
+package com.se.pcremote.android.ui.layout;
 
 import android.content.Intent;
 import android.content.SharedPreferences;

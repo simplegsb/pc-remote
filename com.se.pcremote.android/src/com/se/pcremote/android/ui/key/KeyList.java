@@ -1,4 +1,4 @@
-package com.se.pcremote.android.ui;
+package com.se.pcremote.android.ui.key;
 
 import android.app.ListActivity;
 import android.content.ContentUris;

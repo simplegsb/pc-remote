@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import com.se.pcremote.android.Layout;
 import com.se.pcremote.android.PC;
 import com.se.pcremote.android.PCRemoteProvider;
+import com.se.pcremote.android.ui.controlpad.ControlPad;
 
 import android.app.Activity;
 import android.app.AlertDialog;

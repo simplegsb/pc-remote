@@ -1,4 +1,4 @@
-package com.se.pcremote.android.ui;
+package com.se.pcremote.android.ui.layout;
 
 import android.app.Dialog;
 import android.app.ListActivity;
@@ -15,22 +15,23 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.se.pcremote.android.PCRemoteProvider;
 import com.se.pcremote.android.R;
+import com.se.pcremote.android.ui.DialogFactory;
 
 /**
  * <p>
- * Displays the list of PCs.
+ * Displays the list of Layouts.
  * </p>
  * 
  * @author simple
  */
-public class PCList extends ListActivity
+public class LayoutList extends ListActivity
 {
     /**
      * <p>
-     * Creates an instance of <code>PCList</code>.
+     * Creates an instance of <code>LayoutList</code>.
      * </p>
      */
-    public PCList()
+    public LayoutList()
     {}
 
     @Override
@@ -38,24 +39,25 @@ public class PCList extends ListActivity
     {
         super.onCreate(savedInstanceState);
 
-        getListView().addHeaderView(LayoutInflater.from(this).inflate(R.layout.pc_list_insert, null));
-        setListAdapter(new PCAdapter(this, managedQuery(PCRemoteProvider.PC_URI, null, null, null, null), true));
+        getListView().addHeaderView(LayoutInflater.from(this).inflate(R.layout.layout_list_insert, null));
+        setListAdapter(new LayoutAdapter(this, managedQuery(PCRemoteProvider.LAYOUT_URI, null, null, null, null), true));
 
         getListView().setTextFilterEnabled(true);
 
-        // Opens the 'Create/Edit PC' activity.
+        // Opens the 'Create/Edit Layout' activity.
         getListView().setOnItemClickListener(new OnItemClickListener()
         {
+            @Override
             public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id)
             {
                 Uri data = null;
                 if (id == -1)
                 {
-                    data = PCRemoteProvider.PC_URI;
+                    data = PCRemoteProvider.LAYOUT_URI;
                 }
                 else
                 {
-                    data = ContentUris.withAppendedId(PCRemoteProvider.PC_URI, id);
+                    data = ContentUris.withAppendedId(PCRemoteProvider.LAYOUT_URI, id);
                 }
 
                 startActivity(new Intent(Intent.ACTION_INSERT_OR_EDIT, data));
@@ -72,7 +74,7 @@ public class PCList extends ListActivity
     @Override
     public boolean onCreateOptionsMenu(final Menu menu)
     {
-        getMenuInflater().inflate(R.menu.pc_list_options, menu);
+        getMenuInflater().inflate(R.menu.layout_list_options, menu);
 
         return (true);
     }
@@ -80,9 +82,9 @@ public class PCList extends ListActivity
     @Override
     public boolean onOptionsItemSelected(final MenuItem item)
     {
-        if (item.getItemId() == R.id.delete_pcs)
+        if (item.getItemId() == R.id.delete_layouts)
         {
-            showDialog(DialogFactory.DIALOG_DELETE_PCS_ID);
+            showDialog(DialogFactory.DIALOG_DELETE_LAYOUTS_ID);
             return (true);
         }
         else

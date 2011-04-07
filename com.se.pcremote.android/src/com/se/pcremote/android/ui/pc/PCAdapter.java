@@ -1,4 +1,4 @@
-package com.se.pcremote.android.ui;
+package com.se.pcremote.android.ui.pc;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -13,23 +13,23 @@ import com.se.pcremote.android.R;
 
 /**
  * <p>
- * Exposes Layouts to a {@link android.widget.ListView ListView}.
+ * Exposes PCs to a {@link android.widget.ListView ListView}.
  * </p>
  * 
  * @author simple
  */
-public class LayoutAdapter extends CursorAdapter
+public class PCAdapter extends CursorAdapter
 {
     /**
      * <p>
-     * Creates an instance of <code>LayoutAdapter</code>.
+     * Creates an instance of <code>PCAdapter</code>.
      * </p>
      * 
      * @param context Used to access the database.
      * @param cursor The PC data to expose.
      * @param autoRequery Determines if the data will be re-queried after every change.
      */
-    public LayoutAdapter(final Context context, final Cursor cursor, final boolean autoRequery)
+    public PCAdapter(final Context context, final Cursor cursor, final boolean autoRequery)
     {
         super(context, cursor, autoRequery);
     }
@@ -37,13 +37,13 @@ public class LayoutAdapter extends CursorAdapter
     @Override
     public final void bindView(final View view, final Context context, final Cursor cursor)
     {
-        ((TextView) view).setText(cursor.getString(cursor.getColumnIndex(PCRemoteProvider.LAYOUT_COLUMN_NAME)));
+        ((TextView) view).setText(cursor.getString(cursor.getColumnIndex(PCRemoteProvider.PC_COLUMN_NAME)));
     }
 
     @Override
     public final View newView(final Context context, final Cursor cursor, final ViewGroup parent)
     {
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_list_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.pc_list_item, parent, false);
         bindView(view, context, cursor);
 
         return (view);

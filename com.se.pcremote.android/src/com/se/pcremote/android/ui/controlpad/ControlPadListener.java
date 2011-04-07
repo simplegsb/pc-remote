@@ -1,4 +1,4 @@
-package com.se.pcremote.android.ui;
+package com.se.pcremote.android.ui.controlpad;
 
 import java.io.IOException;
 
@@ -25,7 +25,7 @@ public class ControlPadListener extends SimpleOnGestureListener implements OnCli
 {
     /**
      * <p>
-     * The {@link com.se.pcremote.android.ui.ControlPad ControlPad} this <code>ControlPadListener</code> sends commands to the active
+     * The {@link com.se.pcremote.android.ui.controlpad.ControlPad ControlPad} this <code>ControlPadListener</code> sends commands to the active
      * {@link com.se.pcremote.android.PC PC} for.
      * </p>
      */
@@ -43,7 +43,7 @@ public class ControlPadListener extends SimpleOnGestureListener implements OnCli
      * Creates an instance of <code>ControlPadListener</code>.
      * </p>
      * 
-     * @param controlPad The {@link com.se.pcremote.android.ui.ControlPad ControlPad} this <code>ControlPadListener</code> sends commands to the
+     * @param controlPad The {@link com.se.pcremote.android.ui.controlpad.ControlPad ControlPad} this <code>ControlPadListener</code> sends commands to the
      * active {@link com.se.pcremote.android.PC PC} for.
      */
     public ControlPadListener(final ControlPad controlPad)
