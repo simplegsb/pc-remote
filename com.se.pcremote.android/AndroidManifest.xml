@@ -5,27 +5,27 @@
 	<uses-sdk android:minSdkVersion="7" />
 
 	<application android:icon="@drawable/pc_remote" android:label="@string/app_name" android:debuggable="true">
-		<activity android:name="ui.controlpad.ControlPad" android:label="@string/app_name">
+		<activity android:name=".ui.controlpad.ControlPad" android:label="@string/app_name">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-        <activity android:name="ui.key.KeyList" android:label="@string/select_key">
+        <activity android:name=".ui.key.KeyList" android:label="@string/select_key">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="vnd.android.cursor.dir/com.se.pcremote.key" /> <!-- @string/mime_type_key does not work for SDK 7... -->
             </intent-filter>
         </activity>
-		<activity android:name="ui.layout.LayoutList" android:label="@string/manage_layouts">
+		<activity android:name=".ui.layout.LayoutList" android:label="@string/manage_layouts">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
 				<data android:mimeType="vnd.android.cursor.dir/com.se.pcremote.layout" /> <!-- @string/mime_type_layout does not work for SDK 7... -->
 			</intent-filter>
 		</activity>
-		<activity android:name="ui.layout.LayoutPreferences">
+		<activity android:name=".ui.layout.LayoutPreferences">
 			<intent-filter>
 				<action android:name="android.intent.action.EDIT" />
 				<action android:name="android.intent.action.INSERT" />
@@ -37,14 +37,14 @@
 		</activity>
 		<activity android:name=".ui.MainPreferences">
 		</activity>
-		<activity android:name="ui.pc.PCList" android:label="@string/manage_pcs">
+		<activity android:name=".ui.pc.PCList" android:label="@string/manage_pcs">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
 				<data android:mimeType="vnd.android.cursor.dir/com.se.pcremote.pc" /> <!-- @string/mime_type_pc does not work for SDK 7... -->
 			</intent-filter>
 		</activity>
-		<activity android:name="ui.pc.PCPreferences">
+		<activity android:name=".ui.pc.PCPreferences">
 			<intent-filter>
 				<action android:name="android.intent.action.EDIT" />
 				<action android:name="android.intent.action.INSERT" />
