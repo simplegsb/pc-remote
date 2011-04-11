@@ -21,10 +21,10 @@ import com.se.pcremote.android.Layout;
 import com.se.pcremote.android.PC;
 import com.se.pcremote.android.PCConnection;
 import com.se.pcremote.android.PCConnection.PCConnectionBinder;
-import com.se.pcremote.android.ui.DialogFactory;
-import com.se.pcremote.android.ui.MainPreferences;
 import com.se.pcremote.android.PCRemoteProvider;
 import com.se.pcremote.android.R;
+import com.se.pcremote.android.ui.DialogFactory;
+import com.se.pcremote.android.ui.MainPreferences;
 
 /**
  * <p>

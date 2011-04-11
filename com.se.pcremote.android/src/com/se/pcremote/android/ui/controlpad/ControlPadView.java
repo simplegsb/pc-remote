@@ -308,7 +308,8 @@ public class ControlPadView extends LinearLayout
             @Override
             public boolean onTouch(final View view, final MotionEvent event)
             {
-                return (gestureDetector.onTouchEvent(event));
+                gestureDetector.onTouchEvent(event);
+                return (true);
             }
         });
 

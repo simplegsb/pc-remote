@@ -151,4 +151,48 @@ public class ControlPadListener extends SimpleOnGestureListener implements OnCli
 
         return (true);
     }
+
+    @Override
+    public boolean onSingleTapConfirmed(final MotionEvent event)
+    {
+        if (fControlPad.getConnection() != null)
+        {
+            PCRemoteClient client = fControlPad.getConnection().getClient();
+            if (client != null && client.isConnected())
+            {
+                try
+                {
+                    client.sendCommandViaTcp("mousePress(1);mouseRelease(1);");
+                }
+                catch (IOException e)
+                {
+                    fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
+                }
+            }
+        }
+
+        return (true);
+    }
+
+    @Override
+    public boolean onDoubleTap(final MotionEvent event)
+    {
+        if (fControlPad.getConnection() != null)
+        {
+            PCRemoteClient client = fControlPad.getConnection().getClient();
+            if (client != null && client.isConnected())
+            {
+                try
+                {
+                    client.sendCommandViaTcp("mousePress(1);mouseRelease(1);mousePress(1);mouseRelease(1);");
+                }
+                catch (IOException e)
+                {
+                    fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
+                }
+            }
+        }
+
+        return (true);
+    }
 }
