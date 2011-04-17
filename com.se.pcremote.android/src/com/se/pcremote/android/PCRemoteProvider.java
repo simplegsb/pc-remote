@@ -35,7 +35,7 @@ public class PCRemoteProvider extends ContentProvider
 
     /**
      * <p>
-     * The name of the column that contains 'android code' for Keys.
+     * The name of the column that contains 'android codes' for Keys.
      * </p>
      */
     public static final String KEY_COLUMN_ANDROID_CODE = "android_code";
@@ -49,6 +49,20 @@ public class PCRemoteProvider extends ContentProvider
 
     /**
      * <p>
+     * The name of the column that contains 'ime alt required' for Keys.
+     * </p>
+     */
+    public static final String KEY_COLUMN_IME_ALT_REQUIRED = "ime_alt_required";
+
+    /**
+     * <p>
+     * The name of the column that contains 'ime shift required' for Keys.
+     * </p>
+     */
+    public static final String KEY_COLUMN_IME_SHIFT_REQUIRED = "ime_shift_required";
+
+    /**
+     * <p>
      * The name of the column that contains 'names' for Keys.
      * </p>
      */
@@ -56,10 +70,17 @@ public class PCRemoteProvider extends ContentProvider
 
     /**
      * <p>
-     * The name of the column that contains 'server code' for Keys.
+     * The name of the column that contains 'server codes' for Keys.
      * </p>
      */
     public static final String KEY_COLUMN_SERVER_CODE = "server_code";
+
+    /**
+     * <p>
+     * The name of the column that contains 'server shift required' for Keys.
+     * </p>
+     */
+    public static final String KEY_COLUMN_SERVER_SHIFT_REQUIRED = "server_shift_required";
 
     /**
      * <p>

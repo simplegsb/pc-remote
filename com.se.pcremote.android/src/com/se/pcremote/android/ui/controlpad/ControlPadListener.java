@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
+import android.view.View.OnTouchListener;
 
 import com.se.pcremote.android.Key;
 import com.se.pcremote.client.PCRemoteClient;
@@ -21,8 +22,15 @@ import com.se.pcremote.client.PCRemoteClient;
  * 
  * @author simple
  */
-public class ControlPadListener extends SimpleOnGestureListener implements OnClickListener, OnKeyListener
+public class ControlPadListener extends SimpleOnGestureListener implements OnClickListener, OnKeyListener, OnTouchListener
 {
+    /**
+     * <p>
+     * The Java constant for the Shift Key.
+     * </p>
+     */
+    private static final int SHIFT_KEY_SERVER_CODE = 16;
+
     /**
      * <p>
      * The {@link com.se.pcremote.android.ui.controlpad.ControlPad ControlPad} this <code>ControlPadListener</code> sends commands to the active
@@ -30,6 +38,20 @@ public class ControlPadListener extends SimpleOnGestureListener implements OnCli
      * </p>
      */
     private ControlPad fControlPad;
+
+    /**
+     * <p>
+     * Determines whether the ALT key is currently pressed by the IME.
+     * </p>
+     */
+    private boolean fImeAltPressed;
+
+    /**
+     * <p>
+     * Determines whether the Shift key is currently pressed by the IME.
+     * </p>
+     */
+    private boolean fImeShiftPressed;
 
     /**
      * <p>
@@ -49,14 +71,18 @@ public class ControlPadListener extends SimpleOnGestureListener implements OnCli
     public ControlPadListener(final ControlPad controlPad)
     {
         fControlPad = controlPad;
-        fLogger = Logger.getLogger(this.getClass());
+        fImeAltPressed = false;
+        fImeShiftPressed = false;
+        fLogger = Logger.getLogger(getClass());
     }
 
     @Override
     public void onClick(final View view)
     {
+        // If the Control Pad has been connected to the PC Connection service.
         if (fControlPad.getConnection() != null)
         {
+            // If the PC Remote Client is currently connected to a server.
             PCRemoteClient client = fControlPad.getConnection().getClient();
             if (client != null && client.isConnected())
             {
@@ -70,10 +96,6 @@ public class ControlPadListener extends SimpleOnGestureListener implements OnCli
                     {
                         client.sendCommandViaTcp("mousePress(3);mouseRelease(3);");
                     }
-                    else
-                    {
-                        client.sendCommandViaTcp("keyPress(" + view.getId() + ");keyRelease(" + view.getId() + ");");
-                    }
                 }
                 catch (IOException e)
                 {
@@ -84,40 +106,105 @@ public class ControlPadListener extends SimpleOnGestureListener implements OnCli
     }
 
     @Override
+    public boolean onDoubleTap(final MotionEvent event)
+    {
+        // If the Control Pad has been connected to the PC Connection service.
+        if (fControlPad.getConnection() != null)
+        {
+            // If the PC Remote Client is currently connected to a server.
+            PCRemoteClient client = fControlPad.getConnection().getClient();
+            if (client != null && client.isConnected())
+            {
+                try
+                {
+                    client.sendCommandViaTcp("mousePress(1);mouseRelease(1);mousePress(1);mouseRelease(1);");
+                }
+                catch (IOException e)
+                {
+                    fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
+                }
+            }
+        }
+
+        return (true);
+    }
+
+    @Override
     public boolean onKey(final View view, final int keyCode, final KeyEvent event)
     {
-        if (event.getAction() == KeyEvent.ACTION_DOWN)
+        // If the Control Pad has been connected to the PC Connection service.
+        if (fControlPad.getConnection() != null)
         {
-            if (fControlPad.getConnection() != null)
+            // If the PC Remote Client is currently connected to a server.
+            PCRemoteClient client = fControlPad.getConnection().getClient();
+            if (client != null && client.isConnected())
             {
-                PCRemoteClient client = fControlPad.getConnection().getClient();
-                if (client != null && client.isConnected())
+                // If the Key has been pressed.
+                if (event.getAction() == KeyEvent.ACTION_DOWN)
                 {
+                    fLogger.error("Key Press: " + keyCode);
+
                     try
                     {
-                        Key key = new Key();
-                        key.load(fControlPad, event.getKeyCode());
-                        client.sendCommandViaTcp("keyPress(" + key.getServerCode() + ");");
+                        // Do not send ALT Key commands.
+                        if (keyCode != KeyEvent.KEYCODE_ALT_LEFT)
+                        {
+                            Key key = new Key();
+                            key.loadFromAndroidKeyCode(fControlPad, keyCode, fImeAltPressed, fImeShiftPressed);
+
+                            // If shift is required but has not been pressed by the IME, press is manually.
+                            if (key.isServerShiftRequired() && !fImeShiftPressed)
+                            {
+                                client.sendCommandViaTcp("keyPress(" + SHIFT_KEY_SERVER_CODE + ");");
+                            }
+
+                            client.sendCommandViaTcp("keyPress(" + key.getServerCode() + ");");
+                        }
                     }
                     catch (IOException e)
                     {
                         fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
                     }
+
+                    // Register changes in the state of the modifier Keys.
+                    if (keyCode == KeyEvent.KEYCODE_ALT_LEFT)
+                    {
+                        fImeAltPressed = true;
+                    }
+                    else if (keyCode == KeyEvent.KEYCODE_SHIFT_LEFT)
+                    {
+                        fImeShiftPressed = true;
+                    }
                 }
-            }
-        }
-        else if (event.getAction() == KeyEvent.ACTION_UP)
-        {
-            if (fControlPad.getConnection() != null)
-            {
-                PCRemoteClient client = fControlPad.getConnection().getClient();
-                if (client != null && client.isConnected())
+                // If the Key has been released.
+                else if (event.getAction() == KeyEvent.ACTION_UP)
                 {
+                    // Register changes in the state of the modifier Keys.
+                    if (keyCode == KeyEvent.KEYCODE_ALT_LEFT)
+                    {
+                        fImeAltPressed = false;
+                    }
+                    else if (keyCode == KeyEvent.KEYCODE_SHIFT_LEFT)
+                    {
+                        fImeShiftPressed = false;
+                    }
+
                     try
                     {
-                        Key key = new Key();
-                        key.load(fControlPad, event.getKeyCode());
-                        client.sendCommandViaTcp("keyRelease(" + key.getServerCode() + ");");
+                        // Do not send ALT Key commands.
+                        if (keyCode != KeyEvent.KEYCODE_ALT_LEFT)
+                        {
+                            Key key = new Key();
+                            key.loadFromAndroidKeyCode(fControlPad, keyCode, fImeAltPressed, fImeShiftPressed);
+
+                            client.sendCommandViaTcp("keyRelease(" + key.getServerCode() + ");");
+
+                            // If shift is required but was not been pressed by the IME (it must have been pressed manually), release is manually.
+                            if (key.isServerShiftRequired() && !fImeShiftPressed)
+                            {
+                                client.sendCommandViaTcp("keyRelease(" + SHIFT_KEY_SERVER_CODE + ");");
+                            }
+                        }
                     }
                     catch (IOException e)
                     {
@@ -133,8 +220,10 @@ public class ControlPadListener extends SimpleOnGestureListener implements OnCli
     @Override
     public boolean onScroll(final MotionEvent event1, final MotionEvent event2, final float distanceX, final float distanceY)
     {
+        // If the Control Pad has been connected to the PC Connection service.
         if (fControlPad.getConnection() != null)
         {
+            // If the PC Remote Client is currently connected to a server.
             PCRemoteClient client = fControlPad.getConnection().getClient();
             if (client != null && client.isConnected())
             {
@@ -155,8 +244,10 @@ public class ControlPadListener extends SimpleOnGestureListener implements OnCli
     @Override
     public boolean onSingleTapConfirmed(final MotionEvent event)
     {
+        // If the Control Pad has been connected to the PC Connection service.
         if (fControlPad.getConnection() != null)
         {
+            // If the PC Remote Client is currently connected to a server.
             PCRemoteClient client = fControlPad.getConnection().getClient();
             if (client != null && client.isConnected())
             {
@@ -175,16 +266,40 @@ public class ControlPadListener extends SimpleOnGestureListener implements OnCli
     }
 
     @Override
-    public boolean onDoubleTap(final MotionEvent event)
+    public boolean onTouch(final View view, final MotionEvent event)
     {
+        // If the Control Pad has been connected to the PC Connection service.
         if (fControlPad.getConnection() != null)
         {
+            // If the PC Remote Client is currently connected to a server.
             PCRemoteClient client = fControlPad.getConnection().getClient();
             if (client != null && client.isConnected())
             {
                 try
                 {
-                    client.sendCommandViaTcp("mousePress(1);mouseRelease(1);mousePress(1);mouseRelease(1);");
+                    Key key = new Key();
+                    key.loadFromId(fControlPad, view.getId());
+
+                    // If the button has been pressed.
+                    if (event.getAction() == MotionEvent.ACTION_DOWN)
+                    {
+                        if (key.isServerShiftRequired())
+                        {
+                            client.sendCommandViaTcp("keyPress(" + SHIFT_KEY_SERVER_CODE + ");");
+                        }
+
+                        client.sendCommandViaTcp("keyPress(" + key.getServerCode() + ");");
+                    }
+                    // If the button has been released.
+                    else if (event.getAction() == MotionEvent.ACTION_UP)
+                    {
+                        client.sendCommandViaTcp("keyRelease(" + key.getServerCode() + ");");
+
+                        if (key.isServerShiftRequired())
+                        {
+                            client.sendCommandViaTcp("keyRelease(" + SHIFT_KEY_SERVER_CODE + ");");
+                        }
+                    }
                 }
                 catch (IOException e)
                 {
@@ -193,6 +308,6 @@ public class ControlPadListener extends SimpleOnGestureListener implements OnCli
             }
         }
 
-        return (true);
+        return (false);
     }
 }

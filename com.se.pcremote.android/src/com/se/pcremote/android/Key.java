@@ -22,7 +22,6 @@ public class Key
      * </p>
      */
     private int fAndroidCode;
-
     /**
      * <p>
      * A unique identifier.
@@ -30,6 +29,21 @@ public class Key
      */
     private int fId;
 
+    /**
+     * 
+     * <p>
+     * Determines whether the ALT key must be pressed by the IME while sending the key.
+     * </p>
+     */
+    private boolean fImeAltRequired;
+
+    /**
+     * 
+     * <p>
+     * Determines whether the shift key must be pressed by the IME while sending the key.
+     * </p>
+     */
+    private boolean fImeShiftRequired;
     /**
      * <p>
      * The human-readable name.
@@ -43,6 +57,13 @@ public class Key
      * </p>
      */
     private int fServerCode;
+    /**
+     * 
+     * <p>
+     * Determines whether the shift key must be pressed at the server while sending the key.
+     * </p>
+     */
+    private boolean fServerShiftRequired;
 
     /**
      * <p>
@@ -53,8 +74,11 @@ public class Key
     {
         fAndroidCode = -1;
         fId = 0;
+        fImeAltRequired = false;
+        fImeShiftRequired = false;
         fName = null;
         fServerCode = -1;
+        fServerShiftRequired = false;
     }
 
     /**
@@ -119,28 +143,38 @@ public class Key
 
     /**
      * <p>
-     * Loads this <code>Key</code> from a content provider with the given android key code.
+     * Determines whether the ALT key must be pressed by the IME while sending the key.
      * </p>
      * 
-     * @param context The context from which the content provider can be retrieved.
-     * @param androidCode The android key code.
+     * @return True if the ALT key must be pressed by the IME while sending the key, false otherwise.
      */
-    public void load(final Context context, final int androidCode)
+    public boolean isImeAltRequired()
     {
-        ContentResolver contentResolver = context.getContentResolver();
+        return (fImeAltRequired);
+    }
 
-        Cursor cursor = contentResolver.query(PCRemoteProvider.KEY_URI, null, PCRemoteProvider.KEY_COLUMN_ANDROID_CODE + " = " + androidCode, null,
-                null);
+    /**
+     * <p>
+     * Determines whether the shift key must be pressed by the IME while sending the key.
+     * </p>
+     * 
+     * @return True if the shift key must be pressed by the IME while sending the key, false otherwise.
+     */
+    public boolean isImeShiftRequired()
+    {
+        return (fImeShiftRequired);
+    }
 
-        if (cursor.moveToFirst())
-        {
-            fAndroidCode = cursor.getInt(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_ANDROID_CODE));
-            fId = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
-            fName = cursor.getString(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_NAME));
-            fServerCode = cursor.getInt(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_SERVER_CODE));
-        }
-
-        cursor.close();
+    /**
+     * <p>
+     * Determines whether the shift key must be pressed at the server while sending the key.
+     * </p>
+     * 
+     * @return True if the shift key must be pressed at the server while sending the key, false otherwise.
+     */
+    public boolean isServerShiftRequired()
+    {
+        return (fServerShiftRequired);
     }
 
     /**
@@ -164,11 +198,75 @@ public class Key
             {
                 fAndroidCode = cursor.getInt(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_ANDROID_CODE));
                 fId = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
+                fImeAltRequired = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_IME_ALT_REQUIRED)));
+                fImeShiftRequired = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_IME_SHIFT_REQUIRED)));
                 fName = cursor.getString(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_NAME));
                 fServerCode = cursor.getInt(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_SERVER_CODE));
+                fServerShiftRequired = Boolean
+                        .parseBoolean(cursor.getString(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_SERVER_SHIFT_REQUIRED)));
             }
 
             cursor.close();
         }
+    }
+
+    /**
+     * <p>
+     * Loads this <code>Key</code> from a content provider with the given android key code.
+     * </p>
+     * 
+     * @param context The context from which the content provider can be retrieved.
+     * @param androidKeyCode The android key code.
+     * @param imeAltRequired Determines whether the ALT key must be pressed by the IME while sending the key.
+     * @param imeShiftRequired Determines whether the shift key must be pressed by the IME while sending the key.
+     */
+    public void loadFromAndroidKeyCode(final Context context, final int androidKeyCode, final boolean imeAltRequired, final boolean imeShiftRequired)
+    {
+        ContentResolver contentResolver = context.getContentResolver();
+
+        Cursor cursor = contentResolver.query(PCRemoteProvider.KEY_URI, null, PCRemoteProvider.KEY_COLUMN_ANDROID_CODE + " = " + androidKeyCode
+                + " and " + PCRemoteProvider.KEY_COLUMN_IME_ALT_REQUIRED + " = '" + imeAltRequired + "'" + " and "
+                + PCRemoteProvider.KEY_COLUMN_IME_SHIFT_REQUIRED + " = '" + imeShiftRequired + "'", null, null);
+
+        if (cursor.moveToFirst())
+        {
+            fAndroidCode = cursor.getInt(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_ANDROID_CODE));
+            fId = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
+            fImeAltRequired = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_IME_ALT_REQUIRED)));
+            fImeShiftRequired = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_IME_SHIFT_REQUIRED)));
+            fName = cursor.getString(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_NAME));
+            fServerCode = cursor.getInt(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_SERVER_CODE));
+            fServerShiftRequired = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_SERVER_SHIFT_REQUIRED)));
+        }
+
+        cursor.close();
+    }
+
+    /**
+     * <p>
+     * Loads this <code>Key</code> from a content provider with the given unique identifier.
+     * </p>
+     * 
+     * @param context The context from which the content provider can be retrieved.
+     * @param id The unique identifier.
+     */
+    public void loadFromId(final Context context, final int id)
+    {
+        ContentResolver contentResolver = context.getContentResolver();
+
+        Cursor cursor = contentResolver.query(PCRemoteProvider.KEY_URI, null, BaseColumns._ID + " = " + id, null, null);
+
+        if (cursor.moveToFirst())
+        {
+            fAndroidCode = cursor.getInt(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_ANDROID_CODE));
+            fId = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
+            fImeAltRequired = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_IME_ALT_REQUIRED)));
+            fImeShiftRequired = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_IME_SHIFT_REQUIRED)));
+            fName = cursor.getString(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_NAME));
+            fServerCode = cursor.getInt(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_SERVER_CODE));
+            fServerShiftRequired = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_SERVER_SHIFT_REQUIRED)));
+        }
+
+        cursor.close();
     }
 }
