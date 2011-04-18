@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
+import android.preference.PreferenceManager;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -60,6 +61,8 @@ public class ControlPadListener extends SimpleOnGestureListener implements OnCli
      */
     private Logger fLogger;
 
+    private int fMouseSensitivity;
+
     /**
      * <p>
      * Creates an instance of <code>ControlPadListener</code>.
@@ -74,6 +77,7 @@ public class ControlPadListener extends SimpleOnGestureListener implements OnCli
         fImeAltPressed = false;
         fImeShiftPressed = false;
         fLogger = Logger.getLogger(getClass());
+        fMouseSensitivity = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(fControlPad).getString("mouseSensitivity", "1"));
     }
 
     @Override
@@ -229,7 +233,7 @@ public class ControlPadListener extends SimpleOnGestureListener implements OnCli
             {
                 try
                 {
-                    client.sendCommandViaTcp("mouseMoveRelative(" + distanceX + "," + distanceY + ");");
+                    client.sendCommandViaTcp("mouseMoveRelative(" + distanceX * fMouseSensitivity + "," + distanceY * fMouseSensitivity + ");");
                 }
                 catch (IOException e)
                 {

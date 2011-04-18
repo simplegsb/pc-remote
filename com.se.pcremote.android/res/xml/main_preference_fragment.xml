@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" android:key="mainScreen" android:title="@string/main_preferences">
-	<PreferenceCategory android:title="@string/pc_category" android:key="pcCategory" android:order="0">
-		<ListPreference android:key="activePc" android:title="@string/active_pc" android:summary="@string/active_pc_summary" android:order="0" />
-		<Preference android:key="managePcs" android:summary="@string/manage_pcs_summary" android:title="@string/manage_pcs" android:order="1" />
+	<PreferenceCategory android:title="@string/contribute_category" android:key="contributeCategory">
+		<Preference android:key="reportBug" android:title="@string/report_bug" android:summary="@string/report_bug_summary" />
+		<Preference android:key="requestEnhancement" android:title="@string/request_enhancement" android:summary="@string/request_enhancement_summary" />
 	</PreferenceCategory>
-	<PreferenceCategory android:key="layoutCategory" android:title="@string/layout_category" android:order="1">
-		<ListPreference android:title="@string/active_layout" android:key="activeLayout" android:summary="@string/active_layout_summary"
-			android:order="0" />
-		<Preference android:key="manageLayouts" android:summary="@string/manage_layouts_summary" android:title="@string/manage_layouts"
-			android:order="1" />
+	<PreferenceCategory android:title="@string/pc_category" android:key="pcCategory">
+		<ListPreference android:key="activePc" android:title="@string/active_pc" />
+		<Preference android:key="managePcs" android:title="@string/manage_pcs" android:summary="@string/manage_pcs_summary" />
+	</PreferenceCategory>
+	<PreferenceCategory android:key="layoutCategory" android:title="@string/layout_category">
+		<ListPreference android:key="activeLayout" android:title="@string/active_layout" />
+		<Preference android:key="manageLayouts" android:title="@string/manage_layouts" android:summary="@string/manage_layouts_summary" />
+	</PreferenceCategory>
+	<PreferenceCategory android:key="otherCategory" android:title="@string/other_category">
+		<Preference android:key="installServer" android:title="@string/install_server" android:summary="@string/install_server_summary" />
+		<EditTextPreference android:key="mouseSensitivity" android:title="@string/mouse_sensitivity" android:numeric="integer"
+			android:defaultValue="1" />
 	</PreferenceCategory>
 </PreferenceScreen>

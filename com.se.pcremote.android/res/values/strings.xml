@@ -3,10 +3,22 @@
 	<!-- General -->	
     <string name="app_name">PC Remote for Android</string>
     <string name="connection_status">PC Remote Status</string>
+    <string name="contribute_category">Contribute!</string>
+    <string name="install_server">Install Server</string>
+    <string name="install_server_description">The PC Remote Server must be installed on your PC before you can control it with PC Remote for Android. To install it:\n\n1. Go to www.simpleentertainment.org\n2. Blah blah blah...</string>
+    <string name="install_server_summary">Learn how to install the PC Remote Server on your PC</string>
     <string name="lost_title">Congratulations!</string>
     <string name="lost_summary">You found Tux! This means you don\'t have an active layout so I\'m going to go ahead and suggest activating one (press \'Menu\' and then select \'Layout\')</string>
     <string name="main_preferences">Settings</string>
+    <string name="mouse_sensitivity">Mouse Sensitivity</string>
+    <string name="other_category">Other</string>
     <string name="provider_authority">com.se.pcremote.android.pcremoteprovider</string>
+    <string name="report_bug">Report Bug</string>
+    <string name="report_bug_description">To report a problem with PC Remote for Android:\n\n1. Go to www.simpleentertainment.org\n2. Blah blah blah...\n\nThanks for contributing!</string>
+    <string name="report_bug_summary">Report a problem with PC Remote for Android so we can fix it</string>
+    <string name="request_enhancement">Request Enhancement</string>
+    <string name="request_enhancement_description">To let us know how we can make PC Remote for Android better:\n\n1. Go to www.simpleentertainment.org\n2. Blah blah blah...\n\nThanks for contributing!</string>
+    <string name="request_enhancement_summary">Let us know how we can make PC Remote for Android better</string>
     <string name="settings">Settings</string>
 		
 	<!-- Control Pad -->
@@ -21,7 +33,6 @@
 	
 	<!-- Layouts -->	
     <string name="active_layout">Active Layout</string>
-    <string name="active_layout_summary">The layout you are currently using to control the PC</string>
 	<string name="delete_layouts">Delete Layouts</string>
     <string name="insert_layout">Create Layout</string>
     <string name="layout_button_grid_category">Button Grid</string>
@@ -46,7 +57,6 @@
     
 	<!-- PCs -->
     <string name="active_pc">Active PC</string>
-    <string name="active_pc_summary">The PC you are currently controlling</string>
 	<string name="delete_pcs">Delete PCs</string>
     <string name="insert_pc">Create PC</string>
     <string name="manage_pcs">Manage PCs</string>

@@ -52,6 +52,39 @@ public class MainPreferences extends PreferenceActivity implements OnSharedPrefe
         addPreferencesFromResource(R.xml.main_preference_fragment);
         setPreferenceSummaries();
 
+        // Open the 'Report Bug' activity.
+        getPreferenceScreen().findPreference("reportBug").setOnPreferenceClickListener(new OnPreferenceClickListener()
+        {
+            @Override
+            public boolean onPreferenceClick(final Preference preference)
+            {
+                startActivity(new Intent(MainPreferences.this, ReportBug.class));
+                return (true);
+            }
+        });
+
+        // Open the 'Request Enhancement' activity.
+        getPreferenceScreen().findPreference("requestEnhancement").setOnPreferenceClickListener(new OnPreferenceClickListener()
+        {
+            @Override
+            public boolean onPreferenceClick(final Preference preference)
+            {
+                startActivity(new Intent(MainPreferences.this, RequestEnhancement.class));
+                return (true);
+            }
+        });
+
+        // Save the active Layout.
+        getPreferenceScreen().findPreference("activeLayout").setOnPreferenceChangeListener(new OnPreferenceChangeListener()
+        {
+            @Override
+            public boolean onPreferenceChange(final Preference preference, final Object newValue)
+            {
+                PreferenceManager.getDefaultSharedPreferences(MainPreferences.this).edit().putString("activeLayout", (String) newValue).commit();
+                return (true);
+            }
+        });
+
         // Save the active Layout.
         getPreferenceScreen().findPreference("activeLayout").setOnPreferenceChangeListener(new OnPreferenceChangeListener()
         {
@@ -74,7 +107,7 @@ public class MainPreferences extends PreferenceActivity implements OnSharedPrefe
             }
         });
 
-        // Opens the 'View Layouts' activity.
+        // Open the 'View Layouts' activity.
         getPreferenceScreen().findPreference("manageLayouts").setOnPreferenceClickListener(new OnPreferenceClickListener()
         {
             @Override
@@ -85,13 +118,24 @@ public class MainPreferences extends PreferenceActivity implements OnSharedPrefe
             }
         });
 
-        // Opens the 'View PCs' activity.
+        // Open the 'View PCs' activity.
         getPreferenceScreen().findPreference("managePcs").setOnPreferenceClickListener(new OnPreferenceClickListener()
         {
             @Override
             public boolean onPreferenceClick(final Preference preference)
             {
                 startActivity(new Intent(Intent.ACTION_VIEW, PCRemoteProvider.PC_URI));
+                return (true);
+            }
+        });
+
+        // Open the 'Install Server' activity.
+        getPreferenceScreen().findPreference("installServer").setOnPreferenceClickListener(new OnPreferenceClickListener()
+        {
+            @Override
+            public boolean onPreferenceClick(final Preference preference)
+            {
+                startActivity(new Intent(MainPreferences.this, InstallServer.class));
                 return (true);
             }
         });
@@ -181,5 +225,7 @@ public class MainPreferences extends PreferenceActivity implements OnSharedPrefe
         Layout layout = new Layout();
         layout.load(this, Uri.parse(preferences.getString("activeLayout", "")));
         findPreference("activeLayout").setSummary(layout.getName());
+
+        findPreference("mouseSensitivity").setSummary(preferences.getString("mouseSensitivity", ""));
     }
 }
