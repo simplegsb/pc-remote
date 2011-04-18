@@ -195,20 +195,39 @@ public class ControlPadView extends LinearLayout
         for (int rowIndex = 0; rowIndex < layout.getButtonGridHeight(); rowIndex++)
         {
             TableRow buttonGridRow = new TableRow(getContext());
+            buttonGridRow.setLayoutParams(new TableLayout.LayoutParams(LayoutParams.FILL_PARENT, 0, 1.0f));
 
             for (int columnIndex = 0; columnIndex < layout.getButtonGridWidth(); columnIndex++)
             {
-                Button buttonGridButton = new Button(getContext());
-
                 Key key = layout.getButtonGridKey(getContext(), rowIndex, columnIndex);
                 if (key != null)
                 {
-                    buttonGridButton.setId(key.getId());
-                    buttonGridButton.setText(key.getName());
-                    buttonGridButton.setOnTouchListener(new ControlPadListener(fControlPad));
+                    if (key.getImageResourceId() == -1)
+                    {
+                        Button buttonGridButton = new Button(getContext());
+                        buttonGridButton.setLayoutParams(new TableRow.LayoutParams(0, LayoutParams.FILL_PARENT, 1.0f));
+                        buttonGridButton.setId(key.getId());
+                        buttonGridButton.setText(key.getName());
+                        buttonGridButton.setTextAppearance(fControlPad, R.style.ButtonGridTextAppearance);
+                        buttonGridButton.setOnTouchListener(new ControlPadListener(fControlPad));
+                        buttonGridRow.addView(buttonGridButton);
+                    }
+                    else
+                    {
+                        ImageButton buttonGridButton = new ImageButton(getContext());
+                        buttonGridButton.setLayoutParams(new TableRow.LayoutParams(0, LayoutParams.FILL_PARENT, 1.0f));
+                        buttonGridButton.setId(key.getId());
+                        buttonGridButton.setImageResource(key.getImageResourceId());
+                        buttonGridButton.setOnTouchListener(new ControlPadListener(fControlPad));
+                        buttonGridRow.addView(buttonGridButton);
+                    }
                 }
-
-                buttonGridRow.addView(buttonGridButton);
+                else
+                {
+                    Button buttonGridButton = new Button(getContext());
+                    buttonGridButton.setLayoutParams(new TableRow.LayoutParams(0, LayoutParams.FILL_PARENT, 1.0f));
+                    buttonGridRow.addView(buttonGridButton);
+                }
             }
 
             buttonGrid.addView(buttonGridRow);

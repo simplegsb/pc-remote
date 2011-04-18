@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.se.pcremote.android.PCRemoteProvider;
@@ -37,7 +38,11 @@ public class KeyAdapter extends CursorAdapter
     @Override
     public final void bindView(final View view, final Context context, final Cursor cursor)
     {
-        ((TextView) view).setText(cursor.getString(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_NAME)));
+        TextView textView = (TextView) view.findViewById(R.id.key_list_item_text);
+        textView.setText(cursor.getString(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_NAME)));
+
+        ImageView imageView = (ImageView) view.findViewById(R.id.key_list_item_image);
+        imageView.setImageResource(cursor.getInt(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_IMAGE)));
     }
 
     @Override

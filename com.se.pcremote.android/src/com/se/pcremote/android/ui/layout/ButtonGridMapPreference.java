@@ -9,13 +9,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.LinearLayout.LayoutParams;
 
 import com.se.pcremote.android.Key;
 import com.se.pcremote.android.PCRemoteProvider;
+import com.se.pcremote.android.R;
 
 /**
  * <p>
@@ -168,16 +171,33 @@ public class ButtonGridMapPreference extends Preference
 
             for (int columnIndex = 0; columnIndex < buttonGridWidth; columnIndex++)
             {
-                Button buttonGridButton = new Button(getContext());
-
                 Key key = fLayoutPreferences.getLayout().getButtonGridKey(getContext(), rowIndex, columnIndex);
                 if (key != null)
                 {
-                    buttonGridButton.setText(key.getName());
+                    if (key.getImageResourceId() == -1)
+                    {
+                        Button buttonGridButton = new Button(getContext());
+                        buttonGridButton.setLayoutParams(new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT, 1.0f));
+                        buttonGridButton.setText(key.getName());
+                        buttonGridButton.setTextAppearance(getContext(), R.style.ButtonGridTextAppearance);
+                        buttonGridButton.setOnClickListener(new ButtonGridMapPreferenceListener(rowIndex, columnIndex));
+                        buttonGridRow.addView(buttonGridButton);
+                    }
+                    else
+                    {
+                        ImageButton buttonGridButton = new ImageButton(getContext());
+                        buttonGridButton.setLayoutParams(new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT, 1.0f));
+                        buttonGridButton.setImageResource(key.getImageResourceId());
+                        buttonGridButton.setOnClickListener(new ButtonGridMapPreferenceListener(rowIndex, columnIndex));
+                        buttonGridRow.addView(buttonGridButton);
+                    }
                 }
-
-                buttonGridButton.setOnClickListener(new ButtonGridMapPreferenceListener(rowIndex, columnIndex));
-                buttonGridRow.addView(buttonGridButton);
+                else
+                {
+                    Button buttonGridButton = new Button(getContext());
+                    buttonGridButton.setLayoutParams(new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT, 1.0f));
+                    buttonGridRow.addView(buttonGridButton);
+                }
             }
 
             buttonGrid.addView(buttonGridRow);

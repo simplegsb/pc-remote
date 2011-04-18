@@ -30,6 +30,13 @@ public class Key
     private int fId;
 
     /**
+     * <p>
+     * The ID of the image resource to display the button.
+     * </p>
+     */
+    private int fImageResourceId;
+
+    /**
      * 
      * <p>
      * Determines whether the ALT key must be pressed by the IME while sending the key.
@@ -74,6 +81,7 @@ public class Key
     {
         fAndroidCode = -1;
         fId = 0;
+        fImageResourceId = -1;
         fImeAltRequired = false;
         fImeShiftRequired = false;
         fName = null;
@@ -103,6 +111,18 @@ public class Key
     public int getId()
     {
         return (fId);
+    }
+
+    /**
+     * <p>
+     * Retrieves the ID of the image resource to display the button.
+     * </p>
+     * 
+     * @return The ID of the image resource to display the button.
+     */
+    public int getImageResourceId()
+    {
+        return (fImageResourceId);
     }
 
     /**
@@ -198,6 +218,7 @@ public class Key
             {
                 fAndroidCode = cursor.getInt(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_ANDROID_CODE));
                 fId = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
+                fImageResourceId = cursor.getInt(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_IMAGE));
                 fImeAltRequired = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_IME_ALT_REQUIRED)));
                 fImeShiftRequired = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_IME_SHIFT_REQUIRED)));
                 fName = cursor.getString(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_NAME));
@@ -232,6 +253,7 @@ public class Key
         {
             fAndroidCode = cursor.getInt(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_ANDROID_CODE));
             fId = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
+            fImageResourceId = cursor.getInt(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_IMAGE));
             fImeAltRequired = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_IME_ALT_REQUIRED)));
             fImeShiftRequired = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_IME_SHIFT_REQUIRED)));
             fName = cursor.getString(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_NAME));
@@ -260,6 +282,7 @@ public class Key
         {
             fAndroidCode = cursor.getInt(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_ANDROID_CODE));
             fId = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
+            fImageResourceId = cursor.getInt(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_IMAGE));
             fImeAltRequired = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_IME_ALT_REQUIRED)));
             fImeShiftRequired = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_IME_SHIFT_REQUIRED)));
             fName = cursor.getString(cursor.getColumnIndex(PCRemoteProvider.KEY_COLUMN_NAME));
