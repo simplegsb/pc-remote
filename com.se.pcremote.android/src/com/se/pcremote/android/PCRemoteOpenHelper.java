@@ -220,6 +220,9 @@ public class PCRemoteOpenHelper extends SQLiteOpenHelper
         db.execSQL(keyInsertInto + " values (-1, -1, 'false', 'false', 'F10', 121, 'false')");
         db.execSQL(keyInsertInto + " values (-1, -1, 'false', 'false', 'F11', 122, 'false')");
         db.execSQL(keyInsertInto + " values (-1, -1, 'false', 'false', 'F12', 123, 'false')");
+
+        // 'Null' Key.
+        db.execSQL(keyInsertInto + " values (-1, -1, 'false', 'false', '" + Key.NULL_NAME + "', -1, 'false')");
     }
 
     @Override

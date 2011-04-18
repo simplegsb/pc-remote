@@ -391,8 +391,14 @@ public class Layout
         String gridLocation = row + ":" + column + ":";
         if (fButtonGridMap.contains(gridLocation))
         {
-            fButtonGridMap = fButtonGridMap.replaceFirst(gridLocation + "[0-9]*,", gridLocation + key.getId() + ",");
-            fButtonGridMap = fButtonGridMap.replaceFirst(gridLocation + "[0-9]*$", gridLocation + key.getId());
+            int id = 0;
+            if (key != null && !key.getName().equals(Key.NULL_NAME))
+            {
+                id = key.getId();
+            }
+
+            fButtonGridMap = fButtonGridMap.replaceFirst(gridLocation + "[0-9]*,", gridLocation + id + ",");
+            fButtonGridMap = fButtonGridMap.replaceFirst(gridLocation + "[0-9]*$", gridLocation + id);
         }
         else
         {

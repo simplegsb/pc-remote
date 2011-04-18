@@ -18,6 +18,13 @@ public class Key
 {
     /**
      * <p>
+     * The name to display for the 'Null' Key.
+     * </p>
+     */
+    public static final String NULL_NAME = "<None>";
+
+    /**
+     * <p>
      * The code that is provided by an android event.
      * </p>
      */
