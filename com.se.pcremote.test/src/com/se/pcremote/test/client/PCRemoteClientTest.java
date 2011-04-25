@@ -21,7 +21,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
@@ -29,7 +28,6 @@ import java.net.Socket;
 import java.net.SocketException;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.se.pcremote.client.PCRemoteClient;
@@ -185,21 +183,23 @@ public class PCRemoteClientTest
     public void sendCommandViaTcp() throws IOException
     {
         // Create dependencies.
+        byte[] serverData = new byte[4];
         ServerSocket server = new ServerSocket(10999);
 
         // Initialise test environment.
         fTestObject.init();
-        Socket client = server.accept();
+        Socket serverConnection = server.accept();
 
         // Perform test.
         fTestObject.sendCommandViaTcp("test");
+        serverConnection.getInputStream().read(serverData);
 
         // Verify test results.
-        assertEquals("test", new BufferedReader(new InputStreamReader(client.getInputStream())).readLine());
+        assertEquals("test", new String(serverData));
 
         // Cleanup
         fTestObject.dispose();
-        client.close();
+        serverConnection.close();
         server.close();
     }
 
@@ -211,7 +211,6 @@ public class PCRemoteClientTest
      * @throws IOException Thrown if an I/O error occurs.
      */
     @Test(expected = SocketException.class)
-    @Ignore
     public void sendCommandViaTcpSocketClosed() throws IOException
     {
         // Create dependencies.
@@ -220,6 +219,7 @@ public class PCRemoteClientTest
         // Initialise test environment.
         fTestObject.init();
         Socket client = server.accept();
+        fTestObject.dispose();
         client.close();
         server.close();
 
@@ -244,10 +244,10 @@ public class PCRemoteClientTest
 
         // Perform test.
         fTestObject.sendCommandViaUdp("test");
+        server.receive(serverPacket);
 
         // Verify test results.
-        server.receive(serverPacket);
-        assertEquals("test", new String(serverPacket.getData(), 0, serverPacket.getLength()));
+        assertEquals("test", new String(serverPacket.getData()));
 
         // Cleanup
         server.close();

@@ -14,6 +14,7 @@ package com.se.pcremote.test.server;
 import static org.junit.Assert.assertNotNull;
 
 import java.awt.AWTException;
+import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -51,14 +52,17 @@ public class PCRemoteServerTest
      * <p>
      * Unit test the method {@link com.se.pcremote.server.PCRemoteServer#start() start()}.
      * </p>
+     * 
+     * @throws IOException Thrown is an I/O error occurs.
      */
     @Test
-    public void start()
+    public void startStop() throws IOException
     {
         // Perform test.
         fTestObject.start();
+        fTestObject.stop();
 
         // Verify test results.
-        assertNotNull(fTestObject.getTcpAcceptanceManager());
+        assertNotNull(fTestObject.getTcpServer());
     }
 }

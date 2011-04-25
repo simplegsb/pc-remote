@@ -19,7 +19,7 @@ import java.awt.AWTException;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Robot;
-import java.io.IOException;
+import java.awt.event.InputEvent;
 
 import org.junit.Test;
 
@@ -41,42 +41,221 @@ public class CommandExecuterTest
 
     /**
      * <p>
-     * Unit test the method {@link com.se.pcremote.server.CommandExecuter#executeCommand(String) executeCommand(String)}.
+     * Unit test the method {@link com.se.pcremote.server.CommandExecuter#executeCommand() executeCommand()} with the special condition that a numeric
+     * argument has a non-numeric value.
      * </p>
      * 
-     * @throws IOException Thrown if an I/O error occurs.
+     * @throws AWTException Thrown if the {@link java.awt.Robot Robot} is not supported by the platform configuration.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void executeCommandInvliadNumericArgument() throws AWTException
+    {
+        // Initialise test environment.
+        fTestObject = new CommandExecuter();
+
+        // Perform test.
+        fTestObject.executeCommand("keyPress(alphanumeric)");
+    }
+
+    /**
+     * <p>
+     * Unit test the method {@link com.se.pcremote.server.CommandExecuter#executeCommand() executeCommand()} with the special condition that the
+     * 'keyPress' command is to be executed.
+     * </p>
+     * 
+     * @throws AWTException Thrown if the {@link java.awt.Robot Robot} is not supported by the platform configuration.
      */
     @Test
-    public void executeCommand() throws IOException
+    public void executeCommandKeyPress() throws AWTException
     {
         // Create dependencies.
         Robot mockRobot = createMock(Robot.class);
 
-        // Dictate expected results.
+        // Initialise test environment.
+        fTestObject = new CommandExecuter(mockRobot);
+
+        // Dictate correct results.
         mockRobot.keyPress(0);
-        mockRobot.keyRelease(0);
-        mockRobot.mouseMove(0, 0);
-        mockRobot.mouseMove(0, 0);
-        Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
-        mockRobot.mouseMove(mouseLocation.x, mouseLocation.y);
-        mockRobot.mouseMove(mouseLocation.x, mouseLocation.y);
-        mockRobot.mousePress(0);
-        mockRobot.mouseRelease(0);
-        mockRobot.mouseWheel(0);
         replay(mockRobot);
+
+        // Perform test.
+        fTestObject.executeCommand("keyPress(0)");
+
+        // Verify test results.
+        verify(mockRobot);
+    }
+
+    /**
+     * <p>
+     * Unit test the method {@link com.se.pcremote.server.CommandExecuter#executeCommand() executeCommand()} with the special condition that the
+     * 'keyRelease' command is to be executed.
+     * </p>
+     * 
+     * @throws AWTException Thrown if the {@link java.awt.Robot Robot} is not supported by the platform configuration.
+     */
+    @Test
+    public void executeCommandKeyRelease() throws AWTException
+    {
+        // Create dependencies.
+        Robot mockRobot = createMock(Robot.class);
 
         // Initialise test environment.
         fTestObject = new CommandExecuter(mockRobot);
 
+        // Dictate correct results.
+        mockRobot.keyRelease(0);
+        replay(mockRobot);
+
         // Perform test.
-        fTestObject.executeCommand("keyPress(0)");
         fTestObject.executeCommand("keyRelease(0)");
+
+        // Verify test results.
+        verify(mockRobot);
+    }
+
+    /**
+     * <p>
+     * Unit test the method {@link com.se.pcremote.server.CommandExecuter#executeCommand() executeCommand()} with the special condition that the
+     * 'mouseMove' command is to be executed.
+     * </p>
+     * 
+     * @throws AWTException Thrown if the {@link java.awt.Robot Robot} is not supported by the platform configuration.
+     */
+    @Test
+    public void executeCommandMouseMove() throws AWTException
+    {
+        // Create dependencies.
+        Robot mockRobot = createMock(Robot.class);
+
+        // Initialise test environment.
+        fTestObject = new CommandExecuter(mockRobot);
+
+        // Dictate correct results.
+        mockRobot.mouseMove(0, 0);
+        replay(mockRobot);
+
+        // Perform test.
         fTestObject.executeCommand("mouseMove(0,0)");
-        fTestObject.executeCommand("mouseMove(0.0,0.0)");
-        fTestObject.executeCommand("mouseMoveRelative(0,0)");
-        fTestObject.executeCommand("mouseMoveRelative(0.0,0.0)");
-        fTestObject.executeCommand("mousePress(0)");
-        fTestObject.executeCommand("mouseRelease(0)");
+
+        // Verify test results.
+        verify(mockRobot);
+    }
+
+    /**
+     * <p>
+     * Unit test the method {@link com.se.pcremote.server.CommandExecuter#executeCommand() executeCommand()} with the special condition that the
+     * 'mouseMoveRelative' command is to be executed.
+     * </p>
+     * 
+     * @throws AWTException Thrown if the {@link java.awt.Robot Robot} is not supported by the platform configuration.
+     */
+    @Test
+    public void executeCommandMouseMoveRelative() throws AWTException
+    {
+        // Create dependencies.
+        Robot mockRobot = createMock(Robot.class);
+
+        // Initialise test environment.
+        fTestObject = new CommandExecuter(mockRobot);
+
+        // Dictate correct results.
+        Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
+        mockRobot.mouseMove(mouseLocation.x + -1 * 10, mouseLocation.y + -1 * 10);
+        replay(mockRobot);
+
+        // Perform test.
+        fTestObject.executeCommand("mouseMoveRelative(10,10)");
+
+        // Verify test results.
+        verify(mockRobot);
+    }
+
+    /**
+     * <p>
+     * Unit test the method {@link com.se.pcremote.server.CommandExecuter#executeCommand() executeCommand()} with the special condition that the
+     * 'mousePress' command is to be executed.
+     * </p>
+     * 
+     * @throws AWTException Thrown if the {@link java.awt.Robot Robot} is not supported by the platform configuration.
+     */
+    @Test
+    public void executeCommandMousePress() throws AWTException
+    {
+        // Create dependencies.
+        Robot mockRobot = createMock(Robot.class);
+
+        // Initialise test environment.
+        fTestObject = new CommandExecuter(mockRobot);
+
+        // Dictate correct results.
+        mockRobot.mousePress(InputEvent.BUTTON1_MASK);
+        mockRobot.mousePress(InputEvent.BUTTON2_MASK);
+        mockRobot.mousePress(InputEvent.BUTTON3_MASK);
+        replay(mockRobot);
+
+        // Perform test.
+        fTestObject.executeCommand("mousePress(1)");
+        fTestObject.executeCommand("mousePress(2)");
+        fTestObject.executeCommand("mousePress(3)");
+
+        // Verify test results.
+        verify(mockRobot);
+    }
+
+    /**
+     * <p>
+     * Unit test the method {@link com.se.pcremote.server.CommandExecuter#executeCommand() executeCommand()} with the special condition that the
+     * 'mouseRelease' command is to be executed.
+     * </p>
+     * 
+     * @throws AWTException Thrown if the {@link java.awt.Robot Robot} is not supported by the platform configuration.
+     */
+    @Test
+    public void executeCommandMouseRelease() throws AWTException
+    {
+        // Create dependencies.
+        Robot mockRobot = createMock(Robot.class);
+
+        // Initialise test environment.
+        fTestObject = new CommandExecuter(mockRobot);
+
+        // Dictate correct results.
+        mockRobot.mouseRelease(InputEvent.BUTTON1_MASK);
+        mockRobot.mouseRelease(InputEvent.BUTTON2_MASK);
+        mockRobot.mouseRelease(InputEvent.BUTTON3_MASK);
+        replay(mockRobot);
+
+        // Perform test.
+        fTestObject.executeCommand("mouseRelease(1)");
+        fTestObject.executeCommand("mouseRelease(2)");
+        fTestObject.executeCommand("mouseRelease(3)");
+
+        // Verify test results.
+        verify(mockRobot);
+    }
+
+    /**
+     * <p>
+     * Unit test the method {@link com.se.pcremote.server.CommandExecuter#executeCommand() executeCommand()} with the special condition that the
+     * 'mouseWheel' command is to be executed.
+     * </p>
+     * 
+     * @throws AWTException Thrown if the {@link java.awt.Robot Robot} is not supported by the platform configuration.
+     */
+    @Test
+    public void executeCommandMouseWheel() throws AWTException
+    {
+        // Create dependencies.
+        Robot mockRobot = createMock(Robot.class);
+
+        // Initialise test environment.
+        fTestObject = new CommandExecuter(mockRobot);
+
+        // Dictate correct results.
+        mockRobot.mouseWheel(0);
+        replay(mockRobot);
+
+        // Perform test.
         fTestObject.executeCommand("mouseWheel(0)");
 
         // Verify test results.
@@ -85,77 +264,55 @@ public class CommandExecuterTest
 
     /**
      * <p>
-     * Unit test the method {@link com.se.pcremote.server.CommandExecuter#executeCommand(String) executeCommand(String)} with the special condition
-     * that the command given has no arguments.
+     * Unit test the method {@link com.se.pcremote.server.CommandExecuter#executeCommand() executeCommand()} with the special condition that the
+     * command has no brackets.
      * </p>
      * 
-     * @throws IOException Thrown if an I/O error occurs.
-     * @throws AWTException Thrown if the {@link com.se.pcremote.server.CommandExecuter CommandExecuter} fails to be instantiated.
+     * @throws AWTException Thrown if the {@link java.awt.Robot Robot} is not supported by the platform configuration.
      */
     @Test(expected = IllegalArgumentException.class)
-    public void executeCommandInvalidFormat() throws IOException, AWTException
+    public void executeCommandNoBrackets() throws AWTException
     {
         // Initialise test environment.
         fTestObject = new CommandExecuter();
 
         // Perform test.
-        fTestObject.executeCommand("noBrackets");
+        fTestObject.executeCommand("keyPress");
     }
 
     /**
      * <p>
-     * Unit test the method {@link com.se.pcremote.server.CommandExecuter#executeCommand(String) executeCommand(String)} with the special condition
-     * that the command given has no arguments.
+     * Unit test the method {@link com.se.pcremote.server.CommandExecuter#executeCommand() executeCommand()} with the special condition that the
+     * command has no opening bracket.
      * </p>
      * 
-     * @throws IOException Thrown if an I/O error occurs.
-     * @throws AWTException Thrown if the {@link com.se.pcremote.server.CommandExecuter CommandExecuter} fails to be instantiated.
+     * @throws AWTException Thrown if the {@link java.awt.Robot Robot} is not supported by the platform configuration.
      */
     @Test(expected = IllegalArgumentException.class)
-    public void executeCommandInvalidNumber() throws IOException, AWTException
+    public void executeCommandNoOpeningBracket() throws AWTException
     {
         // Initialise test environment.
         fTestObject = new CommandExecuter();
 
         // Perform test.
-        fTestObject.executeCommand("mouseMove(zero,zero)");
+        fTestObject.executeCommand("keyPress10,10)");
     }
 
     /**
      * <p>
-     * Unit test the method {@link com.se.pcremote.server.CommandExecuter#executeCommand(String) executeCommand(String)} with the special condition
-     * that the command given has no arguments.
+     * Unit test the method {@link com.se.pcremote.server.CommandExecuter#executeCommand() executeCommand()} with the special condition that the
+     * 'keyRelease' command is to be executed.
      * </p>
      * 
-     * @throws IOException Thrown if an I/O error occurs.
-     * @throws AWTException Thrown if the {@link com.se.pcremote.server.CommandExecuter CommandExecuter} fails to be instantiated.
+     * @throws AWTException Thrown if the {@link java.awt.Robot Robot} is not supported by the platform configuration.
      */
     @Test(expected = IllegalArgumentException.class)
-    public void executeCommandNoArgs() throws IOException, AWTException
+    public void executeCommandUnknownCommand() throws AWTException
     {
         // Initialise test environment.
         fTestObject = new CommandExecuter();
 
         // Perform test.
-        fTestObject.executeCommand("mouseMove()");
-    }
-
-    /**
-     * <p>
-     * Unit test the method {@link com.se.pcremote.server.CommandExecuter#executeCommand(String) executeCommand(String)} with the special condition
-     * that the command given is unknown.
-     * </p>
-     * 
-     * @throws IOException Thrown if an I/O error occurs.
-     * @throws AWTException Thrown if the {@link com.se.pcremote.server.CommandExecuter CommandExecuter} fails to be instantiated.
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void executeCommandUnknown() throws IOException, AWTException
-    {
-        // Initialise test environment.
-        fTestObject = new CommandExecuter();
-
-        // Perform test.
-        fTestObject.executeCommand("unknownCommand(0)");
+        fTestObject.executeCommand("unknownCommand(parameter)");
     }
 }
