@@ -48,7 +48,7 @@ public class PCRemoteOpenHelper extends SQLiteOpenHelper
                 + PCRemoteProvider.PC_COLUMN_HOST + " text, " + PCRemoteProvider.PC_COLUMN_NAME + " text, " + PCRemoteProvider.PC_COLUMN_PORT
                 + " integer)");
 
-        // TODO remove test PC.
+        // TODO remove test PC
         db.execSQL("insert into " + PCRemoteProvider.PC_TABLE + " (" + PCRemoteProvider.PC_COLUMN_HOST + "," + PCRemoteProvider.PC_COLUMN_NAME + ","
                 + PCRemoteProvider.PC_COLUMN_PORT + ") values ('192.168.1.9', 'Scimitar', 10999)");
 
@@ -68,7 +68,8 @@ public class PCRemoteOpenHelper extends SQLiteOpenHelper
         // 'Standard' Layout.
         db.execSQL(layoutInsertInto
                 + " values (3, '0:0:10,0:1:4,0:2:12,1:0:2,1:1:9,1:2:3,2:0:6,2:1:1,2:2:40', 3, 'true', 'true', 'true', 'true', 'Standard')");
-        // db.execSQL(layoutInsertInto + " values (2, '0:0:9,0:1:10,0:2:5,1:0:8,1:1:7,1:2:6', 3, 'true', 'true', 'true', 'true', 'Media')"); // TODO
+        // TODO Add media layout
+        // db.execSQL(layoutInsertInto + " values (2, '0:0:9,0:1:10,0:2:5,1:0:8,1:1:7,1:2:6', 3, 'true', 'true', 'true', 'true', 'Media')");
         db.execSQL(layoutInsertInto + " values (3, null, 3, 'false', 'false', 'true', 'true', 'Mouse Only')");
 
         // Create Key table.
@@ -89,13 +90,13 @@ public class PCRemoteOpenHelper extends SQLiteOpenHelper
         db.execSQL(keyInsertInto + " values (22, " + R.drawable.key_right + ", 'false', 'false', 'Right', 39, 'false')");
         db.execSQL(keyInsertInto + " values (19, " + R.drawable.key_up + ", 'false', 'false', 'Up', 38, 'false')");
 
-        // Media Keys.
-        // db.execSQL(keyInsertInto + " values (90, -1, 'false', 'false', 'Fast Forward', -1, 'false')"); // TODO
-        // db.execSQL(keyInsertInto + " values (87, -1, 'false', 'false', 'Next', -1, 'false')"); // TODO
-        // db.execSQL(keyInsertInto + " values (85, -1, 'false', 'false', 'Play/Pause', 19, 'false')"); // TODO
-        // db.execSQL(keyInsertInto + " values (88, -1, 'false', 'false', 'Previous', -1, 'false')"); // TODO
-        // db.execSQL(keyInsertInto + " values (89, -1, 'false', 'false', 'Rewind', -1, 'false')"); // TODO
-        // db.execSQL(keyInsertInto + " values (86, -1, 'false', 'false', 'Stop', 65480, 'false')"); // TODO
+        // Media Keys. TODO Implement media keys
+        // db.execSQL(keyInsertInto + " values (90, -1, 'false', 'false', 'Fast Forward', -1, 'false')");
+        // db.execSQL(keyInsertInto + " values (87, -1, 'false', 'false', 'Next', -1, 'false')");
+        // db.execSQL(keyInsertInto + " values (85, -1, 'false', 'false', 'Play/Pause', 19, 'false')");
+        // db.execSQL(keyInsertInto + " values (88, -1, 'false', 'false', 'Previous', -1, 'false')");
+        // db.execSQL(keyInsertInto + " values (89, -1, 'false', 'false', 'Rewind', -1, 'false')");
+        // db.execSQL(keyInsertInto + " values (86, -1, 'false', 'false', 'Stop', 65480, 'false')");
 
         // Functional Keys.
         db.execSQL(keyInsertInto + " values (57, -1, 'false', 'false', 'Alt', 18, 'false')");
