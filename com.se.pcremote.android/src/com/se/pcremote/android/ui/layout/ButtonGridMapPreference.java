@@ -25,7 +25,7 @@ import com.se.pcremote.android.R;
  * A preference that edits the mapping of Keys for the button grid.
  * </p>
  * 
- * @author simple
+ * @author Gary Buyn
  */
 public class ButtonGridMapPreference extends Preference
 {
@@ -34,7 +34,7 @@ public class ButtonGridMapPreference extends Preference
      * Edits a button in the button grid.
      * </p>
      * 
-     * @author simple
+     * @author Gary Buyn
      */
     private class ButtonGridMapPreferenceListener implements OnClickListener
     {

@@ -13,7 +13,7 @@ import android.provider.BaseColumns;
  * A Layout of the controls that can be used to control a PC.
  * </p>
  * 
- * @author simple
+ * @author Gary Buyn
  */
 public class Layout
 {

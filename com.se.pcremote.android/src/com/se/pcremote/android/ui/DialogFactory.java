@@ -23,7 +23,7 @@ import android.provider.BaseColumns;
  * A factory for all the dialogs displayed by the PC Remote for Android application.
  * </p>
  * 
- * @author simple
+ * @author Gary Buyn
  */
 public final class DialogFactory
 {

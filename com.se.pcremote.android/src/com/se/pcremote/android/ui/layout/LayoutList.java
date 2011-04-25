@@ -22,7 +22,7 @@ import com.se.pcremote.android.ui.DialogFactory;
  * Displays the list of Layouts.
  * </p>
  * 
- * @author simple
+ * @author Gary Buyn
  */
 public class LayoutList extends ListActivity
 {

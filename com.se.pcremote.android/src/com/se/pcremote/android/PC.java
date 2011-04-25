@@ -15,7 +15,7 @@ import com.se.pcremote.server.PCRemoteServer;
  * A PC hosting the {@link com.se.pcremote.server.PCRemoteServer PCRemoteServer} that can be controlled by this client.
  * </p>
  * 
- * @author simple
+ * @author Gary Buyn
  */
 public class PC
 {

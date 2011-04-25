@@ -22,7 +22,7 @@ import com.se.pcremote.android.ui.DialogFactory;
  * Displays the list of PCs.
  * </p>
  * 
- * @author simple
+ * @author Gary Buyn
  */
 public class PCList extends ListActivity
 {

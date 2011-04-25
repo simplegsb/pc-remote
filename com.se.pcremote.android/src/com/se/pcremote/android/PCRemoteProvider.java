@@ -15,7 +15,7 @@ import android.provider.BaseColumns;
  * Provides content for the PC Remote application.
  * </p>
  * 
- * @author simple
+ * @author Gary Buyn
  */
 public class PCRemoteProvider extends ContentProvider
 {

@@ -25,7 +25,7 @@ import com.se.pcremote.android.R;
  * Displays the general preferences for the PC Remote application.
  * </p>
  * 
- * @author simple
+ * @author Gary Buyn
  */
 public class MainPreferences extends PreferenceActivity implements OnSharedPreferenceChangeListener
 {

@@ -15,7 +15,7 @@ import com.se.pcremote.android.PCRemoteProvider;
  * Displays the list of Keys.
  * </p>
  * 
- * @author simple
+ * @author Gary Buyn
  */
 public class KeyList extends ListActivity
 {

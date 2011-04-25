@@ -30,7 +30,7 @@ import com.se.pcremote.android.R;
  * {@link com.se.pcremote.android.Layout Layout}.
  * </p>
  * 
- * @author simple
+ * @author Gary Buyn
  */
 public class ControlPadView extends LinearLayout
 {

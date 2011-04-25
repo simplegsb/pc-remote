@@ -19,7 +19,7 @@ import com.se.pcremote.android.R;
  * Creates and edits Layouts.
  * </p>
  * 
- * @author simple
+ * @author Gary Buyn
  */
 public class LayoutPreferences extends PreferenceActivity implements OnSharedPreferenceChangeListener
 {

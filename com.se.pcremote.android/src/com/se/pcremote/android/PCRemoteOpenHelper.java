@@ -10,7 +10,7 @@ import android.provider.BaseColumns;
  * A helper class to create and manage the PC Remote database.
  * </p>
  * 
- * @author simple
+ * @author Gary Buyn
  */
 public class PCRemoteOpenHelper extends SQLiteOpenHelper
 {

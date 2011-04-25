@@ -16,7 +16,7 @@ import com.se.pcremote.android.R;
  * Exposes PCs to a {@link android.widget.ListView ListView}.
  * </p>
  * 
- * @author simple
+ * @author Gary Buyn
  */
 public class PCAdapter extends CursorAdapter
 {

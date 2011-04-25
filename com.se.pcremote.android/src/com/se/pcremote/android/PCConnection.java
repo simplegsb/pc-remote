@@ -19,7 +19,7 @@ import com.se.pcremote.client.PCRemoteClient;
  * Maintains a connection to a {@link com.se.pcremote.PCRemoteServer PCRemoteServer}.
  * </p>
  * 
- * @author simple
+ * @author Gary Buyn
  */
 public class PCConnection extends Service
 {
@@ -28,7 +28,7 @@ public class PCConnection extends Service
      * Allows clients to bind directly to this <code>PCConnection</code>.
      * </p>
      * 
-     * @author simple
+     * @author Gary Buyn
      */
     public class PCConnectionBinder extends Binder
     {

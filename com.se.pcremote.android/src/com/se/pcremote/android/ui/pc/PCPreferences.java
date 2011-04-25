@@ -17,7 +17,7 @@ import com.se.pcremote.server.PCRemoteServer;
  * Creates and edits {@link com.se.pcremote.android.PC PC}s.
  * </p>
  * 
- * @author simple
+ * @author Gary Buyn
  */
 public class PCPreferences extends PreferenceActivity implements OnSharedPreferenceChangeListener
 {

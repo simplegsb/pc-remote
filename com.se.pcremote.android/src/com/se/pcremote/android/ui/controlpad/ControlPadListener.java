@@ -21,7 +21,7 @@ import com.se.pcremote.client.PCRemoteClient;
  * Sends commands to the active {@link com.se.pcremote.android.PC PC} in response to UI events.
  * </p>
  * 
- * @author simple
+ * @author Gary Buyn
  */
 public class ControlPadListener extends SimpleOnGestureListener implements OnClickListener, OnKeyListener, OnTouchListener
 {

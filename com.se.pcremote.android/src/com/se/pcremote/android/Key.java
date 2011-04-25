@@ -12,7 +12,7 @@ import android.provider.BaseColumns;
  * A Key that can be included in the button grid of a Layout.
  * </p>
  * 
- * @author simple
+ * @author Gary Buyn
  */
 public class Key
 {
