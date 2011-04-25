@@ -74,9 +74,9 @@ public class PCRemoteServer
             server.start();
 
             fLogger.info("...Done.");
-            fLogger.info("Server running at: ");
+            fLogger.info("Server running at:");
             fLogger.info("Host: " + InetAddress.getLocalHost().getHostName());
-            fLogger.info("IP: " + InetAddress.getLocalHost().getHostAddress()); // TODO Fix incorrect IP address.
+            fLogger.info("IP: " + InetAddress.getLocalHost().getHostAddress()); // FIXME Incorrect IP address
             fLogger.info("Port: " + DEFAULT_PORT);
             fLogger.info("Press ENTER in the terminal to stop this server.");
 
@@ -97,17 +97,17 @@ public class PCRemoteServer
 
     /**
      * <p>
+     * The accepter of new connections requested by clients.
+     * </p>
+     */
+    private TcpServer fTcpServer;
+
+    /**
+     * <p>
      * Executes the commands.
      * </p>
      */
     private CommandExecuter fCommandExecuter;
-
-    /**
-     * <p>
-     * The accepter new connections requested by clients.
-     * </p>
-     */
-    private TcpAcceptanceManager fAcceptanceManager;
 
     /**
      * <p>
@@ -125,8 +125,8 @@ public class PCRemoteServer
      */
     public PCRemoteServer() throws AWTException
     {
+        fTcpServer = null;
         fCommandExecuter = new CommandExecuter();
-        fAcceptanceManager = null;
         fLogger = Logger.getLogger(PCRemoteServer.class);
         fPort = DEFAULT_PORT;
     }
@@ -136,46 +136,36 @@ public class PCRemoteServer
      * Retrieves the accepter of new connections requested by clients.
      * </p>
      * 
-     * @return The accepter new connections requested by clients.
+     * @return The accepter of new connections requested by clients.
      */
-    public TcpAcceptanceManager getTcpAcceptanceManager()
+    public TcpServer getTcpServer()
     {
-        return (fAcceptanceManager);
+        return (fTcpServer);
     }
 
     /**
      * <p>
      * Binds the server to a port and starts the {@link ConnectionAccepter}. The default port is 10999.
      * </p>
+     * 
+     * @throws IOException Thrown if the server fails to be started.
      */
-    public void start()
+    public void start() throws IOException
     {
-        try
-        {
-            fAcceptanceManager = new TcpAcceptanceManager(new ServerSocket(fPort), fCommandExecuter);
+        fTcpServer = new TcpServer(new ServerSocket(fPort), fCommandExecuter);
 
-            new Thread(fAcceptanceManager).start();
-        }
-        catch (IOException e)
-        {
-            fLogger.error("Failed to initialise the server.", e);
-        }
+        new Thread(fTcpServer).start();
     }
 
     /**
      * <p>
      * Closes all client connections and stops the server.
      * </p>
+     * 
+     * @throws IOException Thrown if the server fails to be stopped.
      */
-    public void stop()
+    public void stop() throws IOException
     {
-        try
-        {
-            fAcceptanceManager.dispose();
-        }
-        catch (IOException e)
-        {
-            fLogger.error("Failed to close the ServerSocket.", e);
-        }
+        fTcpServer.dispose();
     }
 }

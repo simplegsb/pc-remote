@@ -14,7 +14,6 @@ package com.se.pcremote.client;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -23,6 +22,7 @@ import java.net.SocketException;
 
 import org.apache.log4j.Logger;
 
+import com.se.devenvy.net.Client;
 import com.se.pcremote.server.PCRemoteServer;
 
 /**
@@ -220,17 +220,11 @@ public class PCRemoteClient
 
     /**
      * <p>
-     * Writes commands to the {@link com.se.pcremote.server.PCRemoteServer PCRemoteServer} using the TCP protocol.
+     * The {@link com.se.devenvy.net.Client Client} used to communicate with the {@link com.se.pcremote.server.PCRemoteServer PCRemoteServer} using
+     * the TCP protocol.
      * </p>
      */
-    private PrintWriter fTcpCommandWriter;
-
-    /**
-     * <p>
-     * The socket used to communicate with the {@link com.se.pcremote.server.PCRemoteServer PCRemoteServer} using the TCP protocol.
-     * </p>
-     */
-    private Socket fTcpSocket;
+    private Client fTcpClient;
 
     /**
      * <p>
@@ -254,8 +248,7 @@ public class PCRemoteClient
 
         fLogger = Logger.getLogger(PCRemoteClient.class);
         fServerPort = PCRemoteServer.DEFAULT_PORT;
-        fTcpCommandWriter = null;
-        fTcpSocket = null;
+        fTcpClient = null;
         fUdpSocket = new DatagramSocket();
     }
 
@@ -275,8 +268,7 @@ public class PCRemoteClient
         fServerPort = serverPort;
 
         fLogger = Logger.getLogger(PCRemoteClient.class);
-        fTcpCommandWriter = null;
-        fTcpSocket = null;
+        fTcpClient = null;
         fUdpSocket = new DatagramSocket();
     }
 
@@ -289,9 +281,9 @@ public class PCRemoteClient
      */
     public void dispose() throws IOException
     {
-        if (fTcpSocket != null)
+        if (fTcpClient != null)
         {
-            fTcpSocket.close();
+            fTcpClient.dispose();
         }
     }
 
@@ -328,8 +320,7 @@ public class PCRemoteClient
      */
     public void init() throws IOException
     {
-        fTcpSocket = new Socket(fServerHost, fServerPort);
-        fTcpCommandWriter = new PrintWriter(fTcpSocket.getOutputStream());
+        fTcpClient = new TcpClient(new Socket(fServerHost, fServerPort));
     }
 
     /**
@@ -341,7 +332,7 @@ public class PCRemoteClient
      */
     public boolean isConnected()
     {
-        return (fTcpSocket != null && fTcpSocket.isConnected() && !fTcpSocket.isClosed());
+        return (fTcpClient != null && fTcpClient.isConnected());
     }
 
     /**
@@ -357,8 +348,7 @@ public class PCRemoteClient
     {
         fLogger.debug("Sending command via TCP: " + command);
 
-        fTcpCommandWriter.println(command);
-        fTcpCommandWriter.flush();
+        fTcpClient.sendData(command.getBytes());
     }
 
     /**

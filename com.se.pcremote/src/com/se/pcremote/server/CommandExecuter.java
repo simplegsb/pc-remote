@@ -82,6 +82,7 @@ public class CommandExecuter
     public CommandExecuter(final Robot robot)
     {
         fRobot = robot;
+
         fLogger = Logger.getLogger(getClass());
     }
 
@@ -98,7 +99,7 @@ public class CommandExecuter
 
         // Validate command format.
         String[] commandParts = command.split("\\(");
-        if (commandParts.length != 2 || commandParts[1].split("\\)").length != 1)
+        if (commandParts.length != 2)
         {
             throw new IllegalArgumentException("Invalid command: Format must be <commandName>(<arg>[,<arg>]).");
         }
