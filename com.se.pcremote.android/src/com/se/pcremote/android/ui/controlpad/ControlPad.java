@@ -145,6 +145,7 @@ public class ControlPad extends Activity
     public void finish()
     {
         disconnect();
+        unbindService(fServiceConnection);
 
         super.finish();
     }
@@ -293,14 +294,6 @@ public class ControlPad extends Activity
         getMenuInflater().inflate(R.menu.control_pad_options, menu);
 
         return (true);
-    }
-
-    @Override
-    public void onDestroy()
-    {
-        super.onDestroy();
-
-        unbindService(fServiceConnection);
     }
 
     @Override

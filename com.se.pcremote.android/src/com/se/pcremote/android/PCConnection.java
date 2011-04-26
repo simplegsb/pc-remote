@@ -142,14 +142,14 @@ public class PCConnection extends Service
                         fClient = new PCRemoteClient(pc.getHost(), pc.getPort());
                         fClient.init();
 
-                        if (!fConnectionThread.isInterrupted())
+                        if (!Thread.interrupted())
                         {
                             notifyConnected(pc);
                         }
                     }
                     catch (IOException e)
                     {
-                        if (!fConnectionThread.isInterrupted())
+                        if (!Thread.interrupted())
                         {
                             notifyConnectionFailed(pc);
                         }
@@ -185,9 +185,12 @@ public class PCConnection extends Service
                             fConnectionThread.interrupt();
                             fConnectionThread.wait();
                         }
-                        fClient.dispose();
 
-                        notifyDisconnected(pc);
+                        if (fClient.isConnected())
+                        {
+                            fClient.dispose();
+                            notifyDisconnected(pc);
+                        }
                     }
                     catch (Exception e)
                     {
