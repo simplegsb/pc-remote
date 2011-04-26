@@ -61,6 +61,11 @@ public class ControlPadListener extends SimpleOnGestureListener implements OnCli
      */
     private Logger fLogger;
 
+    /**
+     * <p>
+     * The factor to multiply the mouse movements by.
+     * </p>
+     */
     private int fMouseSensitivity;
 
     /**
@@ -146,8 +151,6 @@ public class ControlPadListener extends SimpleOnGestureListener implements OnCli
                 // If the Key has been pressed.
                 if (event.getAction() == KeyEvent.ACTION_DOWN)
                 {
-                    fLogger.error("Key Press: " + keyCode);
-
                     try
                     {
                         // Do not send ALT Key commands.
