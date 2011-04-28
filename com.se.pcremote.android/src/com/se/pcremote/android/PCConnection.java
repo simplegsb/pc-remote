@@ -183,7 +183,10 @@ public class PCConnection extends Service
                         if (fConnectionThread != null && fConnectionThread.isAlive())
                         {
                             fConnectionThread.interrupt();
-                            fConnectionThread.wait();
+                            synchronized (fConnectionThread)
+                            {
+                                fConnectionThread.wait();
+                            }
                         }
 
                         if (fClient.isConnected())
