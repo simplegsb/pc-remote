@@ -209,7 +209,7 @@ public class ControlPadView extends LinearLayout
                         buttonGridButton.setId(key.getId());
                         buttonGridButton.setText(key.getName());
                         buttonGridButton.setTextAppearance(fControlPad, R.style.ButtonGridTextAppearance);
-                        buttonGridButton.setOnTouchListener(new ControlPadListener(fControlPad));
+                        buttonGridButton.setOnTouchListener(new ButtonGridListener(fControlPad));
                         buttonGridRow.addView(buttonGridButton);
                     }
                     else
@@ -218,7 +218,7 @@ public class ControlPadView extends LinearLayout
                         buttonGridButton.setLayoutParams(new TableRow.LayoutParams(0, LayoutParams.FILL_PARENT, 1.0f));
                         buttonGridButton.setId(key.getId());
                         buttonGridButton.setImageResource(key.getImageResourceId());
-                        buttonGridButton.setOnTouchListener(new ControlPadListener(fControlPad));
+                        buttonGridButton.setOnTouchListener(new ButtonGridListener(fControlPad));
                         buttonGridRow.addView(buttonGridButton);
                     }
                 }
@@ -282,7 +282,7 @@ public class ControlPadView extends LinearLayout
         keyEventView.setLayoutParams(new LayoutParams(1, 1)); // Make it so small that it isn't visible but still holds focus.
         keyEventView.setFocusable(true);
         keyEventView.setFocusableInTouchMode(true);
-        keyEventView.setOnKeyListener(new ControlPadListener(fControlPad));
+        keyEventView.setOnKeyListener(new ImeListener(fControlPad));
 
         return (keyEventView);
     }
@@ -303,14 +303,14 @@ public class ControlPadView extends LinearLayout
         leftMouseButton.setId(MOUSE_BUTTON_LEFT);
         leftMouseButton.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1.0f));
         leftMouseButton.setImageResource(R.drawable.mouse_button_left);
-        leftMouseButton.setOnClickListener(new ControlPadListener(fControlPad));
+        leftMouseButton.setOnClickListener(new MouseButtonListener(fControlPad));
         mouseButtons.addView(leftMouseButton);
 
         ImageButton rightMouseButton = new ImageButton(getContext());
         rightMouseButton.setId(MOUSE_BUTTON_RIGHT);
         rightMouseButton.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1.0f));
         rightMouseButton.setImageResource(R.drawable.mouse_button_right);
-        rightMouseButton.setOnClickListener(new ControlPadListener(fControlPad));
+        rightMouseButton.setOnClickListener(new MouseButtonListener(fControlPad));
         mouseButtons.addView(rightMouseButton);
 
         return (mouseButtons);
@@ -331,7 +331,7 @@ public class ControlPadView extends LinearLayout
         mousePad.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1.0f));
         mousePad.setBackgroundResource(R.drawable.mouse_pad_border);
 
-        final GestureDetector gestureDetector = new GestureDetector(getContext(), new ControlPadListener(fControlPad));
+        final GestureDetector gestureDetector = new GestureDetector(getContext(), new MousePadListener(fControlPad));
         mousePad.setOnTouchListener(new OnTouchListener()
         {
             @Override
