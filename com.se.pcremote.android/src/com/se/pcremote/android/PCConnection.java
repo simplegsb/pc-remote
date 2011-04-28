@@ -47,10 +47,10 @@ public class PCConnection extends Service
 
     /**
      * <p>
-     * The duration to display the 'PC disconnected' connection status notification for.
+     * The duration to display the automatically cancelling notifications for.
      * </p>
      */
-    private static final int NOTIFY_CONNECTION_STATUS_DISCONNECTED_DURATION = 3000;
+    private static final int AUTO_CANCEL_DURATION = 3000;
 
     /**
      * <p>
@@ -82,6 +82,13 @@ public class PCConnection extends Service
 
     /**
      * <p>
+     * Determines if a notification that the connection is closed has been displayed to the user since the last connection attempt.
+     * </p>
+     */
+    private boolean fNotifiedOfDisconnection;
+
+    /**
+     * <p>
      * Creates an instance of <code>PCConnection</code>.
      * </p>
      */
@@ -90,6 +97,7 @@ public class PCConnection extends Service
         fClient = null;
         fConnectionThread = null;
         fLogger = Logger.getLogger(this.getClass());
+        fNotifiedOfDisconnection = false;
     }
 
     /**
@@ -131,6 +139,7 @@ public class PCConnection extends Service
         if (connectionRequired)
         {
             notifyConnecting(pc);
+            fNotifiedOfDisconnection = false;
 
             fConnectionThread = new Thread()
             {
@@ -192,8 +201,8 @@ public class PCConnection extends Service
                         if (fClient.isConnected())
                         {
                             fClient.dispose();
-                            notifyDisconnected(pc);
                         }
+                        notifyDisconnected(pc);
                     }
                     catch (Exception e)
                     {
@@ -262,13 +271,35 @@ public class PCConnection extends Service
      */
     private void notifyConnectionFailed(final PC pc)
     {
-        String connecting = "Failed to connect to PC '" + pc.getName() + "'";
-        Notification notification = new Notification(R.drawable.pc_disconnect, connecting, System.currentTimeMillis());
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, null, 0);
-        notification.setLatestEventInfo(this, getString(R.string.connection_status), connecting, contentIntent);
-        notification.flags = Notification.FLAG_AUTO_CANCEL;
+        if (!fNotifiedOfDisconnection)
+        {
+            String connecting = "Failed to connect to PC '" + pc.getName() + "'";
+            Notification notification = new Notification(R.drawable.pc_disconnect, connecting, System.currentTimeMillis());
+            PendingIntent contentIntent = PendingIntent.getActivity(this, 0, null, 0);
+            notification.setLatestEventInfo(this, getString(R.string.connection_status), connecting, contentIntent);
+            notification.flags = Notification.FLAG_AUTO_CANCEL;
 
-        ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).notify(NOTIFY_CONNECTION_STATUS_ID, notification);
+            ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).notify(NOTIFY_CONNECTION_STATUS_ID, notification);
+
+            Thread notifyConnectionFailedThread = new Thread()
+            {
+                @Override
+                public void run()
+                {
+                    try
+                    {
+                        Thread.sleep(AUTO_CANCEL_DURATION);
+                    }
+                    catch (InterruptedException e)
+                    {}
+
+                    ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancel(NOTIFY_CONNECTION_STATUS_ID);
+                }
+            };
+            notifyConnectionFailedThread.start();
+
+            fNotifiedOfDisconnection = true;
+        }
     }
 
     /**
@@ -280,30 +311,35 @@ public class PCConnection extends Service
      */
     private void notifyDisconnected(final PC pc)
     {
-        String connecting = "Disconnected from PC '" + pc.getName() + "'";
-        Notification notification = new Notification(R.drawable.pc_disconnect, connecting, System.currentTimeMillis());
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, null, 0);
-        notification.setLatestEventInfo(this, getString(R.string.connection_status), connecting, contentIntent);
-        notification.flags = Notification.FLAG_AUTO_CANCEL;
-
-        ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).notify(NOTIFY_CONNECTION_STATUS_ID, notification);
-
-        Thread notifyDisconnectedThread = new Thread()
+        if (!fNotifiedOfDisconnection)
         {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    Thread.sleep(NOTIFY_CONNECTION_STATUS_DISCONNECTED_DURATION);
-                }
-                catch (InterruptedException e)
-                {}
+            String connecting = "Disconnected from PC '" + pc.getName() + "'";
+            Notification notification = new Notification(R.drawable.pc_disconnect, connecting, System.currentTimeMillis());
+            PendingIntent contentIntent = PendingIntent.getActivity(this, 0, null, 0);
+            notification.setLatestEventInfo(this, getString(R.string.connection_status), connecting, contentIntent);
+            notification.flags = Notification.FLAG_AUTO_CANCEL;
 
-                ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancel(NOTIFY_CONNECTION_STATUS_ID);
-            }
-        };
-        notifyDisconnectedThread.start();
+            ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).notify(NOTIFY_CONNECTION_STATUS_ID, notification);
+
+            Thread notifyDisconnectedThread = new Thread()
+            {
+                @Override
+                public void run()
+                {
+                    try
+                    {
+                        Thread.sleep(AUTO_CANCEL_DURATION);
+                    }
+                    catch (InterruptedException e)
+                    {}
+
+                    ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancel(NOTIFY_CONNECTION_STATUS_ID);
+                }
+            };
+            notifyDisconnectedThread.start();
+
+            fNotifiedOfDisconnection = true;
+        }
     }
 
     @Override

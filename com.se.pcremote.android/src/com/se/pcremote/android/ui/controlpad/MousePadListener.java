@@ -75,6 +75,11 @@ public class MousePadListener extends SimpleOnGestureListener
                     fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
                 }
             }
+            // Otherwise, make sure the user has been notified that the PC Remote Client is not currently connected to a server.
+            else
+            {
+                fControlPad.getConnection().disconnect(fControlPad.getPc());
+            }
         }
 
         return (true);
@@ -99,6 +104,11 @@ public class MousePadListener extends SimpleOnGestureListener
                     fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
                 }
             }
+            // Otherwise, make sure the user has been notified that the PC Remote Client is not currently connected to a server.
+            else
+            {
+                fControlPad.getConnection().disconnect(fControlPad.getPc());
+            }
         }
 
         return (true);
@@ -122,6 +132,11 @@ public class MousePadListener extends SimpleOnGestureListener
                 {
                     fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
                 }
+            }
+            // Otherwise, make sure the user has been notified that the PC Remote Client is not currently connected to a server.
+            else
+            {
+                fControlPad.getConnection().disconnect(fControlPad.getPc());
             }
         }
 
