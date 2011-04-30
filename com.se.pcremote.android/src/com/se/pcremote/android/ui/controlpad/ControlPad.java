@@ -124,7 +124,10 @@ public class ControlPad extends Activity
      */
     public void connect()
     {
-        fPcConnection.connect();
+        if (fPcConnection != null)
+        {
+            fPcConnection.connect();
+        }
     }
 
     /**
@@ -134,7 +137,7 @@ public class ControlPad extends Activity
      */
     public void disconnect()
     {
-        if (fPcConnection != null && fPc != null)
+        if (fPcConnection != null)
         {
             fPcConnection.disconnect();
         }
