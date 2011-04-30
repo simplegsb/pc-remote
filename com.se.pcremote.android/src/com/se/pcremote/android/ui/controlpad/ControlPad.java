@@ -94,7 +94,6 @@ public class ControlPad extends Activity
             public void onServiceConnected(final ComponentName className, final IBinder service)
             {
                 fPcConnection = ((PCConnectionBinder) service).getService();
-                connect();
             }
 
             @Override
@@ -125,7 +124,7 @@ public class ControlPad extends Activity
      */
     public void connect()
     {
-        fPcConnection.connect(fPc);
+        fPcConnection.connect();
     }
 
     /**
@@ -137,15 +136,14 @@ public class ControlPad extends Activity
     {
         if (fPcConnection != null && fPc != null)
         {
-            fPcConnection.disconnect(fPc);
+            fPcConnection.disconnect();
         }
     }
 
     @Override
     public void finish()
     {
-        disconnect();
-        unbindService(fServiceConnection);
+        stopService(new Intent(this, PCConnection.class));
 
         super.finish();
     }
@@ -276,16 +274,28 @@ public class ControlPad extends Activity
             preferences.edit().putString("activeLayout", ContentUris.withAppendedId(PCRemoteProvider.LAYOUT_URI, 1).toString()).commit();
         }
 
-        // Bind to the PC connection service.
-        bindService(new Intent(this, PCConnection.class), fServiceConnection, BIND_AUTO_CREATE);
-
-        init();
+        if (init())
+        {
+            // Bind to the PC connection service.
+            Intent intent = new Intent(this, PCConnection.class);
+            intent.setData(fPc.getUri());
+            startService(intent);
+            bindService(intent, fServiceConnection, 0);
+        }
     }
 
     @Override
     protected Dialog onCreateDialog(final int id)
     {
         return (DialogFactory.getInstance().createDialog(this, id));
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        unbindService(fServiceConnection);
+
+        super.onDestroy();
     }
 
     @Override

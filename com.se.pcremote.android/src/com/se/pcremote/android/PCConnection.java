@@ -89,6 +89,13 @@ public class PCConnection extends Service
 
     /**
      * <p>
+     * The {@link com.se.pcremote.android.PC PC} that the maintained connection is to.
+     * </p>
+     */
+    private PC fPc;
+
+    /**
+     * <p>
      * Creates an instance of <code>PCConnection</code>.
      * </p>
      */
@@ -97,48 +104,20 @@ public class PCConnection extends Service
         fClient = null;
         fConnectionThread = null;
         fLogger = Logger.getLogger(this.getClass());
+        fPc = null;
         fNotifiedOfDisconnection = false;
     }
 
     /**
      * <p>
-     * Connects to the given {@link com.se.pcremote.android.PC PC} on a separate thread.
+     * Connects to the {@link com.se.pcremote.android.PC PC} on a separate thread.
      * </p>
-     * 
-     * @param pc The <code>PC</code> to connect to.
      */
-    public void connect(final PC pc)
+    public void connect()
     {
-        if (pc == null)
+        if (fClient == null || !fClient.isConnected())
         {
-            return;
-        }
-
-        boolean connectionRequired = true;
-
-        if (fClient != null)
-        {
-            // If a connection already exists and the active PCs host and port are the same as the existing client's host and port.
-            if (fClient.isConnected() && fClient.getServerHost().equals(pc.getHost()) && fClient.getServerPort() == pc.getPort())
-            {
-                connectionRequired = false;
-            }
-            else
-            {
-                try
-                {
-                    fClient.dispose();
-                }
-                catch (IOException e)
-                {
-                    fLogger.error("Failed to disconnect from PC '" + pc.getName() + "'.", e);
-                }
-            }
-        }
-
-        if (connectionRequired)
-        {
-            notifyConnecting(pc);
+            notifyConnecting();
             fNotifiedOfDisconnection = false;
 
             fConnectionThread = new Thread()
@@ -148,22 +127,22 @@ public class PCConnection extends Service
                 {
                     try
                     {
-                        fClient = new PCRemoteClient(pc.getHost(), pc.getPort());
+                        fClient = new PCRemoteClient(fPc.getHost(), fPc.getPort());
                         fClient.init();
 
                         if (!Thread.interrupted())
                         {
-                            notifyConnected(pc);
+                            notifyConnected();
                         }
                     }
                     catch (IOException e)
                     {
                         if (!Thread.interrupted())
                         {
-                            notifyConnectionFailed(pc);
+                            notifyConnectionFailed();
                         }
 
-                        fLogger.error("Failed to connect to PC '" + pc.getName() + "'.", e);
+                        fLogger.error("Failed to connect to PC '" + fPc.getName() + "'.", e);
                     }
                 }
             };
@@ -173,12 +152,10 @@ public class PCConnection extends Service
 
     /**
      * <p>
-     * Disconnects from the given {@link com.se.pcremote.android.PC PC}.
+     * Disconnects from the {@link com.se.pcremote.android.PC PC}.
      * </p>
-     * 
-     * @param pc The <code>PC</code> to disconnect from.
      */
-    public void disconnect(final PC pc)
+    public void disconnect()
     {
         if (fClient != null)
         {
@@ -202,11 +179,11 @@ public class PCConnection extends Service
                         {
                             fClient.dispose();
                         }
-                        notifyDisconnected(pc);
+                        notifyDisconnected();
                     }
                     catch (Exception e)
                     {
-                        fLogger.error("Failed to disconnect from PC '" + pc.getName() + "'.", e);
+                        fLogger.error("Failed to disconnect from PC '" + fPc.getName() + "'.", e);
                     }
                 }
             };
@@ -230,12 +207,10 @@ public class PCConnection extends Service
      * <p>
      * Displays the 'PC connected' connection status notification.
      * </p>
-     * 
-     * @param pc The {@link com.se.pcremote.android.PC PC} that the maintained connection is to.
      */
-    private void notifyConnected(final PC pc)
+    private void notifyConnected()
     {
-        String connecting = "Connected to PC '" + pc.getName() + "'";
+        String connecting = "Connected to PC '" + fPc.getName() + "'";
         Notification notification = new Notification(R.drawable.pc_connect, connecting, System.currentTimeMillis());
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, null, 0);
         notification.setLatestEventInfo(this, getString(R.string.connection_status), connecting, contentIntent);
@@ -248,12 +223,10 @@ public class PCConnection extends Service
      * <p>
      * Displays the 'PC connecting' connection status notification.
      * </p>
-     * 
-     * @param pc The {@link com.se.pcremote.android.PC PC} that the maintained connection is to.
      */
-    private void notifyConnecting(final PC pc)
+    private void notifyConnecting()
     {
-        String connecting = "Connecting to PC '" + pc.getName() + "'";
+        String connecting = "Connecting to PC '" + fPc.getName() + "'";
         Notification notification = new Notification(R.drawable.pc_connect, connecting, System.currentTimeMillis());
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, null, 0);
         notification.setLatestEventInfo(this, getString(R.string.connection_status), connecting, contentIntent);
@@ -266,14 +239,12 @@ public class PCConnection extends Service
      * <p>
      * Displays the 'PC connection failed' connection status notification.
      * </p>
-     * 
-     * @param pc The {@link com.se.pcremote.android.PC PC} that the maintained connection is to.
      */
-    private void notifyConnectionFailed(final PC pc)
+    private void notifyConnectionFailed()
     {
         if (!fNotifiedOfDisconnection)
         {
-            String connecting = "Failed to connect to PC '" + pc.getName() + "'";
+            String connecting = "Failed to connect to PC '" + fPc.getName() + "'";
             Notification notification = new Notification(R.drawable.pc_disconnect, connecting, System.currentTimeMillis());
             PendingIntent contentIntent = PendingIntent.getActivity(this, 0, null, 0);
             notification.setLatestEventInfo(this, getString(R.string.connection_status), connecting, contentIntent);
@@ -306,14 +277,12 @@ public class PCConnection extends Service
      * <p>
      * Displays the 'PC disconnected' connection status notification.
      * </p>
-     * 
-     * @param pc The {@link com.se.pcremote.android.PC PC} that the maintained connection is to.
      */
-    private void notifyDisconnected(final PC pc)
+    private void notifyDisconnected()
     {
         if (!fNotifiedOfDisconnection)
         {
-            String connecting = "Disconnected from PC '" + pc.getName() + "'";
+            String connecting = "Disconnected from PC '" + fPc.getName() + "'";
             Notification notification = new Notification(R.drawable.pc_disconnect, connecting, System.currentTimeMillis());
             PendingIntent contentIntent = PendingIntent.getActivity(this, 0, null, 0);
             notification.setLatestEventInfo(this, getString(R.string.connection_status), connecting, contentIntent);
@@ -346,5 +315,25 @@ public class PCConnection extends Service
     public IBinder onBind(final Intent intent)
     {
         return (new PCConnectionBinder());
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+
+        disconnect();
+    }
+
+    @Override
+    public int onStartCommand(final Intent intent, final int flags, final int startId)
+    {
+        super.onStartCommand(intent, flags, startId);
+
+        fPc = new PC();
+        fPc.load(this, intent.getData());
+        connect();
+
+        return (START_STICKY);
     }
 }

@@ -76,7 +76,7 @@ public class MouseButtonListener implements OnClickListener
             // Otherwise, make sure the user has been notified that the PC Remote Client is not currently connected to a server.
             else
             {
-                fControlPad.getConnection().disconnect(fControlPad.getPc());
+                fControlPad.getConnection().disconnect();
             }
         }
     }
