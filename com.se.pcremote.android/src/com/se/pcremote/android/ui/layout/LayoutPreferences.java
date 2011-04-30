@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
@@ -125,9 +123,7 @@ public class LayoutPreferences extends PreferenceActivity implements OnSharedPre
                     fLayout.setButtonGridKey(fButtonGridRowIndex, fButtonGridColumnIndex, key);
                     PreferenceManager.getDefaultSharedPreferences(this).edit().putString("layoutButtonGridMap", fLayout.getButtonGridMap()).commit();
 
-                    // Refresh the preferences on-screen.
-                    finish();
-                    startActivity(getIntent());
+                    ((ButtonGridMapPreference) findPreference("layoutButtonGridMap")).buildButtonGrid();
                 }
             }
         }
@@ -142,39 +138,7 @@ public class LayoutPreferences extends PreferenceActivity implements OnSharedPre
         addPreferencesFromResource(R.xml.layout_preference_fragment);
         setPreferenceSummaries();
 
-        findPreference("layoutButtonGridHeight").setOnPreferenceChangeListener(new OnPreferenceChangeListener()
-        {
-            @Override
-            public boolean onPreferenceChange(final Preference preference, final Object newValue)
-            {
-                // Save the button grid height.
-                PreferenceManager.getDefaultSharedPreferences(LayoutPreferences.this).edit().putString("layoutButtonGridHeight", (String) newValue)
-                        .commit();
-
-                // Refresh the preferences on-screen.
-                finish();
-                startActivity(getIntent());
-
-                return (true);
-            }
-        });
         ((ButtonGridMapPreference) findPreference("layoutButtonGridMap")).setLayoutPreferences(this);
-        findPreference("layoutButtonGridWidth").setOnPreferenceChangeListener(new OnPreferenceChangeListener()
-        {
-            @Override
-            public boolean onPreferenceChange(final Preference preference, final Object newValue)
-            {
-                // Save the button grid width.
-                PreferenceManager.getDefaultSharedPreferences(LayoutPreferences.this).edit().putString("layoutButtonGridWidth", (String) newValue)
-                        .commit();
-
-                // Refresh the preferences on-screen.
-                finish();
-                startActivity(getIntent());
-
-                return (true);
-            }
-        });
     }
 
     @Override
@@ -204,6 +168,7 @@ public class LayoutPreferences extends PreferenceActivity implements OnSharedPre
     @Override
     public void onSharedPreferenceChanged(final SharedPreferences sharedPreferences, final String key)
     {
+        ((ButtonGridMapPreference) findPreference("layoutButtonGridMap")).buildButtonGrid();
         setPreferenceSummaries();
     }
 

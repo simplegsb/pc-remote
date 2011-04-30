@@ -98,6 +98,13 @@ public class ButtonGridMapPreference extends Preference
 
     /**
      * <p>
+     * The button grid.
+     * </p>
+     */
+    private TableLayout fButtonGrid;
+
+    /**
+     * <p>
      * The {@link com.se.pcremote.android.ui.layout.LayoutPreferences LayoutPreferences} on which this <code>ButtonGridMapPreference</code> is being
      * displayed.
      * </p>
@@ -116,6 +123,7 @@ public class ButtonGridMapPreference extends Preference
         super(context);
 
         fLayoutPreferences = null;
+        fButtonGrid = null;
     }
 
     /**
@@ -131,6 +139,7 @@ public class ButtonGridMapPreference extends Preference
         super(context, attrs);
 
         fLayoutPreferences = null;
+        fButtonGrid = null;
     }
 
     /**
@@ -147,6 +156,7 @@ public class ButtonGridMapPreference extends Preference
         super(context, attrs, defStyle);
 
         fLayoutPreferences = null;
+        fButtonGrid = null;
     }
 
     /**
@@ -156,14 +166,21 @@ public class ButtonGridMapPreference extends Preference
      * 
      * @return The button grid portion of this <code>ButtonGridMapPreference</code>.
      */
-    private View buildButtonGrid()
+    public View buildButtonGrid()
     {
         int buttonGridHeight = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("layoutButtonGridHeight", "0"));
         int buttonGridWidth = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("layoutButtonGridWidth", "0"));
 
-        TableLayout buttonGrid = new TableLayout(getContext());
-        buttonGrid.setShrinkAllColumns(true);
-        buttonGrid.setStretchAllColumns(true);
+        if (fButtonGrid == null)
+        {
+            fButtonGrid = new TableLayout(getContext());
+            fButtonGrid.setShrinkAllColumns(true);
+            fButtonGrid.setStretchAllColumns(true);
+        }
+        else
+        {
+            fButtonGrid.removeAllViews();
+        }
 
         for (int rowIndex = 0; rowIndex < buttonGridHeight; rowIndex++)
         {
@@ -196,14 +213,15 @@ public class ButtonGridMapPreference extends Preference
                 {
                     Button buttonGridButton = new Button(getContext());
                     buttonGridButton.setLayoutParams(new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT, 1.0f));
+                    buttonGridButton.setOnClickListener(new ButtonGridMapPreferenceListener(rowIndex, columnIndex));
                     buttonGridRow.addView(buttonGridButton);
                 }
             }
 
-            buttonGrid.addView(buttonGridRow);
+            fButtonGrid.addView(buttonGridRow);
         }
 
-        return (buttonGrid);
+        return (fButtonGrid);
     }
 
     @Override
