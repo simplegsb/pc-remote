@@ -51,6 +51,35 @@ public class PCRemoteServer
 
     /**
      * <p>
+     * Checks the validity of the arguments provided to the command line utility.
+     * </p>
+     * 
+     * @param args The arguments provided to the command line utility when it was started.
+     */
+    public static void checkArgs(final String[] args)
+    {
+        if (args.length == 0)
+        {}
+        else if (args.length == 1)
+        {
+            try
+            {
+                Integer.parseInt(args[0]);
+            }
+            catch (NumberFormatException e)
+            {
+                throw new IllegalArgumentException("An invalid port was specified (must be an integer).");
+            }
+        }
+        else
+        {
+            throw new IllegalArgumentException(
+                    "The wrong number of arguments were specified (nothing must be specified, the port can be optionally specified).");
+        }
+    }
+
+    /**
+     * <p>
      * Runs the server until ENTER is pressed in the terminal.
      * </p>
      * 
@@ -62,7 +91,23 @@ public class PCRemoteServer
 
         try
         {
-            PCRemoteServer server = new PCRemoteServer();
+            checkArgs(args);
+        }
+        catch (IllegalArgumentException e)
+        {
+            fLogger.fatal(e.getMessage());
+            printUsage();
+            System.exit(1);
+        }
+
+        try
+        {
+            // Determine server host and port.
+            int port = DEFAULT_PORT;
+            if (args.length == 1)
+            {
+                port = Integer.parseInt(args[0]);
+            }
 
             fLogger.info("#########################");
             fLogger.info("PC Remote 1.0 Server");
@@ -71,13 +116,14 @@ public class PCRemoteServer
             fLogger.info("#########################");
             fLogger.info("Starting server...");
 
+            PCRemoteServer server = new PCRemoteServer(port);
             server.start();
 
             fLogger.info("...Done.");
             fLogger.info("Server running at:");
             fLogger.info("Host: " + InetAddress.getLocalHost().getHostName());
             fLogger.info("IP: " + InetAddress.getLocalHost().getHostAddress()); // FIXME Incorrect IP address
-            fLogger.info("Port: " + DEFAULT_PORT);
+            fLogger.info("Port: " + port);
             fLogger.info("Press ENTER in the terminal to stop this server.");
 
             // Wait until ENTER is pressed in the terminal.
@@ -93,6 +139,19 @@ public class PCRemoteServer
         {
             fLogger.fatal("Epic fail!", e);
         }
+    }
+
+    /**
+     * <p>
+     * Prints usage instructions for the command line utility.
+     * </p>
+     */
+    public static void printUsage()
+    {
+        fLogger.info("Usage:");
+        fLogger.info("\tPCRemoteServer [port]");
+        fLogger.info("Where:");
+        fLogger.info("\t port = The port on which the PCRemoteServer will listen (default is 10999).");
     }
 
     /**
@@ -129,6 +188,23 @@ public class PCRemoteServer
         fCommandExecuter = new CommandExecuter();
         fLogger = Logger.getLogger(PCRemoteServer.class);
         fPort = DEFAULT_PORT;
+    }
+
+    /**
+     * <p>
+     * Creates an instance of <code>PCRemoteServer</code>.
+     * </p>
+     * 
+     * @param port The port on which this <code>PCRemoteServer</code> will listen.
+     * 
+     * @throws AWTException Thrown if the {@link java.awt.Robot Robot} is not supported by the platform configuration.
+     */
+    public PCRemoteServer(final int port) throws AWTException
+    {
+        fTcpServer = null;
+        fCommandExecuter = new CommandExecuter();
+        fLogger = Logger.getLogger(PCRemoteServer.class);
+        fPort = port;
     }
 
     /**
