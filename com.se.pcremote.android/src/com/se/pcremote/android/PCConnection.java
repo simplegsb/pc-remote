@@ -108,6 +108,13 @@ public class PCConnection extends Service
         fNotifiedOfDisconnection = false;
     }
 
+    /**
+     * <p>
+     * Determines if the connection is open. If it is not it creates a 'PC disconnected' notification.
+     * </p>
+     * 
+     * @return True if the connection is open, false otherwise.
+     */
     public boolean checkConnection()
     {
         boolean connected = false;
