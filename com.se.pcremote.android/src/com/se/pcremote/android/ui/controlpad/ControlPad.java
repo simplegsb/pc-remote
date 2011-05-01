@@ -122,12 +122,12 @@ public class ControlPad extends Activity
      * Connects to the active {@link com.se.pcremote.android.PC PC}.
      * </p>
      */
-    public void connect()
+    private void connect()
     {
-        if (fPcConnection != null)
-        {
-            fPcConnection.connect();
-        }
+        Intent intent = new Intent(this, PCConnection.class);
+        intent.setData(fPc.getUri());
+        startService(intent);
+        bindService(intent, fServiceConnection, 0);
     }
 
     /**
@@ -135,18 +135,15 @@ public class ControlPad extends Activity
      * Disconnects from the active {@link com.se.pcremote.android.PC PC}.
      * </p>
      */
-    public void disconnect()
+    private void disconnect()
     {
-        if (fPcConnection != null)
-        {
-            fPcConnection.disconnect();
-        }
+        stopService(new Intent(this, PCConnection.class));
     }
 
     @Override
     public void finish()
     {
-        stopService(new Intent(this, PCConnection.class));
+        disconnect();
 
         super.finish();
     }
@@ -238,7 +235,10 @@ public class ControlPad extends Activity
 
             showDialog(DialogFactory.DIALOG_ACTIVE_PC_NOT_EXISTS_ID);
             fPc = null;
+            return (false);
         }
+
+        connect();
 
         return (true);
     }
@@ -277,14 +277,7 @@ public class ControlPad extends Activity
             preferences.edit().putString("activeLayout", ContentUris.withAppendedId(PCRemoteProvider.LAYOUT_URI, 1).toString()).commit();
         }
 
-        if (init())
-        {
-            // Bind to the PC connection service.
-            Intent intent = new Intent(this, PCConnection.class);
-            intent.setData(fPc.getUri());
-            startService(intent);
-            bindService(intent, fServiceConnection, 0);
-        }
+        init();
     }
 
     @Override
@@ -338,10 +331,7 @@ public class ControlPad extends Activity
     {
         super.onRestart();
 
-        if (init())
-        {
-            connect();
-        }
+        init();
     }
 
     /**
@@ -366,5 +356,8 @@ public class ControlPad extends Activity
     public void setPc(final PC pc)
     {
         fPc = pc;
+
+        disconnect();
+        connect();
     }
 }

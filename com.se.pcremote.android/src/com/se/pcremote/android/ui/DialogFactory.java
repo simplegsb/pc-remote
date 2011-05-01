@@ -684,7 +684,6 @@ public final class DialogFactory
                     PreferenceManager.getDefaultSharedPreferences(activity).edit().putString("activePc", pc.getUri().toString()).commit();
 
                     ((ControlPad) activity).setPc(pc);
-                    ((ControlPad) activity).connect();
                 }
                 catch (Exception e)
                 {
