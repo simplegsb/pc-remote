@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.View.OnKeyListener;
 
 import com.se.pcremote.android.Key;
-import com.se.pcremote.client.PCRemoteClient;
 
 /**
  * <p>
@@ -79,8 +78,7 @@ public class ImeListener implements OnKeyListener
         if (fControlPad.getConnection() != null)
         {
             // If the PC Remote Client is currently connected to a server.
-            PCRemoteClient client = fControlPad.getConnection().getClient();
-            if (client != null && client.isConnected())
+            if (fControlPad.getConnection().checkConnection())
             {
                 // If the Key has been pressed.
                 if (event.getAction() == KeyEvent.ACTION_DOWN)
@@ -96,10 +94,10 @@ public class ImeListener implements OnKeyListener
                             // If shift is required but has not been pressed by the IME, press is manually.
                             if (key.isServerShiftRequired() && !fImeShiftPressed)
                             {
-                                client.sendCommandViaTcp("keyPress(" + SHIFT_KEY_SERVER_CODE + ");");
+                                fControlPad.getConnection().getClient().sendCommandViaTcp("keyPress(" + SHIFT_KEY_SERVER_CODE + ");");
                             }
 
-                            client.sendCommandViaTcp("keyPress(" + key.getServerCode() + ");");
+                            fControlPad.getConnection().getClient().sendCommandViaTcp("keyPress(" + key.getServerCode() + ");");
                         }
                     }
                     catch (IOException e)
@@ -138,12 +136,12 @@ public class ImeListener implements OnKeyListener
                             Key key = new Key();
                             key.loadFromAndroidKeyCode(fControlPad, keyCode, fImeAltPressed, fImeShiftPressed);
 
-                            client.sendCommandViaTcp("keyRelease(" + key.getServerCode() + ");");
+                            fControlPad.getConnection().getClient().sendCommandViaTcp("keyRelease(" + key.getServerCode() + ");");
 
                             // If shift is required but was not been pressed by the IME (it must have been pressed manually), release is manually.
                             if (key.isServerShiftRequired() && !fImeShiftPressed)
                             {
-                                client.sendCommandViaTcp("keyRelease(" + SHIFT_KEY_SERVER_CODE + ");");
+                                fControlPad.getConnection().getClient().sendCommandViaTcp("keyRelease(" + SHIFT_KEY_SERVER_CODE + ");");
                             }
                         }
                     }
@@ -152,11 +150,6 @@ public class ImeListener implements OnKeyListener
                         fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
                     }
                 }
-            }
-            // Otherwise, make sure the user has been notified that the PC Remote Client is not currently connected to a server.
-            else
-            {
-                fControlPad.getConnection().disconnect();
             }
         }
 

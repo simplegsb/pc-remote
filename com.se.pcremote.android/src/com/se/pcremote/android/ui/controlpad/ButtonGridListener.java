@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 
 import com.se.pcremote.android.Key;
-import com.se.pcremote.client.PCRemoteClient;
 
 /**
  * <p>
@@ -63,8 +62,7 @@ public class ButtonGridListener implements OnTouchListener
         if (fControlPad.getConnection() != null)
         {
             // If the PC Remote Client is currently connected to a server.
-            PCRemoteClient client = fControlPad.getConnection().getClient();
-            if (client != null && client.isConnected())
+            if (fControlPad.getConnection().checkConnection())
             {
                 try
                 {
@@ -76,19 +74,19 @@ public class ButtonGridListener implements OnTouchListener
                     {
                         if (key.isServerShiftRequired())
                         {
-                            client.sendCommandViaTcp("keyPress(" + SHIFT_KEY_SERVER_CODE + ");");
+                            fControlPad.getConnection().getClient().sendCommandViaTcp("keyPress(" + SHIFT_KEY_SERVER_CODE + ");");
                         }
 
-                        client.sendCommandViaTcp("keyPress(" + key.getServerCode() + ");");
+                        fControlPad.getConnection().getClient().sendCommandViaTcp("keyPress(" + key.getServerCode() + ");");
                     }
                     // If the button has been released.
                     else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
-                        client.sendCommandViaTcp("keyRelease(" + key.getServerCode() + ");");
+                        fControlPad.getConnection().getClient().sendCommandViaTcp("keyRelease(" + key.getServerCode() + ");");
 
                         if (key.isServerShiftRequired())
                         {
-                            client.sendCommandViaTcp("keyRelease(" + SHIFT_KEY_SERVER_CODE + ");");
+                            fControlPad.getConnection().getClient().sendCommandViaTcp("keyRelease(" + SHIFT_KEY_SERVER_CODE + ");");
                         }
                     }
                 }
@@ -96,11 +94,6 @@ public class ButtonGridListener implements OnTouchListener
                 {
                     fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
                 }
-            }
-            // Otherwise, make sure the user has been notified that the PC Remote Client is not currently connected to a server.
-            else
-            {
-                fControlPad.getConnection().disconnect();
             }
         }
 

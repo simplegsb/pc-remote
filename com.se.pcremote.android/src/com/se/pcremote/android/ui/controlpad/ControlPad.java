@@ -122,7 +122,7 @@ public class ControlPad extends Activity
      * Connects to the active {@link com.se.pcremote.android.PC PC}.
      * </p>
      */
-    private void connect()
+    public void connect()
     {
         Intent intent = new Intent(this, PCConnection.class);
         intent.setData(fPc.getUri());
@@ -135,17 +135,10 @@ public class ControlPad extends Activity
      * Disconnects from the active {@link com.se.pcremote.android.PC PC}.
      * </p>
      */
-    private void disconnect()
+    public void disconnect()
     {
+        unbindService(fServiceConnection);
         stopService(new Intent(this, PCConnection.class));
-    }
-
-    @Override
-    public void finish()
-    {
-        disconnect();
-
-        super.finish();
     }
 
     /**
@@ -289,7 +282,7 @@ public class ControlPad extends Activity
     @Override
     protected void onDestroy()
     {
-        unbindService(fServiceConnection);
+        disconnect();
 
         super.onDestroy();
     }

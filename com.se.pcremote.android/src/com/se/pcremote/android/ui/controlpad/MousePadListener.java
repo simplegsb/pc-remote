@@ -5,10 +5,8 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 
 import android.preference.PreferenceManager;
-import android.view.MotionEvent;
 import android.view.GestureDetector.SimpleOnGestureListener;
-
-import com.se.pcremote.client.PCRemoteClient;
+import android.view.MotionEvent;
 
 /**
  * <p>
@@ -63,22 +61,16 @@ public class MousePadListener extends SimpleOnGestureListener
         if (fControlPad.getConnection() != null)
         {
             // If the PC Remote Client is currently connected to a server.
-            PCRemoteClient client = fControlPad.getConnection().getClient();
-            if (client != null && client.isConnected())
+            if (fControlPad.getConnection().checkConnection())
             {
                 try
                 {
-                    client.sendCommandViaTcp("mousePress(1);mouseRelease(1);mousePress(1);mouseRelease(1);");
+                    fControlPad.getConnection().getClient().sendCommandViaTcp("mousePress(1);mouseRelease(1);mousePress(1);mouseRelease(1);");
                 }
                 catch (IOException e)
                 {
                     fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
                 }
-            }
-            // Otherwise, make sure the user has been notified that the PC Remote Client is not currently connected to a server.
-            else
-            {
-                fControlPad.getConnection().disconnect();
             }
         }
 
@@ -92,22 +84,17 @@ public class MousePadListener extends SimpleOnGestureListener
         if (fControlPad.getConnection() != null)
         {
             // If the PC Remote Client is currently connected to a server.
-            PCRemoteClient client = fControlPad.getConnection().getClient();
-            if (client != null && client.isConnected())
+            if (fControlPad.getConnection().checkConnection())
             {
                 try
                 {
-                    client.sendCommandViaTcp("mouseMoveRelative(" + distanceX * fMouseSensitivity + "," + distanceY * fMouseSensitivity + ");");
+                    fControlPad.getConnection().getClient()
+                            .sendCommandViaTcp("mouseMoveRelative(" + distanceX * fMouseSensitivity + "," + distanceY * fMouseSensitivity + ");");
                 }
                 catch (IOException e)
                 {
                     fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
                 }
-            }
-            // Otherwise, make sure the user has been notified that the PC Remote Client is not currently connected to a server.
-            else
-            {
-                fControlPad.getConnection().disconnect();
             }
         }
 
@@ -121,22 +108,16 @@ public class MousePadListener extends SimpleOnGestureListener
         if (fControlPad.getConnection() != null)
         {
             // If the PC Remote Client is currently connected to a server.
-            PCRemoteClient client = fControlPad.getConnection().getClient();
-            if (client != null && client.isConnected())
+            if (fControlPad.getConnection().checkConnection())
             {
                 try
                 {
-                    client.sendCommandViaTcp("mousePress(1);mouseRelease(1);");
+                    fControlPad.getConnection().getClient().sendCommandViaTcp("mousePress(1);mouseRelease(1);");
                 }
                 catch (IOException e)
                 {
                     fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
                 }
-            }
-            // Otherwise, make sure the user has been notified that the PC Remote Client is not currently connected to a server.
-            else
-            {
-                fControlPad.getConnection().disconnect();
             }
         }
 

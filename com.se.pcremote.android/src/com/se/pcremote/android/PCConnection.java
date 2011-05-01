@@ -108,6 +108,25 @@ public class PCConnection extends Service
         fNotifiedOfDisconnection = false;
     }
 
+    public boolean checkConnection()
+    {
+        boolean connected = false;
+
+        if (fClient != null)
+        {
+            if (fClient.isConnected())
+            {
+                connected = true;
+            }
+            else if (fConnectionThread != null && !fConnectionThread.isAlive())
+            {
+                notifyDisconnected();
+            }
+        }
+
+        return (connected);
+    }
+
     /**
      * <p>
      * Connects to the {@link com.se.pcremote.android.PC PC} on a separate thread.
@@ -169,16 +188,10 @@ public class PCConnection extends Service
                         if (fConnectionThread != null && fConnectionThread.isAlive())
                         {
                             fConnectionThread.interrupt();
-                            synchronized (fConnectionThread)
-                            {
-                                fConnectionThread.wait();
-                            }
+                            fConnectionThread.join();
                         }
 
-                        if (fClient.isConnected())
-                        {
-                            fClient.dispose();
-                        }
+                        fClient.dispose();
                         notifyDisconnected();
                     }
                     catch (Exception e)
@@ -320,9 +333,9 @@ public class PCConnection extends Service
     @Override
     public void onDestroy()
     {
-        super.onDestroy();
-
         disconnect();
+
+        super.onDestroy();
     }
 
     @Override
