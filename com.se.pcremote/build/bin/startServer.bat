@@ -1,1 +1,1 @@
-java -classpath "../lib/*" com.se.pcremote.server.PCRemoteServer $1
+java -classpath "../lib/*" com.se.pcremote.server.PCRemoteServer %1
