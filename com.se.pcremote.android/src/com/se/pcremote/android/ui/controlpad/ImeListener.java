@@ -74,23 +74,22 @@ public class ImeListener implements OnKeyListener
     @Override
     public boolean onKey(final View view, final int keyCode, final KeyEvent event)
     {
-        // If the Control Pad has been connected to the PC Connection service.
-        if (fControlPad.getConnection() != null)
+        // If the Control Pad is currently connected to the PC Connection service.
+        if (fControlPad.getConnection() != null && fControlPad.getConnection().checkConnection())
         {
-            // If the PC Remote Client is currently connected to a server.
-            if (fControlPad.getConnection().checkConnection())
+            // If the Key has been pressed.
+            if (event.getAction() == KeyEvent.ACTION_DOWN)
             {
-                // If the Key has been pressed.
-                if (event.getAction() == KeyEvent.ACTION_DOWN)
+                try
                 {
-                    try
+                    // Do not send ALT Key commands.
+                    if (keyCode != KeyEvent.KEYCODE_ALT_LEFT)
                     {
-                        // Do not send ALT Key commands.
-                        if (keyCode != KeyEvent.KEYCODE_ALT_LEFT)
-                        {
-                            Key key = new Key();
-                            key.loadFromAndroidKeyCode(fControlPad, keyCode, fImeAltPressed, fImeShiftPressed);
+                        Key key = new Key();
+                        key.loadFromAndroidKeyCode(fControlPad, keyCode, fImeAltPressed, fImeShiftPressed);
 
+                        if (key.getId() != 0)
+                        {
                             // If shift is required but has not been pressed by the IME, press is manually.
                             if (key.isServerShiftRequired() && !fImeShiftPressed)
                             {
@@ -100,42 +99,45 @@ public class ImeListener implements OnKeyListener
                             fControlPad.getConnection().getClient().sendCommandViaTcp("keyPress(" + key.getServerCode() + ");");
                         }
                     }
-                    catch (IOException e)
-                    {
-                        fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
-                    }
-
-                    // Register changes in the state of the modifier Keys.
-                    if (keyCode == KeyEvent.KEYCODE_ALT_LEFT)
-                    {
-                        fImeAltPressed = true;
-                    }
-                    else if (keyCode == KeyEvent.KEYCODE_SHIFT_LEFT)
-                    {
-                        fImeShiftPressed = true;
-                    }
                 }
-                // If the Key has been released.
-                else if (event.getAction() == KeyEvent.ACTION_UP)
+                catch (IOException e)
                 {
-                    // Register changes in the state of the modifier Keys.
-                    if (keyCode == KeyEvent.KEYCODE_ALT_LEFT)
-                    {
-                        fImeAltPressed = false;
-                    }
-                    else if (keyCode == KeyEvent.KEYCODE_SHIFT_LEFT)
-                    {
-                        fImeShiftPressed = false;
-                    }
+                    fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
+                }
 
-                    try
+                // Register changes in the state of the modifier Keys.
+                if (keyCode == KeyEvent.KEYCODE_ALT_LEFT)
+                {
+                    fImeAltPressed = true;
+                }
+                else if (keyCode == KeyEvent.KEYCODE_SHIFT_LEFT)
+                {
+                    fImeShiftPressed = true;
+                }
+            }
+            // If the Key has been released.
+            else if (event.getAction() == KeyEvent.ACTION_UP)
+            {
+                // Register changes in the state of the modifier Keys.
+                if (keyCode == KeyEvent.KEYCODE_ALT_LEFT)
+                {
+                    fImeAltPressed = false;
+                }
+                else if (keyCode == KeyEvent.KEYCODE_SHIFT_LEFT)
+                {
+                    fImeShiftPressed = false;
+                }
+
+                try
+                {
+                    // Do not send ALT Key commands.
+                    if (keyCode != KeyEvent.KEYCODE_ALT_LEFT)
                     {
-                        // Do not send ALT Key commands.
-                        if (keyCode != KeyEvent.KEYCODE_ALT_LEFT)
+                        Key key = new Key();
+                        key.loadFromAndroidKeyCode(fControlPad, keyCode, fImeAltPressed, fImeShiftPressed);
+
+                        if (key.getId() != 0)
                         {
-                            Key key = new Key();
-                            key.loadFromAndroidKeyCode(fControlPad, keyCode, fImeAltPressed, fImeShiftPressed);
-
                             fControlPad.getConnection().getClient().sendCommandViaTcp("keyRelease(" + key.getServerCode() + ");");
 
                             // If shift is required but was not been pressed by the IME (it must have been pressed manually), release is manually.
@@ -145,10 +147,10 @@ public class ImeListener implements OnKeyListener
                             }
                         }
                     }
-                    catch (IOException e)
-                    {
-                        fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
-                    }
+                }
+                catch (IOException e)
+                {
+                    fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
                 }
             }
         }

@@ -48,27 +48,23 @@ public class MouseButtonListener implements OnClickListener
     @Override
     public void onClick(final View view)
     {
-        // If the Control Pad has been connected to the PC Connection service.
-        if (fControlPad.getConnection() != null)
+        // If the Control Pad is currently connected to the PC Connection service.
+        if (fControlPad.getConnection() != null && fControlPad.getConnection().checkConnection())
         {
-            // If the PC Remote Client is currently connected to a server.
-            if (fControlPad.getConnection().checkConnection())
+            try
             {
-                try
+                if (view.getId() == ControlPadView.MOUSE_BUTTON_LEFT)
                 {
-                    if (view.getId() == ControlPadView.MOUSE_BUTTON_LEFT)
-                    {
-                        fControlPad.getConnection().getClient().sendCommandViaTcp("mousePress(1);mouseRelease(1);");
-                    }
-                    else if (view.getId() == ControlPadView.MOUSE_BUTTON_RIGHT)
-                    {
-                        fControlPad.getConnection().getClient().sendCommandViaTcp("mousePress(3);mouseRelease(3);");
-                    }
+                    fControlPad.getConnection().getClient().sendCommandViaTcp("mousePress(1);mouseRelease(1);");
                 }
-                catch (IOException e)
+                else if (view.getId() == ControlPadView.MOUSE_BUTTON_RIGHT)
                 {
-                    fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
+                    fControlPad.getConnection().getClient().sendCommandViaTcp("mousePress(3);mouseRelease(3);");
                 }
+            }
+            catch (IOException e)
+            {
+                fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
             }
         }
     }

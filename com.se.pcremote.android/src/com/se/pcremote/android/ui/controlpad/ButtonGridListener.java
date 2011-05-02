@@ -58,42 +58,38 @@ public class ButtonGridListener implements OnTouchListener
     @Override
     public boolean onTouch(final View view, final MotionEvent event)
     {
-        // If the Control Pad has been connected to the PC Connection service.
-        if (fControlPad.getConnection() != null)
+        // If the Control Pad is currently connected to the PC Connection service.
+        if (fControlPad.getConnection() != null && fControlPad.getConnection().checkConnection())
         {
-            // If the PC Remote Client is currently connected to a server.
-            if (fControlPad.getConnection().checkConnection())
+            try
             {
-                try
+                Key key = new Key();
+                key.loadFromId(fControlPad, view.getId());
+
+                // If the button has been pressed.
+                if (event.getAction() == MotionEvent.ACTION_DOWN)
                 {
-                    Key key = new Key();
-                    key.loadFromId(fControlPad, view.getId());
-
-                    // If the button has been pressed.
-                    if (event.getAction() == MotionEvent.ACTION_DOWN)
+                    if (key.isServerShiftRequired())
                     {
-                        if (key.isServerShiftRequired())
-                        {
-                            fControlPad.getConnection().getClient().sendCommandViaTcp("keyPress(" + SHIFT_KEY_SERVER_CODE + ");");
-                        }
-
-                        fControlPad.getConnection().getClient().sendCommandViaTcp("keyPress(" + key.getServerCode() + ");");
+                        fControlPad.getConnection().getClient().sendCommandViaTcp("keyPress(" + SHIFT_KEY_SERVER_CODE + ");");
                     }
-                    // If the button has been released.
-                    else if (event.getAction() == MotionEvent.ACTION_UP)
-                    {
-                        fControlPad.getConnection().getClient().sendCommandViaTcp("keyRelease(" + key.getServerCode() + ");");
 
-                        if (key.isServerShiftRequired())
-                        {
-                            fControlPad.getConnection().getClient().sendCommandViaTcp("keyRelease(" + SHIFT_KEY_SERVER_CODE + ");");
-                        }
+                    fControlPad.getConnection().getClient().sendCommandViaTcp("keyPress(" + key.getServerCode() + ");");
+                }
+                // If the button has been released.
+                else if (event.getAction() == MotionEvent.ACTION_UP)
+                {
+                    fControlPad.getConnection().getClient().sendCommandViaTcp("keyRelease(" + key.getServerCode() + ");");
+
+                    if (key.isServerShiftRequired())
+                    {
+                        fControlPad.getConnection().getClient().sendCommandViaTcp("keyRelease(" + SHIFT_KEY_SERVER_CODE + ");");
                     }
                 }
-                catch (IOException e)
-                {
-                    fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
-                }
+            }
+            catch (IOException e)
+            {
+                fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
             }
         }
 

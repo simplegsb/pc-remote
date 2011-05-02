@@ -57,20 +57,16 @@ public class MousePadListener extends SimpleOnGestureListener
     @Override
     public boolean onDoubleTap(final MotionEvent event)
     {
-        // If the Control Pad has been connected to the PC Connection service.
-        if (fControlPad.getConnection() != null)
+        // If the Control Pad is currently connected to the PC Connection service.
+        if (fControlPad.getConnection() != null && fControlPad.getConnection().checkConnection())
         {
-            // If the PC Remote Client is currently connected to a server.
-            if (fControlPad.getConnection().checkConnection())
+            try
             {
-                try
-                {
-                    fControlPad.getConnection().getClient().sendCommandViaTcp("mousePress(1);mouseRelease(1);mousePress(1);mouseRelease(1);");
-                }
-                catch (IOException e)
-                {
-                    fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
-                }
+                fControlPad.getConnection().getClient().sendCommandViaTcp("mousePress(1);mouseRelease(1);mousePress(1);mouseRelease(1);");
+            }
+            catch (IOException e)
+            {
+                fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
             }
         }
 
@@ -80,21 +76,17 @@ public class MousePadListener extends SimpleOnGestureListener
     @Override
     public boolean onScroll(final MotionEvent event1, final MotionEvent event2, final float distanceX, final float distanceY)
     {
-        // If the Control Pad has been connected to the PC Connection service.
-        if (fControlPad.getConnection() != null)
+        // If the Control Pad is currently connected to the PC Connection service.
+        if (fControlPad.getConnection() != null && fControlPad.getConnection().checkConnection())
         {
-            // If the PC Remote Client is currently connected to a server.
-            if (fControlPad.getConnection().checkConnection())
+            try
             {
-                try
-                {
-                    fControlPad.getConnection().getClient()
-                            .sendCommandViaTcp("mouseMoveRelative(" + distanceX * fMouseSensitivity + "," + distanceY * fMouseSensitivity + ");");
-                }
-                catch (IOException e)
-                {
-                    fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
-                }
+                fControlPad.getConnection().getClient()
+                        .sendCommandViaTcp("mouseMoveRelative(" + distanceX * fMouseSensitivity + "," + distanceY * fMouseSensitivity + ");");
+            }
+            catch (IOException e)
+            {
+                fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
             }
         }
 
@@ -104,20 +96,16 @@ public class MousePadListener extends SimpleOnGestureListener
     @Override
     public boolean onSingleTapConfirmed(final MotionEvent event)
     {
-        // If the Control Pad has been connected to the PC Connection service.
-        if (fControlPad.getConnection() != null)
+        // If the Control Pad is currently connected to the PC Connection service.
+        if (fControlPad.getConnection() != null && fControlPad.getConnection().checkConnection())
         {
-            // If the PC Remote Client is currently connected to a server.
-            if (fControlPad.getConnection().checkConnection())
+            try
             {
-                try
-                {
-                    fControlPad.getConnection().getClient().sendCommandViaTcp("mousePress(1);mouseRelease(1);");
-                }
-                catch (IOException e)
-                {
-                    fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
-                }
+                fControlPad.getConnection().getClient().sendCommandViaTcp("mousePress(1);mouseRelease(1);");
+            }
+            catch (IOException e)
+            {
+                fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
             }
         }
 

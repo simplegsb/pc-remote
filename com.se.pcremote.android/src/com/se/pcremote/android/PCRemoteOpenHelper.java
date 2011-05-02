@@ -67,9 +67,13 @@ public class PCRemoteOpenHelper extends SQLiteOpenHelper
                 + PCRemoteProvider.LAYOUT_COLUMN_NAME + ")";
         // 'Standard' Layout.
         db.execSQL(layoutInsertInto
-                + " values (3, '0:0:10,0:1:4,0:2:12,1:0:2,1:1:9,1:2:3,2:0:6,2:1:1,2:2:40', 3, 'true', 'true', 'true', 'true', 'Standard')");
+                + " values (3, '0:0:10,0:1:4,0:2:12,1:0:2,1:1:9,1:2:3,2:0:6,2:1:1,2:2:40', 3, 'true', 'true', 'false', 'true', 'Standard')");
+        // 'Full' Layout.
+        db.execSQL(layoutInsertInto
+                + " values (3, '0:0:10,0:1:4,0:2:12,1:0:2,1:1:9,1:2:3,2:0:6,2:1:1,2:2:40', 3, 'true', 'true', 'true', 'true', 'Full')");
         // TODO Add media layout
         // db.execSQL(layoutInsertInto + " values (2, '0:0:9,0:1:10,0:2:5,1:0:8,1:1:7,1:2:6', 3, 'true', 'true', 'true', 'true', 'Media')");
+        // 'Mouse Only' layout.
         db.execSQL(layoutInsertInto + " values (3, null, 3, 'false', 'false', 'true', 'true', 'Mouse Only')");
 
         // Create Key table.
@@ -180,32 +184,22 @@ public class PCRemoteOpenHelper extends SQLiteOpenHelper
         db.execSQL(keyInsertInto + " values (14, -1, 'false', 'false', '7', 55, 'false')");
         db.execSQL(keyInsertInto + " values (15, -1, 'false', 'false', '8', 56, 'false')");
         db.execSQL(keyInsertInto + " values (16, -1, 'false', 'false', '9', 57, 'false')");
-        // Java constant for '@' prints '2', need to use shift.
-        db.execSQL(keyInsertInto + " values (77, -1, 'false', 'false', '@', 512, 'true')");
-        // No Java constant for '#', need to use shift.
+        db.execSQL(keyInsertInto + " values (77, -1, 'false', 'false', '@', 50, 'true')");
         db.execSQL(keyInsertInto + " values (18, -1, 'false', 'false', '#', 51, 'true')");
-        // Java constant for '$' prints '4', need to use shift.
-        db.execSQL(keyInsertInto + " values (11, -1, 'false', 'true', '$', 515, 'true')");
-        // No Java constant for '%', need to use shift.
+        db.execSQL(keyInsertInto + " values (11, -1, 'false', 'true', '$', 52, 'true')");
         db.execSQL(keyInsertInto + " values (12, -1, 'false', 'true', '%', 53, 'true')");
-        // Java constant for '&' prints '7', need to use shift.
-        db.execSQL(keyInsertInto + " values (14, -1, 'false', 'true', '&', 150, 'true')");
-        // Java constant for '*' (151) prints '8', need to use shift.
+        db.execSQL(keyInsertInto + " values (14, -1, 'false', 'true', '&', 55, 'true')");
         db.execSQL(keyInsertInto + " values (17, -1, 'false', 'false', '*', 56, 'true')");
         db.execSQL(keyInsertInto + " values (69, -1, 'false', 'false', '-', 45, 'false')");
-        // Java constant for '+' prints '=', need to use shift.
         db.execSQL(keyInsertInto + " values (81, -1, 'false', 'false', '+', 521, 'true')");
-        db.execSQL(keyInsertInto + " values (16, -1, 'false', 'true', '(', 519, 'false')");
-        db.execSQL(keyInsertInto + " values (7, -1, 'false', 'true', ')', 522, 'false')");
-        // Java constant for '!' prints '1', need to use shift.
-        db.execSQL(keyInsertInto + " values (8, -1, 'false', 'true', '!', 517, 'true')");
+        db.execSQL(keyInsertInto + " values (16, -1, 'false', 'true', '(', 57, 'false')");
+        db.execSQL(keyInsertInto + " values (7, -1, 'false', 'true', ')', 48, 'false')");
+        db.execSQL(keyInsertInto + " values (8, -1, 'false', 'true', '!', 49, 'true')");
         db.execSQL(keyInsertInto + " values (75, -1, 'false', 'true', '\"', 152, 'true')");
         db.execSQL(keyInsertInto + " values (75, -1, 'false', 'false', '''', 152, 'false')");
-        // Java constant for ':' prints ';', need to use shift.
-        db.execSQL(keyInsertInto + " values (56, -1, 'false', 'true', ':', 513, 'true')");
+        db.execSQL(keyInsertInto + " values (56, -1, 'false', 'true', ':', 59, 'true')");
         db.execSQL(keyInsertInto + " values (74, -1, 'false', 'false', ';', 59, 'false')");
         db.execSQL(keyInsertInto + " values (76, -1, 'false', 'false', '/', 47, 'false')");
-        // No Java constant for '?', need to use shift.
         db.execSQL(keyInsertInto + " values (76, -1, 'false', 'true', '?', 47, 'true')");
 
         // Function 'F' Keys

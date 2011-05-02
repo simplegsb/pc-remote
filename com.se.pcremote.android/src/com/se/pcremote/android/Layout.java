@@ -102,7 +102,7 @@ public class Layout
     public Layout()
     {
         fButtonGridHeight = DEFATULT_BUTTON_GRID_SIZE;
-        fButtonGridMap = "0:0:1,0:1:2,0:2:3";
+        fButtonGridMap = "0:0:10,0:1:4,0:2:12,1:0:2,1:1:9,1:2:3,2:0:6,2:1:1,2:2:40";
         fButtonGridWidth = DEFATULT_BUTTON_GRID_SIZE;
         fHasButtonGrid = true;
         fHasKeyboardButton = true;
