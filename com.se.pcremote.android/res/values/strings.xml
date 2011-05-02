@@ -64,7 +64,7 @@
     <string name="mime_type_pc">vnd.android.cursor.dir/com.se.pcremote.pc</string>
     <string name="mime_type_pc_id">vnd.android.cursor.item/com.se.pcremote.pc</string>
     <string name="pc_category">PCs</string>
-    <string name="pc_host">Host or IP Address</string>
+    <string name="pc_host">IP Address</string>
     <string name="pc_name">Name</string>
     <string name="pc_port">Port</string>
     <string name="pc_preferences">PC Settings</string>
