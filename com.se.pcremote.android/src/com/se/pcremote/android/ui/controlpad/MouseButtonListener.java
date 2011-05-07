@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
+import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -56,10 +57,12 @@ public class MouseButtonListener implements OnClickListener
                 if (view.getId() == ControlPadView.MOUSE_BUTTON_LEFT)
                 {
                     fControlPad.getConnection().getClient().sendCommandViaTcp("mousePress(1);mouseRelease(1);");
+                    view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                 }
                 else if (view.getId() == ControlPadView.MOUSE_BUTTON_RIGHT)
                 {
                     fControlPad.getConnection().getClient().sendCommandViaTcp("mousePress(3);mouseRelease(3);");
+                    view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                 }
             }
             catch (IOException e)

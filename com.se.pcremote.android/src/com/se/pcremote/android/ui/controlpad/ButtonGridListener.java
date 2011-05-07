@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
+import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -75,6 +76,7 @@ public class ButtonGridListener implements OnTouchListener
                     }
 
                     fControlPad.getConnection().getClient().sendCommandViaTcp("keyPress(" + key.getServerCode() + ");");
+                    view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                 }
                 // If the button has been released.
                 else if (event.getAction() == MotionEvent.ACTION_UP)

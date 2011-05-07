@@ -6,7 +6,9 @@ import org.apache.log4j.Logger;
 
 import android.preference.PreferenceManager;
 import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
+import android.view.View;
 
 /**
  * <p>
@@ -34,6 +36,13 @@ public class MousePadListener extends SimpleOnGestureListener
 
     /**
      * <p>
+     * The {@link android.view.View View} of the mouse pad.
+     * </p>
+     */
+    private View fMousePadView;
+
+    /**
+     * <p>
      * The factor to multiply the mouse movements by.
      * </p>
      */
@@ -46,11 +55,13 @@ public class MousePadListener extends SimpleOnGestureListener
      * 
      * @param controlPad The {@link com.se.pcremote.android.ui.controlpad.ControlPad ControlPad} this <code>MousePadListener</code> sends commands to
      * the active {@link com.se.pcremote.android.PC PC} for.
+     * @param mousePadView The {@link android.view.View View} of the mouse pad.
      */
-    public MousePadListener(final ControlPad controlPad)
+    public MousePadListener(final ControlPad controlPad, final View mousePadView)
     {
         fControlPad = controlPad;
         fLogger = Logger.getLogger(getClass());
+        fMousePadView = mousePadView;
         fMouseSensitivity = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(fControlPad).getString("mouseSensitivity", "1"));
     }
 
@@ -91,6 +102,26 @@ public class MousePadListener extends SimpleOnGestureListener
         }
 
         return (true);
+    }
+
+    @Override
+    public void onLongPress(final MotionEvent event)
+    {
+        super.onLongPress(event);
+
+        // If the Control Pad is currently connected to the PC Connection service.
+        if (fControlPad.getConnection() != null && fControlPad.getConnection().checkConnection())
+        {
+            try
+            {
+                fControlPad.getConnection().getClient().sendCommandViaTcp("mousePress(1);");
+                fMousePadView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+            }
+            catch (IOException e)
+            {
+                fLogger.error("Failed to send the command to PC '" + fControlPad.getPc().getName() + "'.", e);
+            }
+        }
     }
 
     @Override

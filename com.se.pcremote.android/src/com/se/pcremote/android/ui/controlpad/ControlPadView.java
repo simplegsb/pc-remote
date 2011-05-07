@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.view.GestureDetector;
 import android.view.Gravity;
+import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -255,6 +256,7 @@ public class ControlPadView extends LinearLayout
             {
                 InputMethodManager inputMgr = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputMgr.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
             }
         });
 
@@ -331,7 +333,7 @@ public class ControlPadView extends LinearLayout
         mousePad.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1.0f));
         mousePad.setBackgroundResource(R.drawable.mouse_pad_border);
 
-        final GestureDetector gestureDetector = new GestureDetector(getContext(), new MousePadListener(fControlPad));
+        final GestureDetector gestureDetector = new GestureDetector(getContext(), new MousePadListener(fControlPad, mousePad));
         mousePad.setOnTouchListener(new OnTouchListener()
         {
             @Override
