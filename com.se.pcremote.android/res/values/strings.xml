@@ -58,16 +58,20 @@
 	<!-- PCs -->
     <string name="active_pc">Active PC</string>
 	<string name="delete_pcs">Delete PCs</string>
+    <string name="detect_pcs">Detect PCs</string>
     <string name="insert_pc">Create PC</string>
     <string name="manage_pcs">Manage PCs</string>
     <string name="manage_pcs_summary">Manage the PCs that can be controlled</string>
     <string name="mime_type_pc">vnd.android.cursor.dir/com.se.pcremote.pc</string>
     <string name="mime_type_pc_id">vnd.android.cursor.item/com.se.pcremote.pc</string>
     <string name="pc_category">PCs</string>
+    <string name="pc_exists">PC already exists</string>
     <string name="pc_host">IP Address</string>
     <string name="pc_name">Name</string>
     <string name="pc_port">Port</string>
     <string name="pc_preferences">PC Settings</string>
+    <string name="pc_server_detected">PC Remote Server detected!</string>
+    <string name="pc_server_not_detected">PC Remote Server not detected</string>
 	<string name="switch_pc">Switch PC</string>
     <string name="switch_pc_short">PC</string>
 </resources>

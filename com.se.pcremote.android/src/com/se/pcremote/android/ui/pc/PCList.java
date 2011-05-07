@@ -86,6 +86,11 @@ public class PCList extends ListActivity
             showDialog(DialogFactory.DIALOG_DELETE_PCS_ID);
             return (true);
         }
+        else if (item.getItemId() == R.id.detect_pcs)
+        {
+            startActivity(new Intent(this, DetectPCs.class));
+            return (true);
+        }
         else
         {
             return (super.onOptionsItemSelected(item));

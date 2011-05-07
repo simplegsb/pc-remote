@@ -62,6 +62,12 @@ public class PCPreferences extends PreferenceActivity implements OnSharedPrefere
         editor.putString("pcName", fPc.getName());
         editor.putString("pcHost", fPc.getHost());
         editor.putString("pcPort", String.valueOf(fPc.getPort()));
+
+        if (getIntent().hasExtra("host"))
+        {
+            editor.putString("pcHost", getIntent().getExtras().getString("host"));
+        }
+
         editor.commit();
     }
 

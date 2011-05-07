@@ -39,6 +39,7 @@
 			</intent-filter>
 		</activity>
 		<activity android:name=".ui.MainPreferences" />
+        <activity android:name=".ui.pc.DetectPCs" android:label="@string/detect_pcs" />
 		<activity android:name=".ui.pc.PCList" android:label="@string/manage_pcs">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />

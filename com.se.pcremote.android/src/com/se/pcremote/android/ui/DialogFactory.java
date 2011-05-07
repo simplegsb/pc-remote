@@ -2,21 +2,21 @@ package com.se.pcremote.android.ui;
 
 import org.apache.log4j.Logger;
 
-import com.se.pcremote.android.Layout;
-import com.se.pcremote.android.PC;
-import com.se.pcremote.android.PCRemoteProvider;
-import com.se.pcremote.android.ui.controlpad.ControlPad;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentUris;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
+import android.content.Intent;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
+
+import com.se.pcremote.android.Layout;
+import com.se.pcremote.android.PC;
+import com.se.pcremote.android.PCRemoteProvider;
+import com.se.pcremote.android.ui.controlpad.ControlPad;
 
 /**
  * <p>

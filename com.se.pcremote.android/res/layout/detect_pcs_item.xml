@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="wrap_content"
+	android:id="@+id/detect_pcs_item" android:orientation="vertical">
+	<TextView android:id="@+id/detect_pcs_host_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingTop="10dp"
+		android:paddingLeft="10dp" android:textSize="24sp" />
+	<TextView android:id="@+id/pc_exists_status" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingLeft="10dp" />
+	<TextView android:id="@+id/detect_pcs_server_detection_status" android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:paddingLeft="10dp" android:paddingBottom="5dp" />
+</LinearLayout>
