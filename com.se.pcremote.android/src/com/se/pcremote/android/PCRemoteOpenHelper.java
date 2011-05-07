@@ -67,14 +67,12 @@ public class PCRemoteOpenHelper extends SQLiteOpenHelper
                 + PCRemoteProvider.LAYOUT_COLUMN_NAME + ")";
         // 'Standard' Layout.
         db.execSQL(layoutInsertInto
-                + " values (3, '0:0:10,0:1:4,0:2:12,1:0:2,1:1:9,1:2:3,2:0:6,2:1:1,2:2:40', 3, 'true', 'true', 'false', 'true', 'Standard')");
-        // 'Full' Layout.
-        db.execSQL(layoutInsertInto
-                + " values (3, '0:0:10,0:1:4,0:2:12,1:0:2,1:1:9,1:2:3,2:0:6,2:1:1,2:2:40', 3, 'true', 'true', 'true', 'true', 'Full')");
+                + " values (3, '0:0:10,0:1:4,0:2:12,1:0:2,1:1:9,1:2:3,2:0:6,2:1:1,2:2:40', 3, 'true', 'true', 'true', 'true', 'Standard')");
         // TODO Add media layout
         // db.execSQL(layoutInsertInto + " values (2, '0:0:9,0:1:10,0:2:5,1:0:8,1:1:7,1:2:6', 3, 'true', 'true', 'true', 'true', 'Media')");
         // 'Mouse Only' layout.
-        db.execSQL(layoutInsertInto + " values (3, null, 3, 'false', 'false', 'true', 'true', 'Mouse Only')");
+        db.execSQL(layoutInsertInto
+                + " values (3, '0:0:10,0:1:4,0:2:12,1:0:2,1:1:9,1:2:3,2:0:6,2:1:1,2:2:40', 3, 'false', 'false', 'true', 'true', 'Mouse Only')");
 
         // Create Key table.
         db.execSQL("create table " + PCRemoteProvider.KEY_TABLE + " (" + BaseColumns._ID + " integer primary key autoincrement, "
