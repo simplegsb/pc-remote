@@ -164,7 +164,7 @@ public class CommandExecuter
             }
             else if (methodName.equals("mouseWheel"))
             {
-                fRobot.mouseWheel(Integer.parseInt(methodParameters[0]));
+                fRobot.mouseWheel((int) Double.parseDouble(methodParameters[0]));
             }
             else
             {
