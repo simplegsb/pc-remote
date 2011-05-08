@@ -44,6 +44,7 @@
     <string name="layout_has_keyboard_button">Display Keyboard Button</string>
     <string name="layout_has_mouse_buttons">Display Mouse Buttons</string>
     <string name="layout_has_mouse_pad">Display Mouse Pad</string>
+    <string name="layout_has_mouse_pad_vertical">Display Mouse Pad Vertical Scroller</string>
     <string name="layout_keyboard_category">Keyboard</string>
     <string name="layout_mouse_category">Mouse</string>
     <string name="layout_name">Name</string>

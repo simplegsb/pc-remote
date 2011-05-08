@@ -75,6 +75,13 @@ public class Layout
 
     /**
      * <p>
+     * Determines if this <code>Layout</code> displays the vertical scrolling portion of the mouse pad.
+     * </p>
+     */
+    private boolean fHasMousePadVertical;
+
+    /**
+     * <p>
      * A unique identifier.
      * </p>
      */
@@ -108,6 +115,7 @@ public class Layout
         fHasKeyboardButton = true;
         fHasMouseButtons = true;
         fHasMousePad = true;
+        fHasMousePadVertical = true;
         fId = 0;
         fName = null;
         fNewLayout = true;
@@ -283,6 +291,18 @@ public class Layout
 
     /**
      * <p>
+     * Determines if this <code>Layout</code> displays the vertical scrolling portion of the mouse pad.
+     * </p>
+     * 
+     * @return True if this <code>Layout</code> displays the vertical scrolling portion of the mouse pad, false otherwise.
+     */
+    public boolean hasMousePadVertical()
+    {
+        return (fHasMousePadVertical);
+    }
+
+    /**
+     * <p>
      * Determines if this <code>Layout</code> was fetched from the content provider or created manually.
      * </p>
      * 
@@ -322,6 +342,8 @@ public class Layout
                         .parseBoolean(cursor.getString(cursor.getColumnIndex(PCRemoteProvider.LAYOUT_COLUMN_HAS_KEYBOARD_BUTTON)));
                 fHasMouseButtons = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(PCRemoteProvider.LAYOUT_COLUMN_HAS_MOUSE_BUTTONS)));
                 fHasMousePad = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(PCRemoteProvider.LAYOUT_COLUMN_HAS_MOUSE_PAD)));
+                fHasMousePadVertical = Boolean.parseBoolean(cursor.getString(cursor
+                        .getColumnIndex(PCRemoteProvider.LAYOUT_COLUMN_HAS_MOUSE_PAD_VERTICAL)));
                 fId = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
                 fName = cursor.getString(cursor.getColumnIndex(PCRemoteProvider.LAYOUT_COLUMN_NAME));
             }
@@ -348,6 +370,7 @@ public class Layout
         values.put(PCRemoteProvider.LAYOUT_COLUMN_HAS_KEYBOARD_BUTTON, String.valueOf(fHasKeyboardButton));
         values.put(PCRemoteProvider.LAYOUT_COLUMN_HAS_MOUSE_BUTTONS, String.valueOf(fHasMouseButtons));
         values.put(PCRemoteProvider.LAYOUT_COLUMN_HAS_MOUSE_PAD, String.valueOf(fHasMousePad));
+        values.put(PCRemoteProvider.LAYOUT_COLUMN_HAS_MOUSE_PAD_VERTICAL, String.valueOf(fHasMousePadVertical));
         values.put(PCRemoteProvider.LAYOUT_COLUMN_NAME, fName);
 
         if (fNewLayout)
@@ -476,6 +499,18 @@ public class Layout
     public void setHasMousePad(final boolean hasMousePad)
     {
         fHasMousePad = hasMousePad;
+    }
+
+    /**
+     * <p>
+     * Sets the vertical scrolling display status of this <code>Layout</code>.
+     * </p>
+     * 
+     * @param hasMousePadVertical Determines if this <code>Layout</code> displays the vertical scrolling portion of the mouse pad.
+     */
+    public void setHasMousePadVertical(final boolean hasMousePadVertical)
+    {
+        fHasMousePadVertical = hasMousePadVertical;
     }
 
     /**

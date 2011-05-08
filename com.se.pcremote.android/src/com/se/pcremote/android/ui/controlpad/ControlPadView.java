@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -63,6 +64,20 @@ public class ControlPadView extends LinearLayout
      * </p>
      */
     public static final int MOUSE_BUTTON_RIGHT = -3;
+
+    /**
+     * <p>
+     * The padding around of the vertical scrolling portion of the mouse pad.
+     * </p>
+     */
+    private static final int MOUSE_PAD_VERTICAL_PADDING = 10;
+
+    /**
+     * <p>
+     * The width of the vertical scrolling portion of the mouse pad.
+     * </p>
+     */
+    private static final int MOUSE_PAD_VERTICAL_WIDTH = 50;
 
     /**
      * <p>
@@ -329,7 +344,7 @@ public class ControlPadView extends LinearLayout
      */
     private View buildMousePad(final Layout layout)
     {
-        LinearLayout mousePad = new LinearLayout(getContext());
+        RelativeLayout mousePad = new RelativeLayout(getContext());
         mousePad.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1.0f));
         mousePad.setBackgroundResource(R.drawable.mouse_pad_border);
 
@@ -343,6 +358,29 @@ public class ControlPadView extends LinearLayout
                 return (true);
             }
         });
+
+        if (fControlPad.getLayout().hasMousePadVertical())
+        {
+            RelativeLayout mousePadVertical = new RelativeLayout(getContext());
+            RelativeLayout.LayoutParams layoutParamsVertical = new RelativeLayout.LayoutParams(MOUSE_PAD_VERTICAL_WIDTH, LayoutParams.FILL_PARENT);
+            layoutParamsVertical.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            layoutParamsVertical.setMargins(MOUSE_PAD_VERTICAL_PADDING, MOUSE_PAD_VERTICAL_PADDING, MOUSE_PAD_VERTICAL_PADDING,
+                    MOUSE_PAD_VERTICAL_PADDING);
+            mousePadVertical.setLayoutParams(layoutParamsVertical);
+            mousePadVertical.setBackgroundResource(R.drawable.mouse_pad_border);
+            mousePad.addView(mousePadVertical);
+
+            final GestureDetector gestureDetectorVertical = new GestureDetector(getContext(), new MousePadVerticalListener(fControlPad));
+            mousePadVertical.setOnTouchListener(new OnTouchListener()
+            {
+                @Override
+                public boolean onTouch(final View view, final MotionEvent event)
+                {
+                    gestureDetectorVertical.onTouchEvent(event);
+                    return (true);
+                }
+            });
+        }
 
         return (mousePad);
     }

@@ -161,6 +161,13 @@ public class PCRemoteProvider extends ContentProvider
 
     /**
      * <p>
+     * The name of the column that contains 'has mouse pad vertical' for Layouts.
+     * </p>
+     */
+    public static final String LAYOUT_COLUMN_HAS_MOUSE_PAD_VERTICAL = "has_mouse_pad_vertical";
+
+    /**
+     * <p>
      * The name of the column that contains 'names' for Layouts.
      * </p>
      */

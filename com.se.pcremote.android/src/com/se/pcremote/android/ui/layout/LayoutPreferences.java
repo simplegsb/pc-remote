@@ -101,6 +101,7 @@ public class LayoutPreferences extends PreferenceActivity implements OnSharedPre
         editor.putBoolean("layoutHasKeyboardButton", fLayout.hasKeyboardButton());
         editor.putBoolean("layoutHasMouseButtons", fLayout.hasMouseButtons());
         editor.putBoolean("layoutHasMousePad", fLayout.hasMousePad());
+        editor.putBoolean("layoutHasMousePadVertical", fLayout.hasMousePadVertical());
         editor.putString("layoutName", fLayout.getName());
         editor.commit();
     }
@@ -193,6 +194,7 @@ public class LayoutPreferences extends PreferenceActivity implements OnSharedPre
         fLayout.setHasKeyboardButton(preferences.getBoolean("layoutHasKeyboardButton", true));
         fLayout.setHasMouseButtons(preferences.getBoolean("layoutHasMouseButtons", true));
         fLayout.setHasMousePad(preferences.getBoolean("layoutHasMousePad", true));
+        fLayout.setHasMousePadVertical(preferences.getBoolean("layoutHasMousePadVertical", true));
         fLayout.setName(preferences.getString("layoutName", "New Layout"));
 
         fLayout.save(this);

@@ -12,6 +12,7 @@
     </PreferenceCategory>
 	<PreferenceCategory android:title="@string/layout_mouse_category">
 		<CheckBoxPreference android:title="@string/layout_has_mouse_pad" android:key="layoutHasMousePad" />
+        <CheckBoxPreference android:title="@string/layout_has_mouse_pad_vertical" android:key="layoutHasMousePadVertical" android:dependency="layoutHasMousePad" />
 		<CheckBoxPreference android:title="@string/layout_has_mouse_buttons" android:key="layoutHasMouseButtons" />
 	</PreferenceCategory>
 </PreferenceScreen>
