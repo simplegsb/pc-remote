@@ -91,13 +91,6 @@ public class ButtonGridMapPreference extends Preference
 
     /**
      * <p>
-     * The size of the title text.
-     * </p>
-     */
-    private static final int TITLE_TEXT_SIZE = 22;
-
-    /**
-     * <p>
      * The button grid.
      * </p>
      */
@@ -230,10 +223,11 @@ public class ButtonGridMapPreference extends Preference
         LinearLayout preference = new LinearLayout(getContext());
         preference.setOrientation(LinearLayout.VERTICAL);
 
+        int adjustedTitlePadding = (int) (TITLE_PADDING * getContext().getResources().getDisplayMetrics().density + 0.5f);
+
         TextView title = new TextView(getContext());
-        title.setPadding(TITLE_PADDING, TITLE_PADDING, TITLE_PADDING, TITLE_PADDING);
-        title.setTextColor(0xffffffff);
-        title.setTextSize(TITLE_TEXT_SIZE);
+        title.setTextAppearance(getContext(), android.R.style.TextAppearance_Large);
+        title.setPadding(adjustedTitlePadding, adjustedTitlePadding, adjustedTitlePadding, adjustedTitlePadding);
         title.setText(getTitle());
         preference.addView(title);
 

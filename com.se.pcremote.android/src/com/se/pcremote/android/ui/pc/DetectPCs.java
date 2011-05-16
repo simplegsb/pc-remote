@@ -117,7 +117,7 @@ public class DetectPCs extends ListActivity
 
         getListView().addFooterView(fInProgressView);
         setListAdapter(new DetectPCsAdapter(this, fDetectedPcMaps, R.layout.detect_pcs_item, new String[] {"host_name", "pc_exists_status",
-                "server_detection_status"}, new int[] {R.id.detect_pcs_host_name, R.id.pc_exists_status, R.id.detect_pcs_server_detection_status}));
+                "server_detection_status"}, new int[] {R.id.detect_pcs_host_name, R.id.detect_pcs_exists_status, R.id.detect_pcs_server_detection_status}));
 
         getListView().setTextFilterEnabled(true);
 

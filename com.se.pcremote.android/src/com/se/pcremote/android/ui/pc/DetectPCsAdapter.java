@@ -4,8 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.se.pcremote.android.R;
+
 import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 /**
  * <p>
@@ -36,6 +41,35 @@ public class DetectPCsAdapter extends SimpleAdapter
     public boolean areAllItemsEnabled()
     {
         return (false);
+    }
+
+    @Override
+    public View getView(final int position, final View convertView, final ViewGroup parent)
+    {
+        ViewGroup view = (ViewGroup) super.getView(position, convertView, parent);
+
+        View insertView = view.findViewById(R.id.detect_pcs_insert);
+        TextView hostNameView = (TextView) view.findViewById(R.id.detect_pcs_host_name);
+        TextView existsStatusView = (TextView) view.findViewById(R.id.detect_pcs_exists_status);
+        TextView serverDetectionStatusView = (TextView) view.findViewById(R.id.detect_pcs_server_detection_status);
+
+        // For some reason I can't apply these styles in XML.
+        hostNameView.setTextAppearance(hostNameView.getContext(), android.R.style.TextAppearance_Large);
+        existsStatusView.setTextAppearance(existsStatusView.getContext(), android.R.style.TextAppearance_Small);
+        serverDetectionStatusView.setTextAppearance(view.getContext(), android.R.style.TextAppearance_Small);
+
+        if (isEnabled(position))
+        {
+            insertView.setVisibility(View.VISIBLE);
+            existsStatusView.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            insertView.setVisibility(View.INVISIBLE);
+            existsStatusView.setVisibility(View.VISIBLE);
+        }
+
+        return (view);
     }
 
     @Override
