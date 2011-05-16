@@ -93,7 +93,7 @@ public class MousePadListener extends SimpleOnGestureListener
             try
             {
                 fControlPad.getConnection().getClient()
-                        .sendCommandViaTcp("mouseMoveRelative(" + distanceX * fMouseSensitivity + "," + distanceY * fMouseSensitivity + ");");
+                        .sendCommandViaUdp("mouseMoveRelative(" + distanceX * fMouseSensitivity + "," + distanceY * fMouseSensitivity + ");");
             }
             catch (IOException e)
             {

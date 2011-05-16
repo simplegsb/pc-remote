@@ -73,7 +73,7 @@ public class MousePadVerticalListener extends SimpleOnGestureListener
             {
                 try
                 {
-                    fControlPad.getConnection().getClient().sendCommandViaTcp("mouseWheel(" + fVerticalScroll + ");");
+                    fControlPad.getConnection().getClient().sendCommandViaUdp("mouseWheel(" + fVerticalScroll + ");");
                     fVerticalScroll -= Math.floor(fVerticalScroll);
                 }
                 catch (IOException e)
@@ -85,7 +85,7 @@ public class MousePadVerticalListener extends SimpleOnGestureListener
             {
                 try
                 {
-                    fControlPad.getConnection().getClient().sendCommandViaTcp("mouseWheel(" + fVerticalScroll + ");");
+                    fControlPad.getConnection().getClient().sendCommandViaUdp("mouseWheel(" + fVerticalScroll + ");");
                     fVerticalScroll -= Math.ceil(fVerticalScroll);
                 }
                 catch (IOException e)
