@@ -11,18 +11,19 @@
  */
 package com.se.pcremote.server;
 
-import java.net.Socket;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 
 import org.apache.log4j.Logger;
 
 /**
  * <p>
- * Handles commands received from a single PC Remote Client via TCP.
+ * Handles commands received from a single PC Remote Client via UDP.
  * </p>
  * 
  * @author Gary Buyn
  */
-public class TcpClient extends com.se.devenvy.net.TcpClient
+public class UdpClient extends com.se.devenvy.net.UdpClient
 {
     /**
      * <p>
@@ -40,24 +41,24 @@ public class TcpClient extends com.se.devenvy.net.TcpClient
 
     /**
      * <p>
-     * Creates an instance of <code>TcpClient</code>.
+     * Creates an instance of <code>UdpClient</code>.
      * </p>
      * 
-     * @param socket The socket over which the TCP connection is made.
+     * @param datagramSocket The socket over which the UDP data is sent and received.
      * @param commandExecuter Executes the commands.
      */
-    public TcpClient(final Socket socket, final CommandExecuter commandExecuter)
+    public UdpClient(final DatagramSocket datagramSocket, final CommandExecuter commandExecuter)
     {
-        super(socket);
+        super(datagramSocket);
 
         fCommandExecuter = commandExecuter;
         fLogger = Logger.getLogger(getClass());
     }
 
     @Override
-    protected void onReceiveData(final byte[] data, final int dataLength)
+    protected void onReceiveData(final DatagramPacket packet)
     {
-        String commands = new String(data, 0, dataLength);
+        String commands = new String(packet.getData(), 0, packet.getLength());
 
         for (String command : commands.split(";"))
         {

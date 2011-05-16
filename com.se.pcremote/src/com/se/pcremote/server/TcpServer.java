@@ -34,7 +34,7 @@ public class TcpServer extends com.se.devenvy.net.TcpServer
 
     /**
      * <p>
-     * Creates an instance of <code>PCRemoteAcceptanceManager</code>.
+     * Creates an instance of <code>TcpServer</code>.
      * </p>
      * 
      * @param serverSocket The {@link java.net.Socket Socket} listening for new connections.
@@ -43,6 +43,7 @@ public class TcpServer extends com.se.devenvy.net.TcpServer
     public TcpServer(final ServerSocket serverSocket, final CommandExecuter commandExecuter)
     {
         super(serverSocket);
+
         fCommandExecuter = commandExecuter;
     }
 

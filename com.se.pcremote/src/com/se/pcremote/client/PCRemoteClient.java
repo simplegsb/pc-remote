@@ -269,7 +269,7 @@ public class PCRemoteClient
 
         fLogger = Logger.getLogger(PCRemoteClient.class);
         fTcpClient = null;
-        fUdpSocket = new DatagramSocket();
+        fUdpSocket = null;
     }
 
     /**
@@ -284,6 +284,10 @@ public class PCRemoteClient
         if (fTcpClient != null)
         {
             fTcpClient.dispose();
+        }
+        if (fUdpSocket != null)
+        {
+            fUdpSocket.disconnect();
         }
     }
 
@@ -321,6 +325,7 @@ public class PCRemoteClient
     public void init() throws IOException
     {
         fTcpClient = new TcpClient(new Socket(fServerHost, fServerPort));
+        fUdpSocket = new DatagramSocket();
     }
 
     /**

@@ -13,10 +13,13 @@ package com.se.pcremote.server;
 
 import java.awt.AWTException;
 import java.io.IOException;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 
 import org.apache.log4j.Logger;
+
+import com.se.devenvy.net.UdpServer;
 
 /**
  * <p>
@@ -156,13 +159,6 @@ public class PCRemoteServer
 
     /**
      * <p>
-     * The accepter of new connections requested by clients.
-     * </p>
-     */
-    private TcpServer fTcpServer;
-
-    /**
-     * <p>
      * Executes the commands.
      * </p>
      */
@@ -177,6 +173,20 @@ public class PCRemoteServer
 
     /**
      * <p>
+     * The accepter of new connections requested by clients.
+     * </p>
+     */
+    private TcpServer fTcpServer;
+
+    /**
+     * <p>
+     * Listener for UDP data from clients.
+     * </p>
+     */
+    private UdpServer fUdpServer;
+
+    /**
+     * <p>
      * Creates an instance of <code>PCRemoteServer</code>.
      * </p>
      * 
@@ -184,10 +194,11 @@ public class PCRemoteServer
      */
     public PCRemoteServer() throws AWTException
     {
-        fTcpServer = null;
         fCommandExecuter = new CommandExecuter();
         fLogger = Logger.getLogger(PCRemoteServer.class);
         fPort = DEFAULT_PORT;
+        fTcpServer = null;
+        fUdpServer = null;
     }
 
     /**
@@ -201,10 +212,11 @@ public class PCRemoteServer
      */
     public PCRemoteServer(final int port) throws AWTException
     {
-        fTcpServer = null;
         fCommandExecuter = new CommandExecuter();
         fLogger = Logger.getLogger(PCRemoteServer.class);
         fPort = port;
+        fTcpServer = null;
+        fUdpServer = null;
     }
 
     /**
@@ -229,8 +241,10 @@ public class PCRemoteServer
     public void start() throws IOException
     {
         fTcpServer = new TcpServer(new ServerSocket(fPort), fCommandExecuter);
+        fUdpServer = new UdpServer(new UdpClient(new DatagramSocket(fPort - 1), fCommandExecuter));
 
         new Thread(fTcpServer).start();
+        new Thread(fUdpServer).start();
     }
 
     /**
@@ -243,5 +257,6 @@ public class PCRemoteServer
     public void stop() throws IOException
     {
         fTcpServer.dispose();
+        fUdpServer.dispose();
     }
 }
