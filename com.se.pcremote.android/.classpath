@@ -6,7 +6,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/com.se.pcremote"/>
 	<classpathentry kind="lib" path="lib/log4j-over-slf4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-android-1.6.1-RC1.jar"/>
-	<classpathentry kind="lib" path="/com.se.pcremote/properties"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/com.se.devenvy"/>
+	<classpathentry kind="lib" path="properties"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
