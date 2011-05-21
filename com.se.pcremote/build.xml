@@ -3,61 +3,58 @@
      30/04/2011 7:08:32 PM                                                        
 
      pcremote    
-     Builds a distributable for PC Remote
+     Builds distributables for PC Remote
                    
      Gary Buyn                                                                
      ====================================================================== -->
-<project name="pcremote" default="build">
-    <description>
-            Builds a distributable for PC Remote
+<project name="pcremote" default="build-debian">
+	<description>
+            Builds distributables for PC Remote
     </description>
-	
-	<property name="binDir" value="bin" />
-    <property name="buildDir" value="build" />
-    <property name="libDir" value="lib" />
-    <property name="propertiesDir" value="properties" />
-    <property name="srcDir" value="src" />
-	
+
 	<property name="devenvyDir" value="../com.se.devenvy" />
-    
-    <path id="classpath">
-        <pathelement location="${buildDir}/lib/log4j-1.2.15.jar" />
-    	<pathelement location="${buildDir}/lib/devenvy.jar" />
-    </path>
 
-    <!-- ================================= 
-          target: build              
+	<path id="classpath">
+		<pathelement location="${devenvyDir}/build/lib/log4j-1.2.15.jar" />
+		<pathelement location="${devenvyDir}/build/lib/devenvy.jar" />
+	</path>
+
+	<!-- ================================= 
+          target: build-debian
          ================================= -->
-    <target name="build" depends="compile" description="Builds a distributable for PC Remote">
-    	<!-- General files -->
-        <copy todir="${buildDir}">
-            <fileset file="GNU General Public Licence.txt" />
-        </copy>
+	<target name="build-debian" depends="compile" description="Builds a distributable for PC Remote">
+		<delete dir="build" />
 
-        <!-- PC Remote classes -->
-    	<jar destfile="${buildDir}/lib/pcremote.jar">
-    		<fileset dir="${binDir}" />
-    		<fileset dir="${propertiesDir}" />
-    	</jar>
-    </target>
+		<!-- Debian package files -->
+		<copy todir="build/temp/DEBIAN">
+			<fileset dir="debian/DEBIAN" />
+		</copy>
 
-    <!-- - - - - - - - - - - - - - - - - - 
+		<!-- Daemon files -->
+		<copy todir="build/temp/etc">
+			<fileset dir="debian/etc" />
+		</copy>
+
+		<!-- Application files -->
+		<copy todir="build/temp/opt/pcremote">
+			<fileset file="GNU General Public Licence.txt" />
+		</copy>
+		<copy todir="build/temp/opt">
+			<fileset file="debian/opt" />
+		</copy>
+		<copy todir="build/temp/opt/pcremote/lib">
+			<fileset dir="${devenvyDir}/build/lib" />
+		</copy>
+		<jar destfile="build/temp/opt/pcremote/lib/pcremote.jar">
+			<fileset dir="bin" />
+			<fileset file="debian/log4j.properties" />
+		</jar>
+	</target>
+
+	<!-- - - - - - - - - - - - - - - - - - 
           target: compile                      
          - - - - - - - - - - - - - - - - - -->
-    <target name="compile" depends="importLibraries">
-    	<javac srcdir="${srcDir}" destdir="${binDir}" classpathref="classpath" />
-    </target>
-
-    <!-- - - - - - - - - - - - - - - - - - 
-          target: importLibraries                      
-         - - - - - - - - - - - - - - - - - -->
-    <target name="importLibraries">
-        <!-- DevEnvy libraries -->
-        <delete dir="${buildDir}/lib" />
-        <mkdir dir="${buildDir}/lib" />
-    	
-    	<copy todir="${buildDir}/lib">
-    	    <fileset dir="${devenvyDir}/build/lib" />
-    	</copy>
-    </target>
+	<target name="compile">
+		<javac srcdir="src" destdir="bin" classpathref="classpath" />
+	</target>
 </project>
