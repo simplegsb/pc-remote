@@ -1,0 +1,10 @@
+Package: pcremote
+Version: 1.0
+Priority: optional
+Architecture: all
+Depends: default-jre
+Installed-Size: 1024
+Maintainer: Simple Entertainment Limited <dev@simpleentertainment.org>
+Conflicts: pcremote
+Replaces: pcremote
+Description: Includes both the PC Remote Server and PC Remote Client core functionality. The PC Remote Server is installed as a daemon.
