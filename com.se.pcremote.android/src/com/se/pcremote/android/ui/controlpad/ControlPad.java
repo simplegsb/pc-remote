@@ -137,8 +137,11 @@ public class ControlPad extends Activity
      */
     public void disconnect()
     {
-        unbindService(fServiceConnection);
-        stopService(new Intent(this, PCConnection.class));
+        if (PCConnection.isRunning(this))
+        {
+            unbindService(fServiceConnection);
+            stopService(new Intent(this, PCConnection.class));
+        }
     }
 
     /**
@@ -182,10 +185,8 @@ public class ControlPad extends Activity
      * Initialises this <code>ControlPad</code> based on the active {@link com.se.pcremote.android.Layout Layout} and
      * {@link com.se.pcremote.android.PC PC}.
      * </p>
-     * 
-     * @return True if the initialisation was successful, false otherwise.
      */
-    public boolean init()
+    public void init()
     {
         // Check that the active Layout exists.
         String layoutUri = PreferenceManager.getDefaultSharedPreferences(this).getString("activeLayout", null);
@@ -196,7 +197,7 @@ public class ControlPad extends Activity
             fLogger.error("Layout for URI '" + layoutUri + "' not found.");
 
             showDialog(DialogFactory.DIALOG_ACTIVE_LAYOUT_NOT_EXISTS_ID);
-            return (false);
+            return;
         }
 
         build();
@@ -208,7 +209,7 @@ public class ControlPad extends Activity
         if (count == 0)
         {
             showDialog(DialogFactory.DIALOG_NO_PCS_ID);
-            return (false);
+            return;
         }
 
         // Check that an active PC has been selected.
@@ -216,7 +217,7 @@ public class ControlPad extends Activity
         if (pcUri == null)
         {
             showDialog(DialogFactory.DIALOG_NO_ACTIVE_PC_ID);
-            return (false);
+            return;
         }
 
         // Check that the active PC exists.
@@ -228,12 +229,10 @@ public class ControlPad extends Activity
 
             showDialog(DialogFactory.DIALOG_ACTIVE_PC_NOT_EXISTS_ID);
             fPc = null;
-            return (false);
+            return;
         }
 
         connect();
-
-        return (true);
     }
 
     @Override

@@ -4,10 +4,13 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningServiceInfo;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
@@ -58,6 +61,29 @@ public class PCConnection extends Service
      * </p>
      */
     private static final int NOTIFY_CONNECTION_STATUS_ID = 0;
+
+    /**
+     * <p>
+     * Determines if a <code>PCConnection</code> service is currently running.
+     * </p>
+     * 
+     * @param context The context in which to search for the service.
+     * 
+     * @return True if a <code>PCConnection</code> service is currently running, false otherwise.
+     */
+    public static boolean isRunning(final Context context)
+    {
+        ActivityManager manager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+        for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE))
+        {
+            if (service.service.getClassName().equals(PCConnection.class.getName()))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
+    }
 
     /**
      * <p>
