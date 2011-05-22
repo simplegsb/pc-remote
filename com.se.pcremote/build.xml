@@ -22,33 +22,54 @@
 	<!-- ================================= 
           target: build-debian
          ================================= -->
-	<target name="build-debian" depends="compile" description="Builds a distributable for PC Remote">
+	<target name="build-debian" depends="compile" description="Builds a debian distributable for PC Remote">
 		<delete dir="build" />
 
 		<!-- Debian package files -->
-		<copy todir="build/temp/DEBIAN">
-			<fileset dir="debian/DEBIAN" />
-		</copy>
+        <copy todir="build/pcremote/DEBIAN">
+            <fileset dir="debian/DEBIAN" excludes=".svn" />
+        </copy>
 
 		<!-- Daemon files -->
-		<copy todir="build/temp/etc">
-			<fileset dir="debian/etc" />
-		</copy>
+        <copy todir="build/pcremote/etc">
+            <fileset dir="debian/etc" excludes=".svn" />
+        </copy>
 
 		<!-- Application files -->
-		<copy todir="build/temp/opt/pcremote">
+		<copy todir="build/pcremote/opt/pcremote">
 			<fileset file="GNU General Public Licence.txt" />
 		</copy>
-		<copy todir="build/temp/opt">
-			<fileset file="debian/opt" />
-		</copy>
-		<copy todir="build/temp/opt/pcremote/lib">
+        <copy todir="build/pcremote/opt">
+            <fileset dir="debian/opt" excludes=".svn" />
+        </copy>
+		<copy todir="build/pcremote/opt/pcremote/lib">
 			<fileset dir="${devenvyDir}/build/lib" />
 		</copy>
-		<jar destfile="build/temp/opt/pcremote/lib/pcremote.jar">
+		<jar destfile="build/pcremote/opt/pcremote/lib/pcremote.jar">
 			<fileset dir="bin" />
 			<fileset file="debian/log4j.properties" />
 		</jar>
+		
+        <!-- Execution permissions -->
+        <exec executable="chmod">
+            <arg value="+x" />
+            <arg value="build/pcremote/DEBIAN/postinst" />
+            <arg value="build/pcremote/DEBIAN/prerm" />
+            <arg value="build/pcremote/etc/init.d/pc-remote-server" />
+            <arg value="build/pcremote/opt/pcremote/bin/startClient.sh" />
+            <arg value="build/pcremote/opt/pcremote/bin/startServer.sh" />
+        </exec>
+		
+		<!-- Debian package -->
+		<exec executable="fakeroot">
+			<arg value="dpkg-deb" />
+			<arg value="--build" />
+			<arg value="build/pcremote" />
+	    </exec>
+        <exec executable="dpkg-name">
+            <arg value="build/pcremote.deb" />
+        </exec>
+		<!--<delete dir="build/pcremote" />-->
 	</target>
 
 	<!-- - - - - - - - - - - - - - - - - - 
