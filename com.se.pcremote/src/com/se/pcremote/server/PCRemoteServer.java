@@ -127,16 +127,26 @@ public class PCRemoteServer
             fLogger.info("Host: " + InetAddress.getLocalHost().getHostName());
             fLogger.info("IP: " + InetAddress.getLocalHost().getHostAddress()); // FIXME Incorrect IP address
             fLogger.info("Port: " + port);
-            fLogger.info("Press ENTER in the terminal to stop this server.");
 
-            // Wait until ENTER is pressed in the terminal.
-            System.in.read();
+            if (System.console() != null)
+            {
+                fLogger.info("Press ENTER in the terminal to stop this server.");
+                System.in.read();
 
-            fLogger.info("Stopping server...");
+                fLogger.info("Stopping server...");
+                server.stop();
 
-            server.stop();
-
-            fLogger.info("...Done.");
+                fLogger.info("...Done.");
+            }
+            else
+            {
+                // Just wait forever.
+                // TODO Do something smarter...
+                while (!Thread.interrupted())
+                {
+                    Thread.sleep(1000);
+                }
+            }
         }
         catch (Exception e)
         {

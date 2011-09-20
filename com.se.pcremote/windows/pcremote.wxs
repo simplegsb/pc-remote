@@ -1,0 +1,25 @@
+<?xml version='1.0'?>
+<Wix xmlns='http://schemas.microsoft.com/wix/2006/wi'>
+	<Product Id='pcremote' Name='PC Remote Server and Client' Language='1033' Version='1.0' Manufacturer='Simple Entertainment Limited'
+		UpgradeCode='pcremote'>
+		<Package Description='PC Remote Server and Client Installer'
+			Comments='Includes both the PC Remote Server and PC Remote Client core functionality. The PC Remote Server is installed as a Startup Application.'
+			Manufacturer='Simple Entertainment Limited' InstallerVersion='200' Compressed='yes' />
+
+		<Media Id='1' Cabinet='product.cab' EmbedCab='yes' />
+
+		<Directory Id='TARGETDIR' Name='SourceDir'>
+			<Directory Id='ProgramFilesFolder' Name='PFiles'>
+				<Directory Id='MyDir' Name='Test Program'>
+					<Component Id='MyComponent' Guid='pcremote'>
+						<File Id='readme' Name='readme.txt' DiskId='1' Source='readme.txt' />
+					</Component>
+				</Directory>
+			</Directory>
+		</Directory>
+
+		<Feature Id='MyFeature' Title='My 1st Feature' Level='1'>
+			<ComponentRef Id='MyComponent' />
+		</Feature>
+	</Product>
+</Wix>

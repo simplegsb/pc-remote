@@ -3,9 +3,9 @@ Version: 1.0
 Priority: optional
 Architecture: all
 Depends: default-jre
-Installed-Size: 1029
+Installed-Size: 1054
 Maintainer: Simple Entertainment Limited <dev@simpleentertainment.org>
 Conflicts: pcremote
 Replaces: pcremote
 Description: PC Remote Server and Client
- Includes both the PC Remote Server and PC Remote Client core functionality. The PC Remote Server is installed as a daemon.
+ Includes both the PC Remote Server and PC Remote Client core functionality. The PC Remote Server is installed as a Startup Application.

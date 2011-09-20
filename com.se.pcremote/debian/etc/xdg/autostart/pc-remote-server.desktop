@@ -1,0 +1,7 @@
+
+[Desktop Entry]
+Type=Application
+Exec=/opt/pcremote/bin/startServer.sh
+Name=PC Remote Server
+Comment=Allows remote control of this PC
+Terminal=false
