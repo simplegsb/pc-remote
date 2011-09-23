@@ -9,7 +9,7 @@
 
     You should have received a copy of the GNU General Public License along with PC Remote. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.se.pcremote.test.client;
+package com.se.pcremote.client;
 
 import static org.easymock.EasyMock.expect;
 import static org.easymock.classextension.EasyMock.createMock;
