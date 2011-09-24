@@ -27,6 +27,13 @@
       <groupId>com.se.pc-remote</groupId>
       <artifactId>pc-remote</artifactId>
       <version>0.0.1-SNAPSHOT</version>
+      <exclusions>
+        <!-- Replaced by slf4j since Android does not support log4j -->
+        <exclusion>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
 
