@@ -14,8 +14,8 @@ Home page: http://www.simpleentertainment.org/projects/pc_remote_for_android.xht
 
 For information on building this project using Maven see:
 
-- http://www.sonatype.com/books/mvnref-book/reference/android-dev.html
-- http://rgladwell.github.com/m2e-android/
+* http://www.sonatype.com/books/mvnref-book/reference/android-dev.html
+* http://rgladwell.github.com/m2e-android/
 
 To run PC Remote for Android from within eclipse these builds should not be necessary, however, Maven (m2eclipse) is needed for dependency resolution.
 
