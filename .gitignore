@@ -1,3 +1,7 @@
+# Maven project management
+pc-remote/target
+pc-remote-android/target
+
 # Eclipse project management
 *.classpath
 *.metadata
@@ -6,3 +10,4 @@
 
 # Android generated classes
 pc-remote-android/gen
+

@@ -5,6 +5,18 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>apk</packaging>
   <name>PC Remote for Android</name>
+  <url>www.simpleentertainment.org/projects/pc_remote_for_android.xhtml</url>
+  <organization>
+  	<name>simple entertainment</name>
+  	<url>www.simpleentertainment.org</url>
+  </organization>
+  <scm>
+  	<url>github.com/simple-entertainment/pc-remote</url>
+  </scm>
+  <issueManagement>
+  	<system>GitHub Issues</system>
+  	<url>github.com/simple-entertainment/pc-remote/issues</url>
+  </issueManagement>
 
   <dependencies>
     <dependency>
