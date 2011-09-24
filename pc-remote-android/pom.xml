@@ -18,28 +18,27 @@
       <version>1.6.1-RC1</version>
     </dependency>
     <dependency>
-        <groupId>android</groupId>
-        <artifactId>android</artifactId>
-        <version>2.1_r3</version>
-        <scope>provided</scope>
+      <groupId>android</groupId>
+      <artifactId>android</artifactId>
+      <version>2.1_r3</version>
+      <scope>provided</scope>
     </dependency>
-  	<dependency>
-  		<groupId>com.se.pc-remote</groupId>
-  		<artifactId>pc-remote</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-  	</dependency>
+    <dependency>
+      <groupId>com.se.pc-remote</groupId>
+      <artifactId>pc-remote</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 
   <build>
-  	<sourceDirectory>src</sourceDirectory>
     <plugins>
       <plugin>
-	    <groupId>org.apache.maven.plugins</groupId>
-	    <artifactId>maven-compiler-plugin</artifactId>
-	    <configuration>
-	      <source>1.6</source>
-	      <target>1.6</target>
-	    </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>com.jayway.maven.plugins.android.generation2</groupId>
