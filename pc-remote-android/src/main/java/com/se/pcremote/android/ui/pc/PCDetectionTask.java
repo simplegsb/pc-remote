@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.se.devenvy.net.Sniffer;
+import com.se.pcremote.Sniffer;
 import com.se.pcremote.android.R;
 
 /**

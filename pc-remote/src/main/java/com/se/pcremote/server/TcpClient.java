@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
  * 
  * @author Gary Buyn
  */
-public class TcpClient extends com.se.devenvy.net.TcpClient
+public class TcpClient extends com.se.pcremote.TcpClient
 {
     /**
      * <p>

@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 
 import android.widget.BaseAdapter;
 
-import com.se.devenvy.net.Sniffer;
+import com.se.pcremote.Sniffer;
 import com.se.pcremote.android.R;
 import com.se.pcremote.server.PCRemoteServer;
 

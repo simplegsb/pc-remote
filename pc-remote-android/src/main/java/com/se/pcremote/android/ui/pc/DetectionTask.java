@@ -6,7 +6,7 @@ import java.util.List;
 import android.database.Cursor;
 import android.os.AsyncTask;
 
-import com.se.devenvy.net.SnifferListener;
+import com.se.pcremote.SnifferListener;
 import com.se.pcremote.android.PCRemoteProvider;
 
 /**

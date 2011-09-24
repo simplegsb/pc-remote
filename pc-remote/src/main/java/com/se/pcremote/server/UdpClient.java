@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
  * 
  * @author Gary Buyn
  */
-public class UdpClient extends com.se.devenvy.net.UdpClient
+public class UdpClient extends com.se.pcremote.UdpClient
 {
     /**
      * <p>

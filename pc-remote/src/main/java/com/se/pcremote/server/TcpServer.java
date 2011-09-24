@@ -14,7 +14,7 @@ package com.se.pcremote.server;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import com.se.devenvy.net.Client;
+import com.se.pcremote.Client;
 
 /**
  * <p>
@@ -23,7 +23,7 @@ import com.se.devenvy.net.Client;
  * 
  * @author Gary Buyn
  */
-public class TcpServer extends com.se.devenvy.net.TcpServer
+public class TcpServer extends com.se.pcremote.TcpServer
 {
     /**
      * <p>

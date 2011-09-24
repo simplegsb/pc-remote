@@ -22,7 +22,7 @@ import java.net.SocketException;
 
 import org.apache.log4j.Logger;
 
-import com.se.devenvy.net.Client;
+import com.se.pcremote.Client;
 import com.se.pcremote.server.PCRemoteServer;
 
 /**
@@ -220,7 +220,7 @@ public class PCRemoteClient
 
     /**
      * <p>
-     * The {@link com.se.devenvy.net.Client Client} used to communicate with the {@link com.se.pcremote.server.PCRemoteServer PCRemoteServer} using
+     * The {@link com.se.pcremote.Client Client} used to communicate with the {@link com.se.pcremote.server.PCRemoteServer PCRemoteServer} using
      * the TCP protocol.
      * </p>
      */
