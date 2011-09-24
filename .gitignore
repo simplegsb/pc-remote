@@ -1,4 +1,6 @@
 # Eclipse project management
-*.classpath
-*.project
-*.settings
+*.metadata
+*pc-remote/.classpath
+*pc-remote/.project
+*pc-remote/.settings
+
