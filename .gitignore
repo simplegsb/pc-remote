@@ -1,6 +1,8 @@
 # Eclipse project management
+*.classpath
 *.metadata
+*.project
 *.settings
-*pc-remote/.classpath
-*pc-remote/.project
 
+# Android generated classes
+pc-remote-android/gen
